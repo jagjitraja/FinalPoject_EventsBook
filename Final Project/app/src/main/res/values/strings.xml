@@ -33,4 +33,6 @@
     <string name="event_description">Event description</string>
     <string name="post_this_event">Post this event</string>
     <string name="address">Address:</string>
+    <string name="event_address">Event Address</string>
+    <string name="my_device_location">My Device Location</string>
 </resources>
