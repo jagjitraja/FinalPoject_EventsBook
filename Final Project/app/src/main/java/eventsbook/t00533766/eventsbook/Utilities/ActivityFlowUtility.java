@@ -1,15 +1,11 @@
 package eventsbook.t00533766.eventsbook.Utilities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-
-import eventsbook.t00533766.eventsbook.MainActivity;
-import eventsbook.t00533766.eventsbook.R;
 
 /**
  * Created by T00533766 on 3/16/2018.

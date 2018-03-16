@@ -41,13 +41,15 @@ public class SplashIntroActivity extends AppCompatActivity {
         login = findViewById(R.id.splash_button_login);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //temp
+        goToMainActivity();
     }
 
     private void goToMainActivity() {
 
         ActivityFlowUtility.goToActivity(
                 new Intent(getApplicationContext(),MainActivity.class),
-                1000,
+                50,
                 getApplicationContext());
 
     }

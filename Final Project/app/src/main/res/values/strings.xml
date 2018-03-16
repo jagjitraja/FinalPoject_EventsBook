@@ -22,4 +22,8 @@
     <string name="login">Let's Go!!!</string>
     <string name="explore_without_logging_in">Explore without logging in</string>
     <string name="anonymous_error">Sorry we faced an error :(</string>
+    <string name="event_name">Event Name:</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="events_name">Event's name</string>
 </resources>

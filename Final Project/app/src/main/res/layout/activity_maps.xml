@@ -5,4 +5,4 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eventsbook.t00533766.eventsbook.MapsActivity" />
+    tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.MapsActivity" />

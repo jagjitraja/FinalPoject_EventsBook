@@ -28,6 +28,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:background="@color/black_overlay"
+        android:src="@drawable/ic_add_circle_outline_black_24dp"
+        app:backgroundTint="@color/cardview_light_background"
+        app:fabSize="normal" />
 
 </android.support.design.widget.CoordinatorLayout>

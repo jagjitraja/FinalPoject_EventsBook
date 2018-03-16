@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,21 +40,18 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                goToAddEventActivity();
             }
         });
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
@@ -78,6 +76,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void goToAddEventActivity() {
+        ActivityFlowUtility.goToActivity(new Intent(getApplicationContext(),AddEventActivity.class),0,getApplicationContext());
+    }
     private void goToSplashActivity() {
         ActivityFlowUtility.goToActivity(
                 new Intent(getApplicationContext(),SplashIntroActivity.class),
