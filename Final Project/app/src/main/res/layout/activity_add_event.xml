@@ -1,91 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.AddEventActivity">
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.AddEventActivity">
 
 
-    <TextView
-        android:id="@+id/event_name_label"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_marginStart="8dp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:text="@string/event_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/event_description_label"
+            style="@style/label_styles"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/input_fields_height"
+            android:text="@string/describe_this_event"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/private_checkbox" />
 
-    <EditText
-        android:id="@+id/event_name_edit_text"
-        android:layout_width="250dp"
-        android:layout_height="56dp"
-        android:gravity="center"
-        android:layout_marginEnd="8dp"
-        android:hint="@string/events_name"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginTop="8dp"
-        android:maxLines="1"
-        android:maxLength="20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/event_name_label"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/event_name_label"
+            style="@style/label_styles"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/input_fields_height"
+            android:text="@string/event_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/event_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:gravity="center"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:layout_marginStart="8dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginTop="8dp"
-        android:text="@string/date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_name_label" />
+        <EditText
+            android:id="@+id/event_name_edit_text"
+            style="@style/label_styles"
+            android:layout_width="@dimen/input_fields_width"
+            android:layout_height="@dimen/input_fields_height"
+            android:hint="@string/events_name"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:textColor="@color/cardview_dark_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/event_name_label"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/event_time_label"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
+        <TextView
+            android:id="@+id/event_date_label"
+            style="@style/label_styles"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/input_fields_height"
+            android:text="@string/date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_name_label" />
 
-    <TextView
-        android:id="@+id/event_date_val"
-        android:layout_width="250dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/cardview_dark_background"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/event_name_edit_text"
-        app:layout_constraintTop_toBottomOf="@+id/event_name_edit_text" />
+        <TextView
+            android:id="@+id/event_time_label"
+            style="@style/label_styles"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/input_fields_height"
+            android:gravity="center"
+            android:text="@string/time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
 
-    <TextView
-        android:id="@+id/event_time_val"
-        android:layout_width="250dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/cardview_dark_background"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/event_name_edit_text"
-        app:layout_constraintTop_toBottomOf="@+id/event_date_val" />
+        <TextView
+            android:id="@+id/event_date_val"
+            style="@style/label_styles"
+            android:layout_width="@dimen/input_fields_width"
+            android:layout_height="@dimen/input_fields_height"
+            android:background="@color/cardview_dark_background"
+            android:textColor="@color/cardview_dark_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/event_name_edit_text"
+            app:layout_constraintTop_toBottomOf="@+id/event_name_edit_text" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/event_time_val"
+            style="@style/label_styles"
+            android:layout_width="@dimen/input_fields_width"
+            android:layout_height="@dimen/input_fields_height"
+            android:background="@color/cardview_dark_background"
+            android:textColor="@color/cardview_dark_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/event_name_edit_text"
+            app:layout_constraintTop_toBottomOf="@+id/event_date_val" />
+
+        <EditText
+            android:id="@+id/event_description_value"
+            style="@style/label_styles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:maxLines="12"
+            android:gravity="start"
+            android:minHeight="@dimen/input_fields_height"
+            android:hint="@string/event_description"
+            android:inputType="textMultiLine"
+            android:textColor="@color/cardview_dark_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_label" />
+
+        <CheckBox
+            android:id="@+id/private_checkbox"
+            style="@style/label_styles"
+            android:layout_width="161dp"
+            android:layout_height="@dimen/input_fields_height"
+            android:text="@string/private_event_question"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_time_val" />
+
+        <TextView
+            android:id="@+id/cost_label"
+            style="@style/label_styles"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/input_fields_height"
+            android:text="@string/price"
+            app:layout_constraintBottom_toTopOf="@+id/event_description_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_time_label" />
+
+        <EditText
+            android:id="@+id/event_price_input"
+            style="@style/label_styles"
+            android:layout_width="@dimen/cost_check_box_height"
+            android:layout_height="@dimen/input_fields_height"
+            android:ems="10"
+            android:hint="@string/hint_cost"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:textColor="@color/cardview_dark_background"
+            app:layout_constraintEnd_toStartOf="@+id/private_checkbox"
+            app:layout_constraintStart_toEndOf="@+id/cost_label"
+            app:layout_constraintTop_toBottomOf="@+id/event_time_val" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/post_this_event"
+            style="@style/label_styles"
+            android:backgroundTint="@color/cardview_dark_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_description_value"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

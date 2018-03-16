@@ -26,4 +26,10 @@
     <string name="date">Date:</string>
     <string name="time">Time:</string>
     <string name="events_name">Event's name</string>
+    <string name="describe_this_event">Describe this event:</string>
+    <string name="private_event_question">Is this a private event?</string>
+    <string name="price">Price:</string>
+    <string name="hint_cost">$###.##</string>
+    <string name="event_description">Event description</string>
+    <string name="post_this_event">Post this event</string>
 </resources>
