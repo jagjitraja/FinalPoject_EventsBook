@@ -19,6 +19,7 @@ public class Event {
     private boolean publicEvent;
     private boolean hasTicketPrice;
     private double eventPrice;
+    private String addressLocation;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:MI");
 
     public Event(String eventName,
@@ -27,7 +28,7 @@ public class Event {
                  ArrayList<User> attendingUsers,
                  ArrayList<User> interestedUsers, boolean publicEvent,
                  boolean hasTicketPrice,
-                 double eventPrice) {
+                 double eventPrice, String addressLocation) {
 
         this.eventName = eventName;
         this.description = description;
@@ -38,6 +39,7 @@ public class Event {
         this.publicEvent = publicEvent;
         this.hasTicketPrice = hasTicketPrice;
         this.eventPrice = eventPrice;
+        this.addressLocation = addressLocation;
     }
 
     public double getEventPrice() {
@@ -120,5 +122,13 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAddressLocation() {
+        return addressLocation;
+    }
+
+    public void setAddressLocation(String addressLocation) {
+        this.addressLocation = addressLocation;
     }
 }

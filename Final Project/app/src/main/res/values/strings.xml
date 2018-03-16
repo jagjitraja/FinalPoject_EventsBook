@@ -32,4 +32,5 @@
     <string name="hint_cost">$###.##</string>
     <string name="event_description">Event description</string>
     <string name="post_this_event">Post this event</string>
+    <string name="address">Address:</string>
 </resources>
