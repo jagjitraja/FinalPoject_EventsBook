@@ -1,30 +1,18 @@
-package eventsbook.t00533766.eventsbook;
+package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
-import java.util.Timer;
 
+import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
 
 /**

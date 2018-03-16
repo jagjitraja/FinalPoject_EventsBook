@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook;
+package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.Arrays;
-
+import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
 
 public class MainActivity extends AppCompatActivity
