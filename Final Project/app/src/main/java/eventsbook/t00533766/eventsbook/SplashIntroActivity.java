@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Arrays;
 import java.util.Timer;
 
+import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -35,7 +37,13 @@ public class SplashIntroActivity extends AppCompatActivity {
     private final static int SIGN_IN_CODE = 152;
     private final String TAG = SplashIntroActivity.class.getName();
     private Button login;
-    private ProgressBar progressBar;
+
+    private View.OnClickListener tryAgainListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            showSignInScreen();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,39 +51,19 @@ public class SplashIntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_intro);
 
         login = findViewById(R.id.splash_button_login);
-        progressBar = findViewById(R.id.progress_bar_login);
-        progressBar.setMax(100);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            progressBar.setMin(0);
-        }
-        progressBar.setVisibility(View.VISIBLE);
-
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() != null) {
-            Log.d(TAG, "onCreate: PREVIOUS LOGGED IN USER");
-            login.setText("Continue");
-            progressBar.setProgress(25);
-        } else {
-            login.setText("Login");
-            progressBar.setProgress(25);
-        }
     }
 
     private void goToMainActivity() {
 
-        Handler handler = new Handler();
-        handler.postDelayed(goToMainActivityRunnable, 3000);
+        ActivityFlowUtility.goToActivity(
+                new Intent(getApplicationContext(),MainActivity.class),
+                1000,
+                getApplicationContext());
 
     }
 
-    private Runnable goToMainActivityRunnable = new Runnable() {
-        @Override
-        public void run() {
-            progressBar.setProgress(100);
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }
-    };
     //TODO - Connect and get location, and updates from database
     //TODO - Show icon and spinner
 
@@ -102,38 +90,29 @@ public class SplashIntroActivity extends AppCompatActivity {
             Log.d(TAG, "onActivityResult: RESULT =====================");
             if (resultCode == RESULT_OK) {
                 Log.d(TAG, "onActivityResult: RESULT OK");
-                progressBar.setProgress(90);
                 goToMainActivity();
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "onActivityResult: RESULT CANCELLED");
-                showSnackBar(getString(R.string.cancelled_sign_in));
+                ActivityFlowUtility.showSnackBar(findViewById(R.id.splash_view),
+                        getString(R.string.failed_sign_in),
+                        getString(R.string.try_again),tryAgainListener);
             } else {
                 Log.d(TAG, "onActivityResult: RESULT FAILED");
-                showSnackBar(getString(R.string.failed_sign_in));
+                ActivityFlowUtility.showSnackBar(findViewById(R.id.splash_view),
+                        getString(R.string.failed_sign_in),
+                        getString(R.string.try_again),tryAgainListener);
             }
         }
-
     }
 
-    private void showSnackBar(String s) {
-        Log.d(TAG, "showSnackBar: ");
-        Snackbar.make(findViewById(R.id.splash_view), s, Snackbar.LENGTH_SHORT)
-                .setAction(getString(R.string.try_again), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showSignInScreen();
-                    }
-                }).show();
-    }
 
 
     public void login(View view) {
         if (firebaseAuth.getCurrentUser() != null) {
             goToMainActivity();
-            progressBar.setProgress(90);
+            view.setEnabled(false);
         } else {
             showSignInScreen();
-            progressBar.setProgress(65);
         }
     }
 

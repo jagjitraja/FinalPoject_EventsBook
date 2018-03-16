@@ -13,23 +13,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 
+import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    private FirebaseAuth firebaseAuth;
+    private DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_main);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser()==null){
+            ActivityFlowUtility.showSnackBar(findViewById(R.id.main_activity),
+                    "User Session Timed Out",
+                    null,null);
+            goToSplashActivity();
+            finish();
+        }
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -42,19 +55,41 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                TextView userNameTextView = findViewById(R.id.user_name);
+                TextView userEmailTextView = findViewById(R.id.user_email);
+                if(firebaseAuth.getCurrentUser().getDisplayName()!=null)
+                    userNameTextView.setText(firebaseAuth.getCurrentUser().getDisplayName());
+                userEmailTextView.setText(firebaseAuth.getCurrentUser().getEmail());
+
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    private void goToSplashActivity() {
+        ActivityFlowUtility.goToActivity(
+                new Intent(getApplicationContext(),SplashIntroActivity.class),
+                0,
+                getApplicationContext()
+        );
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -99,17 +134,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.sign_out) {
-
+            firebaseAuth.signOut();
+            goToSplashActivity();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    /*********************************************************************************************************
-     * SIGN IN METHODS
-     ******************************************************************************************************** */
-
 
 }

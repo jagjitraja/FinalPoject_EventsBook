@@ -19,7 +19,7 @@
     <string name="cancelled_sign_in">Sign In Cancelled</string>
     <string name="failed_sign_in">Failed To Sign in</string>
     <string name="let_s_get_planning">Let\'s get planning</string>
-    <string name="login">Login</string>
+    <string name="login">Let's Go!!!</string>
     <string name="explore_without_logging_in">Explore without logging in</string>
     <string name="anonymous_error">Sorry we faced an error :(</string>
 </resources>
