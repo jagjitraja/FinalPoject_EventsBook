@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_light"
+    android:background="@android:color/holo_blue_dark"
     tools:context="eventsbook.t00533766.eventsbook.SplashIntroActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -23,8 +23,8 @@
         android:keepScreenOn="true"
         android:text="@string/title_launch_screen"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="30sp"
+        android:textColor="@android:color/holo_blue_bright"
+        android:textSize="45dp"
         android:textStyle="bold"
         android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -49,6 +49,7 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textSize="18sp"
         android:textStyle="bold|italic"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
