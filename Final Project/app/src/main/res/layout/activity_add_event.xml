@@ -59,7 +59,6 @@
             style="@style/label_styles"
             android:layout_width="@dimen/input_fields_width"
             android:layout_height="@dimen/input_fields_height"
-            android:background="@color/cardview_dark_background"
             android:textColor="@color/cardview_dark_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/event_name_edit_text"
@@ -75,7 +74,6 @@
             android:gravity="start"
             android:minHeight="@dimen/input_fields_height"
             android:hint="@string/event_description"
-            android:background="@color/cardview_dark_background"
             android:inputType="textMultiLine"
             android:textColor="@color/cardview_light_background"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +110,6 @@
             android:hint="@string/hint_cost"
             android:inputType="numberDecimal"
             android:maxLength="5"
-            android:textColor="@color/cardview_dark_background"
             app:layout_constraintEnd_toStartOf="@+id/private_checkbox"
             app:layout_constraintStart_toEndOf="@+id/cost_label"
             app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
