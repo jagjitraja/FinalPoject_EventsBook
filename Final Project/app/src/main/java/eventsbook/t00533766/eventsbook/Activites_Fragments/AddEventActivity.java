@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import eventsbook.t00533766.eventsbook.R;
-import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
 
 public class AddEventActivity extends AppCompatActivity {
 

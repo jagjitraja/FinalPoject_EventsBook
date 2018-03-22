@@ -3,7 +3,6 @@ package eventsbook.t00533766.eventsbook.Activites_Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import eventsbook.t00533766.eventsbook.R;
-import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
+import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser()==null){
-            ActivityFlowUtility.showSnackBar(findViewById(R.id.main_activity),
+            Utils.showSnackBar(findViewById(R.id.main_activity),
                     "User Session Timed Out",
                     null,null);
             goToSplashActivity();
@@ -77,10 +76,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goToAddEventActivity() {
-        ActivityFlowUtility.goToActivity(new Intent(getApplicationContext(),AddEventActivity.class),0,getApplicationContext());
+        Utils.goToActivity(new Intent(getApplicationContext(),AddEventActivity.class),0,getApplicationContext());
     }
     private void goToSplashActivity() {
-        ActivityFlowUtility.goToActivity(
+        Utils.goToActivity(
                 new Intent(getApplicationContext(),SplashIntroActivity.class),
                 0,
                 getApplicationContext()

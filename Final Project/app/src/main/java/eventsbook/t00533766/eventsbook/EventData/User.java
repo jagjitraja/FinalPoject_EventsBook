@@ -1,28 +1,40 @@
 package eventsbook.t00533766.eventsbook.EventData;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.ArrayList;
 
 /**
  * Created by T00533766 on 3/16/2018.
  */
-
+@Entity
 public class User {
 
+    @PrimaryKey
+    private int userID;
+    @ColumnInfo
     private String userName;
+    @ColumnInfo
     private String userEmail;
+    @ColumnInfo
     private String userPassword;
+
     private ArrayList<Event> postedEvents;
     private ArrayList<Event> attendingEvents;
     private ArrayList<Event> savedEvents;
 
 
-    public User(String userName,
+    public User(int userID,
+                String userName,
                 String userEmail,
                 String userPassword,
                 ArrayList<Event> postedEvents,
                 ArrayList<Event> attendingEvents,
                 ArrayList<Event> savedEvents) {
 
+        this.userID = userID;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
@@ -77,5 +89,13 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 }

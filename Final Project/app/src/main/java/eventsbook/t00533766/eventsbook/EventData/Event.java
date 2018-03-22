@@ -1,5 +1,10 @@
 package eventsbook.t00533766.eventsbook.EventData;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,28 +13,43 @@ import java.util.Date;
  * Created by T00533766 on 3/16/2018.
  */
 
+@Entity
 public class Event {
 
-    private String eventName;
-    private String description;
-    private Date eventDate;
+    @PrimaryKey
+    private int eventID;
+    @ForeignKey(entity = User.class, parentColumns = "postedBy", childColumns = "userID")
+    @ColumnInfo
     private User postedBy;
+    @ColumnInfo
+    private String eventName;
+    @ColumnInfo
+    private String description;
+    @ColumnInfo
+    private Date eventDate;
+    @ColumnInfo
+    private boolean publicEvent;
+    @ColumnInfo
+    private double eventPrice;
+    @ColumnInfo
+    private String addressLocation;
+
+
+    //TODO: STORE ARRAY LIST IN DATABASE
     private ArrayList<User> attendingUsers;
     private ArrayList<User> interestedUsers;
-    private boolean publicEvent;
-    private boolean hasTicketPrice;
-    private double eventPrice;
-    private String addressLocation;
+
+
     private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:MI");
 
-    public Event(String eventName,
+    public Event(int eventID, String eventName,
                  String description, Date eventDate,
                  User postedBy,
                  ArrayList<User> attendingUsers,
                  ArrayList<User> interestedUsers, boolean publicEvent,
-                 boolean hasTicketPrice,
                  double eventPrice, String addressLocation) {
 
+        this.eventID = eventID;
         this.eventName = eventName;
         this.description = description;
         this.eventDate = eventDate;
@@ -37,7 +57,6 @@ public class Event {
         this.attendingUsers = attendingUsers;
         this.interestedUsers = interestedUsers;
         this.publicEvent = publicEvent;
-        this.hasTicketPrice = hasTicketPrice;
         this.eventPrice = eventPrice;
         this.addressLocation = addressLocation;
     }
@@ -48,14 +67,6 @@ public class Event {
 
     public void setEventPrice(double eventPrice) {
         this.eventPrice = eventPrice;
-    }
-
-    public boolean isHasTicketPrice() {
-        return hasTicketPrice;
-    }
-
-    public void setHasTicketPrice(boolean hasTicketPrice) {
-        this.hasTicketPrice = hasTicketPrice;
     }
 
     public boolean isPublicEvent() {
@@ -130,5 +141,13 @@ public class Event {
 
     public void setAddressLocation(String addressLocation) {
         this.addressLocation = addressLocation;
+    }
+
+    public int getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
     }
 }

@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Arrays;
 
 import eventsbook.t00533766.eventsbook.R;
-import eventsbook.t00533766.eventsbook.Utilities.ActivityFlowUtility;
+import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -47,7 +47,7 @@ public class SplashIntroActivity extends AppCompatActivity {
 
     private void goToMainActivity() {
 
-        ActivityFlowUtility.goToActivity(
+        Utils.goToActivity(
                 new Intent(getApplicationContext(),MainActivity.class),
                 50,
                 getApplicationContext());
@@ -83,12 +83,12 @@ public class SplashIntroActivity extends AppCompatActivity {
                 goToMainActivity();
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "onActivityResult: RESULT CANCELLED");
-                ActivityFlowUtility.showSnackBar(findViewById(R.id.splash_view),
+                Utils.showSnackBar(findViewById(R.id.splash_view),
                         getString(R.string.failed_sign_in),
                         getString(R.string.try_again),tryAgainListener);
             } else {
                 Log.d(TAG, "onActivityResult: RESULT FAILED");
-                ActivityFlowUtility.showSnackBar(findViewById(R.id.splash_view),
+                Utils.showSnackBar(findViewById(R.id.splash_view),
                         getString(R.string.failed_sign_in),
                         getString(R.string.try_again),tryAgainListener);
             }
