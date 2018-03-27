@@ -29,18 +29,15 @@ public class User {
     public User(int userID,
                 String userName,
                 String userEmail,
-                String userPassword,
-                ArrayList<Event> postedEvents,
-                ArrayList<Event> attendingEvents,
-                ArrayList<Event> savedEvents) {
+                String userPassword) {
 
         this.userID = userID;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-        this.postedEvents = postedEvents;
-        this.attendingEvents = attendingEvents;
-        this.savedEvents = savedEvents;
+        this.postedEvents = new ArrayList<>();
+        this.attendingEvents = new ArrayList<>();
+        this.savedEvents = new ArrayList<>();
     }
 
     public ArrayList<Event> getAttendingEvents() {

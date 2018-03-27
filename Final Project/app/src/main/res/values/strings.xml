@@ -38,4 +38,6 @@
     <string name="my_events">My Events</string>
     <string name="saved_events">My Saved Events</string>
     <string name="settings">Settings</string>
+    <string name="interested">Interested</string>
+    <string name="register">Register</string>
 </resources>

@@ -28,8 +28,6 @@ public class Event {
     @ColumnInfo
     private Date eventDate;
     @ColumnInfo
-    private boolean publicEvent;
-    @ColumnInfo
     private double eventPrice;
     @ColumnInfo
     private String addressLocation;
@@ -45,18 +43,16 @@ public class Event {
     public Event(int eventID, String eventName,
                  String description, Date eventDate,
                  User postedBy,
-                 ArrayList<User> attendingUsers,
-                 ArrayList<User> interestedUsers, boolean publicEvent,
-                 double eventPrice, String addressLocation) {
+                 double eventPrice,
+                 String addressLocation) {
 
         this.eventID = eventID;
         this.eventName = eventName;
         this.description = description;
         this.eventDate = eventDate;
         this.postedBy = postedBy;
-        this.attendingUsers = attendingUsers;
-        this.interestedUsers = interestedUsers;
-        this.publicEvent = publicEvent;
+        this.attendingUsers = new ArrayList<>();
+        this.interestedUsers = new ArrayList<>();
         this.eventPrice = eventPrice;
         this.addressLocation = addressLocation;
     }
@@ -69,13 +65,6 @@ public class Event {
         this.eventPrice = eventPrice;
     }
 
-    public boolean isPublicEvent() {
-        return publicEvent;
-    }
-
-    public void setPublicEvent(boolean publicEvent) {
-        this.publicEvent = publicEvent;
-    }
 
     public ArrayList<User> getAttendingUsers() {
         return attendingUsers;

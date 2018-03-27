@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Date;
+
+import eventsbook.t00533766.eventsbook.EventData.Event;
+import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 
 public class AddEventActivity extends AppCompatActivity {
@@ -50,8 +54,13 @@ public class AddEventActivity extends AppCompatActivity {
 
     public void postEvent(View view) {
 
+        String eventName = eventNameEditText.getText().toString();
+        String eventDate = eventDateTextView.getText().toString();
+        String eventPrice = eventPriceEditText.getText().toString();
+        String eventAddress = eventAddressEditText.getText().toString();
+        String eventDescription = eventDescriptionEditText.getText().toString();
 
-
-
+        User user = new User(0,"A","a","a");
+        Event event = new Event(0,eventName,eventDescription,new Date(),user,0.00,eventAddress);
     }
 }
