@@ -8,8 +8,14 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import eventsbook.t00533766.eventsbook.EventData.Event;
 
 /**
  * Created by T00533766 on 3/16/2018.
@@ -45,17 +51,15 @@ public class Utils {
         }
     }
 
-    @TypeConverter
-    public static ArrayList<String> fromString(String value) {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public static ArrayList<Event> getArrayListFromString(String arrayString){
+        TypeToken<ArrayList<Event>> token = new TypeToken<ArrayList<Event>>() {};
+        Gson gson = new Gson();
+        return gson.fromJson(arrayString,token.getType());
     }
 
-    @TypeConverter
-    public static String fromArrayList(ArrayList<String> list) {
+    public static String getStringFromArray (ArrayList<Event> eventArrayList){
         Gson gson = new Gson();
-        String json = gson.toJson(list);
-        return json;
+        return gson.toJson(eventArrayList);
     }
 
 

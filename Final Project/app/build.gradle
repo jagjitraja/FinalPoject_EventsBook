@@ -34,23 +34,23 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:1.1.1"
-
     //FirebaseAuth
-    compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'com.google.firebase:firebase-auth:12.0.0'
     //FireBase
-    compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.firebase:firebase-core:12.0.0'
     //FireBaseDatabase
-    compile 'com.google.firebase:firebase-database:11.8.0'
+    compile 'com.google.firebase:firebase-database:12.0.0'
     //FireBase Online Storage
-    compile 'com.google.firebase:firebase-storage:11.8.0'
+    compile 'com.google.firebase:firebase-storage:12.0.0'
     // FirebaseUI for Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:3.2.2'
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:3.2.2'
 
-    compile 'com.google.android.gms:play-services-gcm:11.8.0'
-    implementation 'com.google.android.gms:play-services-places:11.8.0'
-    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    compile 'com.google.android.gms:play-services-gcm:12.0.0'
+    implementation 'com.google.android.gms:play-services-places:12.0.0'
+    implementation 'com.google.android.gms:play-services-maps:12.0.0'
+    compile 'com.google.code.gson:gson:2.8.2'
 }
 
 

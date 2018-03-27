@@ -4,10 +4,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import eventsbook.t00533766.eventsbook.R;
 
 public class AddEventActivity extends AppCompatActivity {
+
+    private EditText eventNameEditText;
+    private TextView eventDateTextView;
+    private EditText eventPriceEditText;
+    private EditText eventAddressEditText;
+    private EditText eventDescriptionEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +27,13 @@ public class AddEventActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        eventNameEditText = findViewById(R.id.event_name_edit_text);
+        eventDateTextView = findViewById(R.id.event_date_val);
+        eventPriceEditText = findViewById(R.id.event_price_input);
+        eventAddressEditText = findViewById(R.id.address_val);
+        eventDescriptionEditText = findViewById(R.id.event_description_value);
+
     }
 
     @Override
@@ -30,5 +46,12 @@ public class AddEventActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void postEvent(View view) {
+
+
+
+
     }
 }

@@ -59,7 +59,10 @@
             style="@style/label_styles"
             android:layout_width="@dimen/input_fields_width"
             android:layout_height="@dimen/input_fields_height"
-            android:textColor="@color/cardview_dark_background"
+            android:background="?android:attr/statusBarColor"
+            android:hint="DD/MM/YY"
+            android:textColor="@color/cardview_shadow_end_color"
+            android:textColorLink="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/event_name_edit_text"
             app:layout_constraintTop_toBottomOf="@+id/event_name_edit_text" />
@@ -80,37 +83,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description_label" />
 
-        <CheckBox
-            android:id="@+id/private_checkbox"
-            style="@style/label_styles"
-            android:layout_width="160dp"
-            android:layout_height="@dimen/input_fields_height"
-            android:layout_marginTop="8dp"
-            android:buttonTint="@color/colorPrimaryDark"
-            android:checked="false"
-            android:text="@string/private_event_question"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_date_val" />
-
         <TextView
             android:id="@+id/cost_label"
             style="@style/label_styles"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/input_fields_height"
+            android:layout_marginStart="8dp"
             android:text="@string/price"
-            app:layout_constraintTop_toBottomOf="@+id/event_date_label"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
 
         <EditText
             android:id="@+id/event_price_input"
             style="@style/label_styles"
             android:layout_width="@dimen/cost_check_box_height"
             android:layout_height="@dimen/input_fields_height"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/hint_cost"
             android:inputType="numberDecimal"
             android:maxLength="5"
-            app:layout_constraintEnd_toStartOf="@+id/private_checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cost_label"
             app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
 
@@ -125,7 +119,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_description_value"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            android:onClick="postEvent"/>
 
 
         <TextView
@@ -153,15 +147,15 @@
 
         <ImageButton
             android:id="@+id/my_location_button"
+            style="@style/label_styles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/label_styles"
-            app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/colorPrimary"
+            android:contentDescription="@string/my_device_location"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/address_val"
-            app:layout_constraintTop_toBottomOf="@+id/private_checkbox"
             app:srcCompat="@drawable/ic_my_location_black_24dp"
-            android:contentDescription="@string/my_device_location" />
+            tools:layout_editor_absoluteY="203dp" />
 
 
     </android.support.constraint.ConstraintLayout>

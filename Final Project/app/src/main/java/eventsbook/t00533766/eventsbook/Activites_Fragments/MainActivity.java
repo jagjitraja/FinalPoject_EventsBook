@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth firebaseAuth;
     private DrawerLayout drawer;
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -68,7 +70,6 @@ public class MainActivity extends AppCompatActivity
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -124,13 +125,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.events_line) {
-            // Handle the camera action
+            toolbar.setTitle(R.string.app_name);
         } else if (id == R.id.posted_events) {
-
+            toolbar.setTitle("My Events");
         } else if (id == R.id.attending_events) {
-
+            toolbar.setTitle(R.string.saved_events);
         } else if (id == R.id.settings) {
-
+            toolbar.setTitle(R.string.settings);
         } else if (id == R.id.sign_out) {
             firebaseAuth.signOut();
             goToSplashActivity();
