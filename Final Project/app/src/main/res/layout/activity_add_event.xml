@@ -78,7 +78,7 @@
             android:minHeight="@dimen/input_fields_height"
             android:hint="@string/event_description"
             android:inputType="textMultiLine"
-            android:textColor="@color/cardview_light_background"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description_label" />

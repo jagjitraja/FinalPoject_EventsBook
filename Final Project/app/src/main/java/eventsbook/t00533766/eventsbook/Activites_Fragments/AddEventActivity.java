@@ -72,10 +72,13 @@ public class AddEventActivity extends AppCompatActivity {
         String eventPrice = eventPriceEditText.getText().toString();
         String eventAddress = eventAddressEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
-        Event event = new Event(0,eventName,eventDescription,new Date(),user,0.00,eventAddress);
+        Event event = new Event(0,eventName,eventDescription,new Date()
+                ,user,0.00,eventAddress);
 
+        Log.d(TAG, "postEvent: "+event.toString());
         setResult(MainActivity.EVENT_ADD_SUCCESS,
                 new Intent(this,MainActivity.class).
                 putExtra(MainActivity.EVENT_DATA,event));
+        finish();
     }
 }

@@ -38,7 +38,7 @@ public class Event implements Serializable{
     private ArrayList<User> interestedUsers;
 
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:MI");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:mm");
 
     public Event(int eventID, String eventName,
                  String description, Date eventDate,
@@ -138,5 +138,10 @@ public class Event implements Serializable{
 
     public void setEventID(int eventID) {
         this.eventID = eventID;
+    }
+
+    @Override
+    public String toString() {
+        return this.eventName+"  "+this.eventPrice+"  "+this.description+"  "+this.getStringDate();
     }
 }

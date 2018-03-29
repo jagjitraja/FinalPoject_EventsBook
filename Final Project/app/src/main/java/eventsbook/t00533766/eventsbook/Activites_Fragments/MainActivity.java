@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fab;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private EventListAdapter eventListAdapter;
 
 
     private final static int ADD_EVENT_REQUEST = 500;
@@ -100,7 +101,8 @@ public class MainActivity extends AppCompatActivity
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext());
+        recyclerView.setAdapter(eventListAdapter);
     }
 
     private void goToAddEventActivity() {
@@ -121,11 +123,13 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "onActivityResult: "+requestCode+"        "+resultCode);
         switch (requestCode){
             case ADD_EVENT_REQUEST:
                 if (resultCode==EVENT_ADD_SUCCESS){
                     Log.d(TAG, "onActivityResult: ");
                     eventArrayList.add((Event) data.getSerializableExtra(EVENT_DATA));
+                    eventListAdapter.notifyDataSetChanged();
                 }
                 break;
             default:
