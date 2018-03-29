@@ -1,12 +1,16 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Date;
 
@@ -16,6 +20,10 @@ import eventsbook.t00533766.eventsbook.R;
 
 public class AddEventActivity extends AppCompatActivity {
 
+    private String TAG = AddEventActivity.class.getSimpleName();
+
+
+    private User user;
     private EditText eventNameEditText;
     private TextView eventDateTextView;
     private EditText eventPriceEditText;
@@ -26,6 +34,11 @@ public class AddEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        Intent intent = getIntent();
+        user = (User) intent.getSerializableExtra(MainActivity.FIRE_BASE_USER);
+
+        Log.d(TAG, "onCreate: " + user);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -59,8 +72,10 @@ public class AddEventActivity extends AppCompatActivity {
         String eventPrice = eventPriceEditText.getText().toString();
         String eventAddress = eventAddressEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
-
-        User user = new User(0,"A","a","a");
         Event event = new Event(0,eventName,eventDescription,new Date(),user,0.00,eventAddress);
+
+        setResult(MainActivity.EVENT_ADD_SUCCESS,
+                new Intent(this,MainActivity.class).
+                putExtra(MainActivity.EVENT_DATA,event));
     }
 }

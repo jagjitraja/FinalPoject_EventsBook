@@ -24,7 +24,6 @@ public class SplashIntroActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private final static int SIGN_IN_CODE = 152;
     private final String TAG = SplashIntroActivity.class.getName();
-    private Button login;
 
     private View.OnClickListener tryAgainListener = new View.OnClickListener() {
         @Override
@@ -38,7 +37,6 @@ public class SplashIntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_intro);
 
-        login = findViewById(R.id.splash_button_login);
         firebaseAuth = FirebaseAuth.getInstance();
 
         //temp

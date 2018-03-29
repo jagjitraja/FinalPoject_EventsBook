@@ -4,37 +4,36 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by T00533766 on 3/16/2018.
  */
 @Entity
-public class User {
+public class User implements Serializable  {
 
     @PrimaryKey
-    private int userID;
+    private String userID;
     @ColumnInfo
     private String userName;
     @ColumnInfo
     private String userEmail;
-    @ColumnInfo
-    private String userPassword;
 
     private ArrayList<Event> postedEvents;
     private ArrayList<Event> attendingEvents;
     private ArrayList<Event> savedEvents;
 
 
-    public User(int userID,
+    public User(String userID,
                 String userName,
-                String userEmail,
-                String userPassword) {
+                String userEmail) {
 
         this.userID = userID;
         this.userName = userName;
         this.userEmail = userEmail;
-        this.userPassword = userPassword;
         this.postedEvents = new ArrayList<>();
         this.attendingEvents = new ArrayList<>();
         this.savedEvents = new ArrayList<>();
@@ -64,13 +63,6 @@ public class User {
         this.postedEvents.add(postedEvent);
     }
 
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
 
     public String getUserEmail() {
         return userEmail;
@@ -88,11 +80,11 @@ public class User {
         this.userName = userName;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 }

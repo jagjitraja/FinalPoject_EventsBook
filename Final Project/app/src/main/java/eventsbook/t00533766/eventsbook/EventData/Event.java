@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Event {
+public class Event implements Serializable{
 
     @PrimaryKey
     private int eventID;
@@ -31,7 +32,6 @@ public class Event {
     private double eventPrice;
     @ColumnInfo
     private String addressLocation;
-
 
     //TODO: STORE ARRAY LIST IN DATABASE
     private ArrayList<User> attendingUsers;
