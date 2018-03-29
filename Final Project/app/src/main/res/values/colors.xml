@@ -7,4 +7,6 @@
     <color name="black_overlay">#ba000000</color>
     <color name="event_item_background">#b730ecf6</color>
     <color name="interested_button_back">#de66e14d</color>
+    <color name="white">#ffffff</color>
+    <color name="red">#d15158</color>
 </resources>

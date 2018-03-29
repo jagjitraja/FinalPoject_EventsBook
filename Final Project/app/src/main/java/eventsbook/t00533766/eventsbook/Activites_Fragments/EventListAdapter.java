@@ -17,7 +17,8 @@ import eventsbook.t00533766.eventsbook.R;
  * Created by T00533766 on 3/28/2018.
  */
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventItemHolder> {
+public class EventListAdapter extends
+        RecyclerView.Adapter<EventListAdapter.EventItemHolder> {
 
     private ArrayList<Event> eventArrayList;
     private Context context;
@@ -26,7 +27,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         this.eventArrayList = eventArrayList;
         this.context= context;
     }
-
 
     @Override
     public EventItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,18 +49,21 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         TextView eventNameTextView;
         TextView eventDateTextView;
+        TextView eventPostersNameTextView;
+        TextView eventCityTextView;
         TextView eventDescriptionTextView;
         Button interestedButton;
         Button registerButton;
 
         public EventItemHolder(View itemView) {
             super(itemView);
-
             eventNameTextView = itemView.findViewById(R.id.eventname);
             eventDateTextView = itemView.findViewById(R.id.eventdate);
             eventDescriptionTextView = itemView.findViewById(R.id.eventdesctiption);
-           // interestedButton = itemView.findViewById(R.id.interested_button);
-            //registerButton = itemView.findViewById(R.id.register_button);
+            interestedButton = itemView.findViewById(R.id.interested_button);
+            registerButton = itemView.findViewById(R.id.register_button);
+            eventPostersNameTextView = itemView.findViewById(R.id.posters_name);
+            eventCityTextView = itemView.findViewById(R.id.eventCity);
         }
 
         public void bindDataToView(int pos){
@@ -68,6 +71,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             eventNameTextView.setText(event.getEventName());
             eventDescriptionTextView.setText(event.getDescription());
             eventDateTextView.setText(event.getStringDate());
+            eventPostersNameTextView.setText(event.getPostedBy().getUserName());
+            eventCityTextView.setText(event.getAddressLocation());
         }
     }
 }

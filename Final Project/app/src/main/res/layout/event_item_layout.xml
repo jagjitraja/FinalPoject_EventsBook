@@ -7,9 +7,22 @@
     android:background="@color/event_item_background"
     android:layout_margin="5dp">
 
+    <TextView
+        android:id="@+id/posters_name"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Posters Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/eventname"
+        style="@style/label_styles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -18,29 +31,37 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/posters_name" />
 
     <TextView
-        android:id="@+id/eventdate"
+        android:id="@+id/eventCity"
+        style="@style/label_styles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:text="Event City"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventdate" />
+    <TextView
+        android:id="@+id/eventdate"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
         android:text="Event Date"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/eventname"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/eventdesctiption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        style="@style/label_styles"
         android:gravity="center"
         android:text="-------------------------EVENT DESCRIPTION------------"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
