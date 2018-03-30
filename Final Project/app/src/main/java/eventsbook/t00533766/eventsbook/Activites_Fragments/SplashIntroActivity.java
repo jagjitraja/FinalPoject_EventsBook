@@ -81,14 +81,14 @@ public class SplashIntroActivity extends AppCompatActivity {
                 goToMainActivity();
             } else if (resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "onActivityResult: RESULT CANCELLED");
-                Utils.showSnackBar(findViewById(R.id.splash_view),
-                        getString(R.string.failed_sign_in),
-                        getString(R.string.try_again),tryAgainListener);
+               // Utils.showSnackBar(findViewById(R.id.splash_view),
+                //        getString(R.string.failed_sign_in),
+                //        getString(R.string.try_again),tryAgainListener);
             } else {
                 Log.d(TAG, "onActivityResult: RESULT FAILED");
-                Utils.showSnackBar(findViewById(R.id.splash_view),
-                        getString(R.string.failed_sign_in),
-                        getString(R.string.try_again),tryAgainListener);
+                //Utils.showSnackBar(findViewById(R.id.splash_view),
+                //        getString(R.string.failed_sign_in),
+                //        getString(R.string.try_again),tryAgainListener);
             }
         }
     }

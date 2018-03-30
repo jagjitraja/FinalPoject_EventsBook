@@ -19,6 +19,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -36,6 +41,37 @@ public class MainActivity extends AppCompatActivity
     public static final String EVENT_DATA = "EVENT ADDED";
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
+    private ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Log.d(TAG, "onChildAdded: ");
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            Log.d(TAG, "onChildChanged: ");
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            Log.d(TAG, "onChildRemoved: ");
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            Log.d(TAG, "onChildMoved: ");
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.d(TAG, "onCancelled: ");
+        }
+    };
+
+
     private DrawerLayout drawer;
     private FloatingActionButton fab;
     private Toolbar toolbar;
@@ -52,18 +88,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        eventArrayList = new ArrayList<>();
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser()==null){
-            Utils.showSnackBar(findViewById(R.id.main_activity),
-                    "User Session Timed Out",
-                    null,null);
+            //Utils.showSnackBar(findViewById(R.id.main_activity),
+            //        "User Session Timed Out",
+            //        null,null);
             goToSplashActivity();
             finish();
         }
+        initializeFireBase();
+        eventArrayList = new ArrayList<>();
+        initializeUIElements();
 
+    }
+
+    private void initializeUIElements() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
@@ -93,19 +133,46 @@ public class MainActivity extends AppCompatActivity
         };
 
         drawer.addDrawerListener(toggle);
+        
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext());
         recyclerView.setAdapter(eventListAdapter);
+
+
+    }
+    private void initializeFireBase() {
+        if (firebaseAuth.getCurrentUser()!=null) {
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference().child(firebaseAuth.getCurrentUser().getUid());
+            setChildEventListener();
+        }
+    }
+
+    private void setChildEventListener(){
+        if (databaseReference!=null){
+            databaseReference.addChildEventListener(childEventListener);
+        }
+    }
+    private void removeChildEventListener(){
+        if (databaseReference!=null)
+        databaseReference.removeEventListener(childEventListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        removeChildEventListener();
     }
 
     private void goToAddEventActivity() {
+
         Intent intent =new Intent(getApplicationContext(),AddEventActivity.class);
 
         String name = firebaseAuth.getCurrentUser().getDisplayName();
@@ -128,13 +195,20 @@ public class MainActivity extends AppCompatActivity
             case ADD_EVENT_REQUEST:
                 if (resultCode==EVENT_ADD_SUCCESS){
                     Log.d(TAG, "onActivityResult: ");
-                    eventArrayList.add((Event) data.getSerializableExtra(EVENT_DATA));
+                    Event event = (Event) data.getSerializableExtra(EVENT_DATA);
+                    eventArrayList.add(event);
                     eventListAdapter.notifyDataSetChanged();
+
+                    postEventToDatabase(event);
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private void postEventToDatabase(Event event) {
+        databaseReference.push().setValue(event);
     }
 
     private void goToSplashActivity() {
@@ -169,7 +243,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -177,6 +250,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
+        Log.d(TAG, "onNavigationItemSelected: ");
         int id = item.getItemId();
 
         if (id == R.id.events_line) {
@@ -197,4 +271,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void interestedClicked(View view) {
+        Log.d(TAG, "interestedClicked: ");
+    }
 }
