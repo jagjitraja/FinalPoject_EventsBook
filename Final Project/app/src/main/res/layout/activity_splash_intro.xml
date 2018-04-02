@@ -2,7 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
     android:layout_height="match_parent"
     android:id="@+id/splash_view"
     tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.SplashIntroActivity">
@@ -27,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
+    
     <TextView
         android:id="@+id/fullscreen_name"
         android:layout_width="match_parent"
@@ -37,7 +36,6 @@
         android:layout_marginTop="8dp"
         android:fontFamily="casual"
         android:gravity="center"
-        android:keepScreenOn="true"
         android:text="@string/slogan"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -46,7 +44,7 @@
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fullscreen_content" />
+        app:layout_constraintTop_toBottomOf="@+id/fullscreen_content"/>
 
     <Button
         android:id="@+id/splash_button_login"

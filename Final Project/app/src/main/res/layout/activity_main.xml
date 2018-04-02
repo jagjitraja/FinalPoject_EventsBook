@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_activity">
-
+    android:fitsSystemWindows="true"
+    tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.MainActivity">
+    
+    
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
         android:fitsSystemWindows="false"
-        android:elevation="@dimen/cardview_default_elevation"
-        tools:foregroundGravity="start">
-
+        android:elevation="@dimen/cardview_default_elevation">
+        
+        <include layout="@layout/content_main"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"/>
+        
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -25,32 +31,21 @@
             app:itemTextColor="@color/colorPrimaryDark"
             app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_drawer" />
-
+        
     </android.support.v4.widget.DrawerLayout>
-
-    <include
-        layout="@layout/app_bar_main"
+    
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:background="@color/black_overlay"
-        android:src="@drawable/ic_add_circle_outline_black_24dp"
-        app:backgroundTint="@color/cardview_light_background"
-        app:fabSize="normal" />
-
-
-</RelativeLayout>
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    
+    </android.support.design.widget.AppBarLayout>
+</android.support.design.widget.CoordinatorLayout>

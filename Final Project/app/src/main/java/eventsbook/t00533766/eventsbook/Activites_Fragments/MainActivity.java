@@ -261,6 +261,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.saved_events);
         } else if (id == R.id.settings) {
             toolbar.setTitle(R.string.settings);
+            Log.d(TAG, "onNavigationItemSelected: ");
         } else if (id == R.id.sign_out) {
             firebaseAuth.signOut();
             goToSplashActivity();
