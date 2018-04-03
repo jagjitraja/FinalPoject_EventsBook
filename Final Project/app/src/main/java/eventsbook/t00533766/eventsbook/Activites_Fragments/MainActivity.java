@@ -1,12 +1,8 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,10 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
-import eventsbook.t00533766.eventsbook.EventData.EventRoomDatabase.EventViewModel;
+import eventsbook.t00533766.eventsbook.EventData.EventRoomDatabase.EventFireBase;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
@@ -43,22 +38,21 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<Event> eventArrayList;
 
-    public final static String FIRE_BASE_USER = "FIREBASE_USER";
     public static final String EVENT_DATA = "EVENT ADDED";
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-    private EventViewModel eventViewModel;
+    //private EventViewModel eventViewModel;
 
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-          //  Event addedEvent = dataSnapshot.getValue(Event.class);
-           // eventListAdapter.addEvent(addedEvent);
-          //  Log.d(TAG, "onChildAdded: "+addedEvent);
+            Event addedEvent = dataSnapshot.getValue(Event.class);
+            eventListAdapter.addEvent(addedEvent);
+            Log.d(TAG, "onChildAdded: "+addedEvent);
         }
 
         @Override
@@ -103,20 +97,19 @@ public class MainActivity extends AppCompatActivity
         eventArrayList = new ArrayList<>();
 
 
-        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
-
-        eventViewModel.getEventListLiveData().observe(this,
-                new Observer<List<Event>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Event> events) {
-                        Log.d(TAG, "onChanged: ");
-                        if (events!=null){
-                            Log.d(TAG, "onChanged: "+events);
-                            eventArrayList = (ArrayList<Event>) events;
-                            eventListAdapter.setEventArrayList(eventArrayList);
-                        }
-                    }
-                });
+//        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+//        eventViewModel.getEventListLiveData().observe(this,
+//                new Observer<List<Event>>() {
+//                    @Override
+//                    public void onChanged(@Nullable List<Event> events) {
+//                        Log.d(TAG, "onChanged: ");
+//                        if (events!=null){
+//                            Log.d(TAG, "onChanged: "+events);
+//                            eventArrayList = (ArrayList<Event>) events;
+//                            eventListAdapter.setEventArrayList(eventArrayList);
+//                        }
+//                    }
+//                });
 
         if (firebaseAuth.getCurrentUser()==null){
             //Utils.showSnackBar(findViewById(R.id.main_activity),
@@ -176,11 +169,12 @@ public class MainActivity extends AppCompatActivity
     }
     private void initializeFireBase() {
         if (firebaseAuth.getCurrentUser()!=null) {
-            firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseDatabase = EventFireBase.getFirebaseDatabase();
             databaseReference = firebaseDatabase.getReference().child(firebaseAuth.getCurrentUser().getUid());
             setChildEventListener();
             eventListAdapter.notifyDataSetChanged();
         }
+
     }
 
     private void setChildEventListener(){
@@ -202,14 +196,13 @@ public class MainActivity extends AppCompatActivity
     private void goToAddEventActivity() {
 
         Intent intent =new Intent(getApplicationContext(),AddEventActivity.class);
-
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         if (name==null){
-            name = "";
+            name = "Not Available";
         }
         User user = new User(firebaseAuth.getUid(), name
                 ,firebaseAuth.getCurrentUser().getEmail());
-        intent.putExtra(FIRE_BASE_USER,user);
+        intent.putExtra(Utils.FIRE_BASE_USER_KEY,user);
 
         startActivityForResult(intent,ADD_EVENT_REQUEST);
     }
@@ -236,8 +229,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void postEventToDatabase(Event event) {
-   //     databaseReference.push().setValue(event);
-        eventViewModel.insertEventData(event);
+        databaseReference.push().setValue(event);
+        //eventViewModel.insertEventData(event);
     }
 
     private void goToSplashActivity() {
@@ -309,4 +302,7 @@ public class MainActivity extends AppCompatActivity
     public void eventItemClicked(View view) {
         Log.d(TAG, "eventItemClicked: ");
     }
+
 }
+
+//TODO: Event scync with firebase

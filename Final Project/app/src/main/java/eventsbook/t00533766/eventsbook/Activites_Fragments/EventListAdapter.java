@@ -1,6 +1,7 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 /**
  * Created by T00533766 on 3/28/2018.
@@ -39,9 +41,17 @@ public class EventListAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(EventItemHolder holder, int position) {
+    public void onBindViewHolder(EventItemHolder holder, final int position) {
 
         holder.bindDataToView(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,ViewEventActivity.class);
+                intent.putExtra(Utils.VIEW_EVENT_INTENT_KEY,eventArrayList.get(position));
+                Utils.goToActivity(intent,0,context);
+            }
+        });
     }
 
     public void setEventArrayList(ArrayList<Event> eventArrayList){
@@ -69,7 +79,7 @@ public class EventListAdapter extends
         Button interestedButton;
         Button registerButton;
 
-        public EventItemHolder(View itemView) {
+        public EventItemHolder(final View itemView) {
             super(itemView);
             eventNameTextView = itemView.findViewById(R.id.eventname);
             eventDateTextView = itemView.findViewById(R.id.eventdate);
@@ -78,13 +88,6 @@ public class EventListAdapter extends
             registerButton = itemView.findViewById(R.id.register_button);
             eventPostersNameTextView = itemView.findViewById(R.id.posters_name);
             eventCityTextView = itemView.findViewById(R.id.eventCity);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(TAG, "onClick: ");
-                }
-            });
         }
 
         public void bindDataToView(int pos){

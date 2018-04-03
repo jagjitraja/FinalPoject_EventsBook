@@ -10,17 +10,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.Date;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 public class AddEventActivity extends AppCompatActivity {
 
     private String TAG = AddEventActivity.class.getSimpleName();
+
+    private Event event;
 
     private User user;
     private EditText eventNameEditText;
@@ -35,7 +36,8 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
 
         Intent intent = getIntent();
-        user = (User) intent.getSerializableExtra(MainActivity.FIRE_BASE_USER);
+        event = (Event) intent.getSerializableExtra(Utils.EDIT_EVENT_INTENT_KEY);
+        user = (User) intent.getSerializableExtra(Utils.FIRE_BASE_USER_KEY);
 
         Log.d(TAG, "onCreate: " + user);
 
@@ -44,11 +46,19 @@ public class AddEventActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        eventNameEditText = findViewById(R.id.event_name_edit_text);
+        eventNameEditText = findViewById(R.id.event_name_text_view);
         eventDateTextView = findViewById(R.id.event_date_val);
-        eventPriceEditText = findViewById(R.id.event_price_input);
-        eventAddressEditText = findViewById(R.id.address_val);
-        eventDescriptionEditText = findViewById(R.id.event_description_value);
+        eventPriceEditText = findViewById(R.id.event_price__text_view);
+        eventAddressEditText = findViewById(R.id.address__text_view);
+        eventDescriptionEditText = findViewById(R.id.event_description_text_view);
+
+        if (event!=null){
+            eventNameEditText.setText(event.getEventName());
+            eventDescriptionEditText.setText(event.getDescription());
+            eventDateTextView.setText(event.getStringDate());
+            eventPriceEditText.setText(event.getEventPrice()+"");
+            eventAddressEditText.setText(event.getAddressLocation());
+        }
 
     }
 

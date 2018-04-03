@@ -44,6 +44,18 @@ public class User implements Serializable  {
     @Ignore
     private ArrayList<Event> savedEvents;
 
+    public User() {
+        this.userID = "";
+        this.userName = "";
+        this.userEmail = "";
+        this.postedEvents = new ArrayList<>();
+        this.attendingEvents = new ArrayList<>();
+        this.savedEvents = new ArrayList<>();
+
+        this.attendingEventsJSON = EventArrayListTypeConverter.getEventJSONStringFromArray(attendingEvents);
+        this.savedEventsJSON =  EventArrayListTypeConverter.getEventJSONStringFromArray(savedEvents);
+        this.postedEventsJSON =  EventArrayListTypeConverter.getEventJSONStringFromArray(postedEvents);
+    }
     public User(String userID,
                 String userName,
                 String userEmail) {

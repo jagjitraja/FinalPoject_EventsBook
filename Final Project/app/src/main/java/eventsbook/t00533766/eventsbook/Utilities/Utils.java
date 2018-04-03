@@ -25,6 +25,9 @@ import eventsbook.t00533766.eventsbook.EventData.User;
 
 public class Utils {
 
+    public static final String VIEW_EVENT_INTENT_KEY = "VIEW EVENT";
+    public static final String EDIT_EVENT_INTENT_KEY = "EDIT EVENT";
+    public final static String FIRE_BASE_USER_KEY = "FIREBASE_USER";
 
     private static final String TAG = Utils.class.getName();
 

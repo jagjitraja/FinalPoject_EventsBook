@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.AddEventActivity">
-
 
         <TextView
             android:id="@+id/event_description_label"
@@ -32,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <TextView
             android:id="@+id/event_name_text_view"
             style="@style/label_styles"
             android:layout_width="@dimen/input_fields_width"
@@ -40,7 +38,6 @@
             android:hint="@string/events_name"
             android:maxLength="20"
             android:maxLines="1"
-            android:textColor="@color/cardview_dark_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/event_name_label"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +52,7 @@
             app:layout_constraintTop_toBottomOf="@+id/event_name_label" />
 
         <TextView
-            android:id="@+id/event_date_val"
+            android:id="@+id/event_date__text_view"
             style="@style/label_styles"
             android:layout_width="@dimen/input_fields_width"
             android:layout_height="@dimen/input_fields_height"
@@ -67,7 +64,7 @@
             app:layout_constraintStart_toStartOf="@+id/event_name_text_view"
             app:layout_constraintTop_toBottomOf="@+id/event_name_text_view" />
 
-        <EditText
+        <TextView
             android:id="@+id/event_description_text_view"
             style="@style/label_styles"
             android:layout_width="match_parent"
@@ -93,7 +90,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
 
-        <EditText
+        <TextView
             android:id="@+id/event_price__text_view"
             style="@style/label_styles"
             android:layout_width="@dimen/cost_check_box_height"
@@ -111,7 +108,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:text="@string/post_this_event"
+            android:text="@string/edit_event"
             style="@style/label_styles"
             android:backgroundTint="@color/cardview_dark_background"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +116,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_description_text_view"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:onClick="postEvent"/>
+            android:onClick="editEvent"/>
 
 
         <TextView
@@ -133,7 +130,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cost_label" />
 
-        <EditText
+        <TextView
             android:id="@+id/address__text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
