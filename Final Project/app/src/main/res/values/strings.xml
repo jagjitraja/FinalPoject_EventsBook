@@ -19,13 +19,13 @@
     <string name="cancelled_sign_in">Sign In Cancelled</string>
     <string name="failed_sign_in">Failed To Sign in</string>
     <string name="let_s_get_planning">Let\'s get planning</string>
-    <string name="login">Let's Go!!!</string>
+    <string name="login">Let\'s Go</string>
     <string name="explore_without_logging_in">Explore without logging in</string>
     <string name="anonymous_error">Sorry we faced an error :(</string>
     <string name="event_name">Event Name:</string>
     <string name="date">Date:</string>
     <string name="time">Time:</string>
-    <string name="events_name">Event's name</string>
+    <string name="events_name">Event\'s name</string>
     <string name="describe_this_event">Describe this event:</string>
     <string name="private_event_question">Is this a private event?</string>
     <string name="price">Price:</string>

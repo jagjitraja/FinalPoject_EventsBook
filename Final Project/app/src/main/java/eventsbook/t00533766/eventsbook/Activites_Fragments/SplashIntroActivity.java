@@ -24,12 +24,12 @@ public class SplashIntroActivity extends AppCompatActivity {
     private final static int SIGN_IN_CODE = 152;
     private final String TAG = SplashIntroActivity.class.getName();
 
-    private View.OnClickListener tryAgainListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            showSignInScreen();
-        }
-    };
+//    private View.OnClickListener tryAgainListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            showSignInScreen();
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,6 @@ public class SplashIntroActivity extends AppCompatActivity {
     public void login(View view) {
         if (firebaseAuth.getCurrentUser() != null) {
             goToMainActivity();
-            view.setEnabled(false);
         } else {
             showSignInScreen();
         }

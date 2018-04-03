@@ -22,7 +22,6 @@ public class AddEventActivity extends AppCompatActivity {
 
     private String TAG = AddEventActivity.class.getSimpleName();
 
-
     private User user;
     private EditText eventNameEditText;
     private TextView eventDateTextView;

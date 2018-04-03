@@ -54,43 +54,7 @@ public class Utils {
         }
     }
 
-    @TypeConverter
-    public static ArrayList<Event> getArrayListFromString(String arrayString){
-        TypeToken<ArrayList<Event>> token = new TypeToken<ArrayList<Event>>() {};
-        Gson gson = new Gson();
-        return gson.fromJson(arrayString,token.getType());
-    }
 
-
-    @TypeConverter
-    public static String getStringFromArray (ArrayList<Event> eventArrayList){
-        Gson gson = new Gson();
-        return gson.toJson(eventArrayList);
-    }
-
-    @TypeConverter
-    public static String getUserString (User user){
-        Gson gson = new Gson();
-        return gson.toJson(user);
-    }
-
-    @TypeConverter
-    public static User getUserFromString (String json){
-        Gson gson = new Gson();
-        return gson.fromJson(json,User.class);
-    }
-
-    @TypeConverter
-    public static String getEventString (Event event){
-        Gson gson = new Gson();
-        return gson.toJson(event);
-    }
-
-    @TypeConverter
-    public static Event getEventFromString (String json){
-        Gson gson = new Gson();
-        return gson.fromJson(json,Event.class);
-    }
 
 
 

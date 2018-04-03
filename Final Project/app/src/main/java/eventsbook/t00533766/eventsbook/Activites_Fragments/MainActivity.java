@@ -1,8 +1,12 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,8 +30,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
+import eventsbook.t00533766.eventsbook.EventData.EventRoomDatabase.EventViewModel;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
@@ -44,10 +50,15 @@ public class MainActivity extends AppCompatActivity
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
+    private EventViewModel eventViewModel;
+
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Log.d(TAG, "onChildAdded: ");
+
+          //  Event addedEvent = dataSnapshot.getValue(Event.class);
+           // eventListAdapter.addEvent(addedEvent);
+          //  Log.d(TAG, "onChildAdded: "+addedEvent);
         }
 
         @Override
@@ -89,6 +100,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        eventArrayList = new ArrayList<>();
+
+
+        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+
+        eventViewModel.getEventListLiveData().observe(this,
+                new Observer<List<Event>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Event> events) {
+                        Log.d(TAG, "onChanged: ");
+                        if (events!=null){
+                            Log.d(TAG, "onChanged: "+events);
+                            eventArrayList = (ArrayList<Event>) events;
+                            eventListAdapter.setEventArrayList(eventArrayList);
+                        }
+                    }
+                });
 
         if (firebaseAuth.getCurrentUser()==null){
             //Utils.showSnackBar(findViewById(R.id.main_activity),
@@ -97,9 +125,8 @@ public class MainActivity extends AppCompatActivity
             goToSplashActivity();
             finish();
         }
-        initializeFireBase();
-        eventArrayList = new ArrayList<>();
         initializeUIElements();
+        initializeFireBase();
 
     }
 
@@ -152,6 +179,7 @@ public class MainActivity extends AppCompatActivity
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference().child(firebaseAuth.getCurrentUser().getUid());
             setChildEventListener();
+            eventListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -208,11 +236,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void postEventToDatabase(Event event) {
-        databaseReference.push().setValue(event);
+   //     databaseReference.push().setValue(event);
+        eventViewModel.insertEventData(event);
     }
 
     private void goToSplashActivity() {
-        Utils.goToActivity(new Intent(getApplicationContext(),SplashIntroActivity.class),
+        Utils.goToActivity(new Intent(getApplicationContext(),
+                        SplashIntroActivity.class),
                 0, getApplicationContext());
     }
 
@@ -274,5 +304,9 @@ public class MainActivity extends AppCompatActivity
 
     public void interestedClicked(View view) {
         Log.d(TAG, "interestedClicked: ");
+    }
+
+    public void eventItemClicked(View view) {
+        Log.d(TAG, "eventItemClicked: ");
     }
 }

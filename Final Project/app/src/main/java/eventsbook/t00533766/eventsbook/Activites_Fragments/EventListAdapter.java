@@ -2,6 +2,7 @@ package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import eventsbook.t00533766.eventsbook.R;
 public class EventListAdapter extends
         RecyclerView.Adapter<EventListAdapter.EventItemHolder> {
 
+    private final String TAG = EventListAdapter.class.getSimpleName();
     private ArrayList<Event> eventArrayList;
     private Context context;
 
@@ -32,13 +34,25 @@ public class EventListAdapter extends
     public EventItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemview = LayoutInflater.from(context).inflate(R.layout.event_item_layout,parent,false);
+
         return new EventItemHolder(itemview);
     }
 
     @Override
     public void onBindViewHolder(EventItemHolder holder, int position) {
+
         holder.bindDataToView(position);
     }
+
+    public void setEventArrayList(ArrayList<Event> eventArrayList){
+        this.eventArrayList = eventArrayList;notifyDataSetChanged();
+    }
+
+    public void addEvent(Event event){
+        this.eventArrayList.add(event);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
@@ -64,6 +78,13 @@ public class EventListAdapter extends
             registerButton = itemView.findViewById(R.id.register_button);
             eventPostersNameTextView = itemView.findViewById(R.id.posters_name);
             eventCityTextView = itemView.findViewById(R.id.eventCity);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick: ");
+                }
+            });
         }
 
         public void bindDataToView(int pos){
