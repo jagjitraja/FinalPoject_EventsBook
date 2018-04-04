@@ -34,7 +34,7 @@ import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnEventItemClick {
 
     public final String EVENTS_NODE = "EVENTS";
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext());
+        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
         recyclerView.setAdapter(eventListAdapter);
 
 
@@ -295,4 +295,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void eventItemClicked(String clickedButton, Event event) {
+        event.addAttendingUsers(firebaseAuth.getUid());
+        databaseReference.child(event.getEventID()).setValue(event);
+    }
 }

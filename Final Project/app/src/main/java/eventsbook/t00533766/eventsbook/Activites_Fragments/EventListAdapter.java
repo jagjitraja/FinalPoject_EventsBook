@@ -26,10 +26,13 @@ public class EventListAdapter extends
     private final String TAG = EventListAdapter.class.getSimpleName();
     private ArrayList<Event> eventArrayList;
     private Context context;
+    private OnEventItemClick onEventItemClickListener;
 
-    public EventListAdapter(ArrayList<Event> eventArrayList, Context context) {
+    public EventListAdapter(ArrayList<Event> eventArrayList,
+                            Context context,OnEventItemClick onEventItemClick) {
         this.eventArrayList = eventArrayList;
         this.context= context;
+        this.onEventItemClickListener = onEventItemClick;
     }
 
     @Override
@@ -87,6 +90,7 @@ public class EventListAdapter extends
             eventPostersNameTextView = itemView.findViewById(R.id.posters_name);
             eventCityTextView = itemView.findViewById(R.id.eventCity);
 
+            //TODO:HIDE INTERESTED AND REGISTER BUTTONS FOR SAME USER
 
         }
 
@@ -101,13 +105,13 @@ public class EventListAdapter extends
             interestedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG, "onClick: INTERESTED"+pos);
+                    onEventItemClickListener.eventItemClicked("INTERESTED",eventArrayList.get(pos));
                 }
             });
             registerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG, "onClick: REGISTER"+eventArrayList.get(pos));
+                    onEventItemClickListener.eventItemClicked("REGISTER",eventArrayList.get(pos));
                 }
             });
         }
