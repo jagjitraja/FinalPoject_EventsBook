@@ -1,66 +1,30 @@
 package eventsbook.t00533766.eventsbook.EventData;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
-import android.arch.persistence.room.TypeConverters;
-
-import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import eventsbook.t00533766.eventsbook.Utilities.DateTypeConverters;
-import eventsbook.t00533766.eventsbook.Utilities.UserArrayListTypeConverter;
-import eventsbook.t00533766.eventsbook.Utilities.UserTypeConverters;
-import eventsbook.t00533766.eventsbook.Utilities.Utils;
-
 /**
  * Created by T00533766 on 3/16/2018.
  */
 
-@Entity(tableName = "Events")
 public class Event implements Serializable{
 
-    @PrimaryKey(autoGenerate = true)
-    private int eventID;
-    @ForeignKey(entity = User.class, parentColumns = "postedBy", childColumns = "userID")
-
-    @ColumnInfo
-    @TypeConverters(UserTypeConverters.class)
+    private String eventID;
     private User postedBy;
-    @ColumnInfo
     private String eventName;
-    @ColumnInfo
     private String description;
-
-    @TypeConverters(DateTypeConverters.class)
-    @ColumnInfo
     private Date eventDate;
-    @ColumnInfo
     private double eventPrice;
-    @ColumnInfo
     private String addressLocation;
-    @ColumnInfo
-    private String attendingUsersJSON;
-    @ColumnInfo
-    private String interestedUsersJSON;
-
-    //TODO: STORE ARRAY LIST IN DATABASE
-    @Ignore
-    private ArrayList<User> attendingUsers;
-    @Ignore
-    private ArrayList<User> interestedUsers;
-    @Ignore
+    private ArrayList<String> attendingUsers;
+    private ArrayList<String> interestedUsers;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:mm");
 
     public Event(){
-        this.eventID = 0;
+        this.eventID = "";
         this.eventName = "";
         this.description = "";
         this.eventDate = null;
@@ -69,12 +33,9 @@ public class Event implements Serializable{
         this.interestedUsers = new ArrayList<>();
         this.eventPrice = 0;
         this.addressLocation = "";
-
-        this.attendingUsersJSON = UserArrayListTypeConverter.getUserJSONStringFromArray(this.attendingUsers);
-        this.interestedUsersJSON = UserArrayListTypeConverter.getUserJSONStringFromArray(this.interestedUsers);
     }
 
-    public Event(int eventID, String eventName,
+    public Event(String eventID, String eventName,
                  String description, Date eventDate,
                  User postedBy,
                  double eventPrice,
@@ -89,11 +50,15 @@ public class Event implements Serializable{
         this.interestedUsers = new ArrayList<>();
         this.eventPrice = eventPrice;
         this.addressLocation = addressLocation;
-
-        this.attendingUsersJSON = UserArrayListTypeConverter.getUserJSONStringFromArray(this.attendingUsers);
-        this.interestedUsersJSON = UserArrayListTypeConverter.getUserJSONStringFromArray(this.interestedUsers);
     }
 
+    public void setAttendingUsers(ArrayList<String> attendingUsers){
+        this.attendingUsers = attendingUsers;
+    }
+
+    public void setInterestedUsers(ArrayList<String> interestedUsers){
+        this.interestedUsers = interestedUsers;
+    }
     public double getEventPrice() {
         return eventPrice;
     }
@@ -102,7 +67,7 @@ public class Event implements Serializable{
         this.eventPrice = eventPrice;
     }
 
-    public ArrayList<User> getAttendingUsers() {
+    public ArrayList<String> getAttendingUsers() {
         return attendingUsers;
     }
 
@@ -110,9 +75,8 @@ public class Event implements Serializable{
         return attendingUsers.size();
     }
 
-    public void addAttendingUsers(User attendingUser) {
+    public void addAttendingUsers(String attendingUser) {
         this.attendingUsers.add(attendingUser);
-        this.attendingUsersJSON = UserArrayListTypeConverter.getUserJSONStringFromArray(this.attendingUsers);
     }
 
     public User getPostedBy() {
@@ -142,14 +106,15 @@ public class Event implements Serializable{
         this.eventName = eventName;
     }
 
-    public ArrayList<User> getInterestedUsers() {
+    public ArrayList<String> getInterestedUsers() {
         return interestedUsers;
     }
 
-    public void addInterestedUsers(User interestedUser) {
+    public void addInterestedUsers(String interestedUser) {
         this.interestedUsers.add(interestedUser);
-        this.interestedUsersJSON = UserArrayListTypeConverter.getUserJSONStringFromArray(this.interestedUsers);
+
     }
+
     public int getInterestedUsersCount(){
         return interestedUsers.size();
     }
@@ -170,43 +135,16 @@ public class Event implements Serializable{
         this.addressLocation = addressLocation;
     }
 
-    public int getEventID() {
+    public String getEventID() {
         return eventID;
     }
 
-    public void setEventID(int eventID) {
+    public void setEventID(String eventID) {
         this.eventID = eventID;
     }
 
     @Override
     public String toString() {
-        return this.eventName+"  "+this.eventPrice+"  "+this.description+"  "+this.getStringDate();
+        return this.eventID+"  "+ this.eventName+"  "+this.eventPrice+"  "+this.description+"  "+this.getStringDate();
     }
-
-    public String getInterestedUsersJSON() {
-        return interestedUsersJSON;
-    }
-
-    public String getAttendingUsersJSON() {
-        return attendingUsersJSON;
-    }
-
-    public void setAttendingUsersJSON(String JSON){
-        this.attendingUsersJSON = JSON;
-    }
-    public void setInterestedUsersJSON(String JSON){
-        this.interestedUsersJSON = JSON;
-    }
-    @TypeConverter
-    public static Event getEventFromJSONString (String json){
-        Gson gson = new Gson();
-        return gson.fromJson(json,Event.class);
-    }
-
-    @TypeConverter
-    public static String getEventJSONString (Event event){
-        Gson gson = new Gson();
-        return gson.toJson(event);
-    }
-
 }

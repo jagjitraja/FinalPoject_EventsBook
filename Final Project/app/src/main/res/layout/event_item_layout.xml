@@ -94,7 +94,6 @@
             android:layout_weight="1"
             android:background="@color/cardview_light_background"
             android:text="@string/interested"
-            android:onClick="interestedClicked"
             android:textColor="@color/colorPrimary" />
 
         <Button

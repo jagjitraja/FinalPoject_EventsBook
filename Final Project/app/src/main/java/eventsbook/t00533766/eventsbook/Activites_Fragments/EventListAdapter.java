@@ -34,9 +34,7 @@ public class EventListAdapter extends
 
     @Override
     public EventItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View itemview = LayoutInflater.from(context).inflate(R.layout.event_item_layout,parent,false);
-
         return new EventItemHolder(itemview);
     }
 
@@ -49,7 +47,7 @@ public class EventListAdapter extends
             public void onClick(View view) {
                 Intent intent = new Intent(context,ViewEventActivity.class);
                 intent.putExtra(Utils.VIEW_EVENT_INTENT_KEY,eventArrayList.get(position));
-                Utils.goToActivity(intent,0,context);
+                context.startActivity(intent);
             }
         });
     }
@@ -88,15 +86,30 @@ public class EventListAdapter extends
             registerButton = itemView.findViewById(R.id.register_button);
             eventPostersNameTextView = itemView.findViewById(R.id.posters_name);
             eventCityTextView = itemView.findViewById(R.id.eventCity);
+
+
         }
 
-        public void bindDataToView(int pos){
+        public void bindDataToView(final int pos){
             Event event = eventArrayList.get(pos);
             eventNameTextView.setText(event.getEventName());
             eventDescriptionTextView.setText(event.getDescription());
             eventDateTextView.setText(event.getStringDate());
             eventPostersNameTextView.setText(event.getPostedBy().getUserName());
             eventCityTextView.setText(event.getAddressLocation());
+
+            interestedButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick: INTERESTED"+pos);
+                }
+            });
+            registerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick: REGISTER"+eventArrayList.get(pos));
+                }
+            });
         }
     }
 }

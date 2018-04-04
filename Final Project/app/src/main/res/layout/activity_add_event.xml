@@ -40,7 +40,6 @@
             android:hint="@string/events_name"
             android:maxLength="20"
             android:maxLines="1"
-            android:textColor="@color/cardview_dark_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/event_name_label"
             app:layout_constraintTop_toTopOf="parent" />

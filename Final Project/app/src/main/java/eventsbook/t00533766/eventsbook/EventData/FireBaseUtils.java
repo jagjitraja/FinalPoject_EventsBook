@@ -1,10 +1,10 @@
-package eventsbook.t00533766.eventsbook.EventData.EventRoomDatabase;
+package eventsbook.t00533766.eventsbook.EventData;
 
 import android.content.Context;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-public class EventFireBase {
+public class FireBaseUtils {
 
     private static FirebaseDatabase firebaseDatabase;
 
@@ -14,5 +14,9 @@ public class EventFireBase {
             firebaseDatabase.setPersistenceEnabled(true);
         }
         return firebaseDatabase;
+    }
+
+    public void addInterestedUser(Event event,String userID){
+
     }
 }

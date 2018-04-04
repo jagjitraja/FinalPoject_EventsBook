@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
-import eventsbook.t00533766.eventsbook.EventData.EventRoomDatabase.EventFireBase;
+import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
@@ -36,10 +36,10 @@ import eventsbook.t00533766.eventsbook.Utilities.Utils;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public final String EVENTS_NODE = "EVENTS";
+
     private ArrayList<Event> eventArrayList;
-
     public static final String EVENT_DATA = "EVENT ADDED";
-
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -51,8 +51,9 @@ public class MainActivity extends AppCompatActivity
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
             Event addedEvent = dataSnapshot.getValue(Event.class);
+            addedEvent.setEventID(dataSnapshot.getKey());
             eventListAdapter.addEvent(addedEvent);
-            Log.d(TAG, "onChildAdded: "+addedEvent);
+            Log.d(TAG, "onChildAdded: "+addedEvent+"  \n "+s);
         }
 
         @Override
@@ -169,12 +170,11 @@ public class MainActivity extends AppCompatActivity
     }
     private void initializeFireBase() {
         if (firebaseAuth.getCurrentUser()!=null) {
-            firebaseDatabase = EventFireBase.getFirebaseDatabase();
-            databaseReference = firebaseDatabase.getReference().child(firebaseAuth.getCurrentUser().getUid());
+            firebaseDatabase = FireBaseUtils.getFirebaseDatabase();
+            databaseReference = firebaseDatabase.getReference().child(EVENTS_NODE);
             setChildEventListener();
             eventListAdapter.notifyDataSetChanged();
         }
-
     }
 
     private void setChildEventListener(){
@@ -219,7 +219,6 @@ public class MainActivity extends AppCompatActivity
                     Event event = (Event) data.getSerializableExtra(EVENT_DATA);
                     eventArrayList.add(event);
                     eventListAdapter.notifyDataSetChanged();
-
                     postEventToDatabase(event);
                 }
                 break;
@@ -295,14 +294,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void interestedClicked(View view) {
-        Log.d(TAG, "interestedClicked: ");
-    }
-
-    public void eventItemClicked(View view) {
-        Log.d(TAG, "eventItemClicked: ");
-    }
 
 }
-
-//TODO: Event scync with firebase

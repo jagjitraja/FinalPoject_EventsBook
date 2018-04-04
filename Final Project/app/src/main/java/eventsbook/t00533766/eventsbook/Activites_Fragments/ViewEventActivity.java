@@ -51,21 +51,11 @@ public class ViewEventActivity extends AppCompatActivity {
         eventCostTextView.setText(event.getEventPrice()+"");
         eventLocationTextView.setText(event.getAddressLocation());
     }
-`
-    public void editEvent(View view) {
-        Intent intent = new Intent(this,AddEventActivity.class);
-        intent.putExtra(Utils.EDIT_EVENT_INTENT_KEY,intent);
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        String name = firebaseAuth.getCurrentUser().getDisplayName();
-        if (name==null){
-            name = "Not Available";
-        }
-        User user = new User(firebaseAuth.getUid(), name
-                ,firebaseAuth.getCurrentUser().getEmail());
+    public void editEvent(View view) {
+        Intent intent = new Intent(getApplicationContext(),AddEventActivity.class);
+        intent.putExtra(Utils.EDIT_EVENT_INTENT_KEY,event);
        // intent.putExtra(Utils.FIRE_BASE_USER_KEY,user);
         Utils.goToActivity(intent,0,getApplicationContext());
-
-
     }
 }
