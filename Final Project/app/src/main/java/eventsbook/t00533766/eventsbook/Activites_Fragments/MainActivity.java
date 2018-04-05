@@ -27,22 +27,40 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.EvenListFragment;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_ADD_SUCCESS;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_ACTION;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.FIRE_BASE_USER_KEY;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnEventItemClick {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnEventItemClick, EvenListFragment.ListFragmentListener {
+
 
     public final String EVENTS_NODE = "EVENTS";
+    public final static int ADD_EVENT_REQUEST = 500;
 
     private ArrayList<Event> eventArrayList;
-    public static final String EVENT_DATA = "EVENT ADDED";
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+
+    private DrawerLayout drawer;
+    private FloatingActionButton fab;
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private EventListAdapter eventListAdapter;
+
+
 
     //private EventViewModel eventViewModel;
 
@@ -52,7 +70,8 @@ public class MainActivity extends AppCompatActivity
 
             Event addedEvent = dataSnapshot.getValue(Event.class);
             addedEvent.setEventID(dataSnapshot.getKey());
-            eventListAdapter.addEvent(addedEvent);
+            eventArrayList.add(addedEvent);
+            eventListAdapter.notifyDataSetChanged();
             Log.d(TAG, "onChildAdded: "+addedEvent+"  \n "+s);
         }
 
@@ -78,17 +97,7 @@ public class MainActivity extends AppCompatActivity
     };
 
 
-    private DrawerLayout drawer;
-    private FloatingActionButton fab;
-    private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private EventListAdapter eventListAdapter;
-
-
-    private final static int ADD_EVENT_REQUEST = 500;
-    public final static int EVENT_ADD_SUCCESS = 20;
     public final String TAG = MainActivity.class.getSimpleName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,21 +105,11 @@ public class MainActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
         eventArrayList = new ArrayList<>();
-
-
-//        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
-//        eventViewModel.getEventListLiveData().observe(this,
-//                new Observer<List<Event>>() {
-//                    @Override
-//                    public void onChanged(@Nullable List<Event> events) {
-//                        Log.d(TAG, "onChanged: ");
-//                        if (events!=null){
-//                            Log.d(TAG, "onChanged: "+events);
-//                            eventArrayList = (ArrayList<Event>) events;
-//                            eventListAdapter.setEventArrayList(eventArrayList);
-//                        }
-//                    }
-//                });
+        recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
+        recyclerView.setAdapter(eventListAdapter);
 
         if (firebaseAuth.getCurrentUser()==null){
             //Utils.showSnackBar(findViewById(R.id.main_activity),
@@ -159,21 +158,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        
-        recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
-        recyclerView.setAdapter(eventListAdapter);
-
 
     }
+
     private void initializeFireBase() {
         if (firebaseAuth.getCurrentUser()!=null) {
             firebaseDatabase = FireBaseUtils.getFirebaseDatabase();
             databaseReference = firebaseDatabase.getReference().child(EVENTS_NODE);
             setChildEventListener();
-            eventListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -195,41 +187,23 @@ public class MainActivity extends AppCompatActivity
 
     private void goToAddEventActivity() {
 
-        Intent intent =new Intent(getApplicationContext(),AddEventActivity.class);
+        Intent intent =new Intent(getApplicationContext(),EventDetailActivity.class);
         String name = firebaseAuth.getCurrentUser().getDisplayName();
         if (name==null){
             name = "Not Available";
         }
+        intent.setAction(INTENT_ACTION);
         User user = new User(firebaseAuth.getUid(), name
                 ,firebaseAuth.getCurrentUser().getEmail());
-        intent.putExtra(Utils.FIRE_BASE_USER_KEY,user);
-
+        intent.putExtra(FIRE_BASE_USER_KEY,user);
+        intent.putExtra(INTENT_FRAGMENT_CODE, ADD_FRAGMENT_CODE);
         startActivityForResult(intent,ADD_EVENT_REQUEST);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "onActivityResult: "+requestCode+"        "+resultCode);
-        switch (requestCode){
-            case ADD_EVENT_REQUEST:
-                if (resultCode==EVENT_ADD_SUCCESS){
-                    Log.d(TAG, "onActivityResult: ");
-                    Event event = (Event) data.getSerializableExtra(EVENT_DATA);
-                    eventArrayList.add(event);
-                    eventListAdapter.notifyDataSetChanged();
-                    postEventToDatabase(event);
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     private void postEventToDatabase(Event event) {
         databaseReference.push().setValue(event);
-        //eventViewModel.insertEventData(event);
     }
 
     private void goToSplashActivity() {
@@ -246,6 +220,8 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -299,5 +275,10 @@ public class MainActivity extends AppCompatActivity
     public void eventItemClicked(String clickedButton, Event event) {
         event.addAttendingUsers(firebaseAuth.getUid());
         databaseReference.child(event.getEventID()).setValue(event);
+    }
+
+    @Override
+    public void onEventAdded(Event event) {
+        postEventToDatabase(event);
     }
 }

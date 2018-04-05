@@ -3,7 +3,6 @@ package eventsbook.t00533766.eventsbook.Activites_Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,11 @@ import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.R;
-import eventsbook.t00533766.eventsbook.Utilities.Utils;
+
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.*;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_ACTION;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
 
 /**
  * Created by T00533766 on 3/28/2018.
@@ -48,8 +51,10 @@ public class EventListAdapter extends
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,ViewEventActivity.class);
-                intent.putExtra(Utils.VIEW_EVENT_INTENT_KEY,eventArrayList.get(position));
+                Intent intent = new Intent(context,EventDetailActivity.class);
+                intent.setAction(INTENT_ACTION);
+                intent.putExtra(INTENT_FRAGMENT_CODE, VIEW_FRAGMENT_CODE);
+                intent.putExtra(VIEW_EVENT_INTENT_KEY,eventArrayList.get(position));
                 context.startActivity(intent);
             }
         });

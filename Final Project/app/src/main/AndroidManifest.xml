@@ -48,11 +48,8 @@
         <activity
             android:name=".Activites_Fragments.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".Activites_Fragments.AddEventActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activites_Fragments.ViewEventActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activites_Fragments.EventDetailActivity"></activity>
     </application>
 
 </manifest>
