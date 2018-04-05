@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.EvenListFragment;
+import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.EventListFragment;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
@@ -35,15 +37,13 @@ import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_ADD_SUCCESS;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.FIRE_BASE_USER_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        OnEventItemClick, EvenListFragment.ListFragmentListener {
+        OnEventItemClick, EventListFragment.ListFragmentListener {
 
 
     public final String EVENTS_NODE = "EVENTS";
@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private FloatingActionButton fab;
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private EventListAdapter eventListAdapter;
+
+    private EventListFragment eventListFragment;
 
 
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
             Event addedEvent = dataSnapshot.getValue(Event.class);
             addedEvent.setEventID(dataSnapshot.getKey());
             eventArrayList.add(addedEvent);
-            eventListAdapter.notifyDataSetChanged();
+            eventListFragment.updateList(addedEvent);
             Log.d(TAG, "onChildAdded: "+addedEvent+"  \n "+s);
         }
 
@@ -103,14 +103,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setListFragment();
+
+
         firebaseAuth = FirebaseAuth.getInstance();
         eventArrayList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
-        recyclerView.setAdapter(eventListAdapter);
-
+        
         if (firebaseAuth.getCurrentUser()==null){
             //Utils.showSnackBar(findViewById(R.id.main_activity),
             //        "User Session Timed Out",
@@ -120,6 +118,16 @@ public class MainActivity extends AppCompatActivity
         }
         initializeUIElements();
         initializeFireBase();
+
+    }
+
+    private void setListFragment() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        eventListFragment = new EventListFragment();
+        eventListFragment.setFragmentInteractionListener(this);
+        fragmentTransaction.add(eventListFragment,"List Fragment");
 
     }
 
