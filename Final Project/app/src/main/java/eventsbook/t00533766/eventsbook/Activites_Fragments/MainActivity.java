@@ -82,8 +82,12 @@ public class MainActivity extends AppCompatActivity
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             Event addedEvent = dataSnapshot.getValue(Event.class);
             Log.d(TAG, "-*-*-*-*-*-*-*-*-*-*-*-*--* "+addedEvent);
-            for (Event event:eventArrayList) {
-                Log.d(TAG, "onChildChanged: \n"+event);
+
+            for (int i = 0;i<eventArrayList.size();i++) {
+                Event event = eventArrayList.get(i);
+                if (addedEvent.getEventID().equals(event.getEventID())){
+                    event = addedEvent;
+                }
             }
         }
 
@@ -228,8 +232,8 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode){
             case ADD_EVENT_REQUEST:
                 if (resultCode==RESULT_OK){
-                    Log.d(TAG, "onActivityResult: ");
                     Event event = (Event) data.getSerializableExtra(EVENT_DATA);
+                    eventListAdapter.addEvent(event);
                     postEventToDatabase(event);
                 }
                 break;
@@ -238,6 +242,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //TODO REFRESH ARRAY LIST AFTER UPDATING
     private void goToSplashActivity() {
         Utils.goToActivity(new Intent(getApplicationContext(),
                         SplashIntroActivity.class),
