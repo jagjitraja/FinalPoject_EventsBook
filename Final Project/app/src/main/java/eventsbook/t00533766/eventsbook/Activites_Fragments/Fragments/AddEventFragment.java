@@ -1,8 +1,6 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,6 +35,10 @@ public class AddEventFragment extends Fragment {
     private EditText eventAddressEditText;
     private EditText eventDescriptionEditText;
     private Button postEventButton;
+    private final int ADDING = 1;
+    private final int EDITING = 2;
+
+    private int EVENT_TASK = ADDING;
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -45,12 +47,6 @@ public class AddEventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Intent intent = getActivity().getIntent();
-        if(intent.getSerializableExtra(Utils.EDIT_EVENT_INTENT_KEY)!=null) {
-            event = (Event) intent.getSerializableExtra(Utils.EDIT_EVENT_INTENT_KEY);
-        }
-        user = (User) intent.getSerializableExtra(Utils.FIRE_BASE_USER_KEY);
     }
 
     @Override
@@ -75,7 +71,6 @@ public class AddEventFragment extends Fragment {
         eventDescriptionEditText = getActivity().findViewById(R.id.event_description_text_view);
         postEventButton = getActivity().findViewById(R.id.post_event_button);
 
-        Log.d(TAG, "intializeLayout: "+event);
         if (event!=null){
             eventNameEditText.setText(event.getEventName());
             eventDescriptionEditText.setText(event.getDescription());
@@ -94,10 +89,11 @@ public class AddEventFragment extends Fragment {
 
     public void setUser(User user) {
         this.user = user;
+        Log.d(TAG, "setUser: ==============="+this.user+"=----------------------"+user);
     }
     public void setEvent(Event event) {
-        Log.d(TAG, "setEvent: ");
         this.event = event;
+        EVENT_TASK = EDITING;
     }
 
     public void setEventFragmentListener(AddEventFragmentListener eventFragmentListener) {
@@ -107,6 +103,7 @@ public class AddEventFragment extends Fragment {
 
     public interface AddEventFragmentListener {
         void PostEvent(Event event);
+        void UpdateEvent(Event event);
     }
 
     public void postEvent() {
@@ -116,11 +113,18 @@ public class AddEventFragment extends Fragment {
         String eventPrice = eventPriceEditText.getText().toString();
         String eventAddress = eventAddressEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
-        Event event = new Event("",eventName,eventDescription,new Date()
+        Event newEvent = new Event("",eventName,eventDescription,new Date()
                 ,user,0.00,eventAddress);
 
-        Log.d(TAG, "postEvent: "+event.toString());
+        if (event!=null)
+            newEvent.setEventID(event.getEventID());
 
-        eventFragmentListener.PostEvent(event);
+        Log.d(TAG, user+"\n\n\npostEvent: ******************************************"+newEvent);
+        if (EVENT_TASK ==ADDING) {
+            eventFragmentListener.PostEvent(newEvent);
+        }else if (EVENT_TASK == EDITING){
+            eventFragmentListener.UpdateEvent(newEvent);
+        }
+
     }
 }

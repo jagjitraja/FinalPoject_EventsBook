@@ -96,18 +96,6 @@ public class ViewEventFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach: ");
-        if (context instanceof ViewEventFragmentListener) {
-            mListener = (ViewEventFragmentListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement AddEventFragmentListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;

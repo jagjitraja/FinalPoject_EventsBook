@@ -1,6 +1,8 @@
 package eventsbook.t00533766.eventsbook.EventData;
 
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class Event implements Serializable{
     private Date eventDate;
     private double eventPrice;
     private String addressLocation;
+    private int interestedUsersCount;
+    private int attendingUsersCount;
     private ArrayList<String> attendingUsers;
     private ArrayList<String> interestedUsers;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:mm");
@@ -84,6 +88,7 @@ public class Event implements Serializable{
     }
 
     public void setPostedBy(User postedBy) {
+        Log.d(postedBy+"][]][][][][][][][][", "setPostedBy: ");
         this.postedBy = postedBy;
     }
 
@@ -115,6 +120,7 @@ public class Event implements Serializable{
 
     }
 
+
     public int getInterestedUsersCount(){
         return interestedUsers.size();
     }
@@ -145,6 +151,7 @@ public class Event implements Serializable{
 
     @Override
     public String toString() {
-        return this.eventID+"  "+ this.eventName+"  "+this.eventPrice+"  "+this.description+"  "+this.getStringDate();
+        return this.eventID+"\n"+ this.eventName+"\n"+this.eventPrice+"\n"+
+                this.description+"\n"+this.postedBy;
     }
 }
