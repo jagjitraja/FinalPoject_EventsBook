@@ -51,18 +51,13 @@ public class EventDetailActivity extends FragmentActivity
             } else if (code.equals(VIEW_FRAGMENT_CODE)) {
                 showViewEventFragment();
                 event = (Event) intent.getSerializableExtra(VIEW_EVENT_INTENT_KEY);
-                user = event.getPostedBy();
             }
         }
-
-
-
-
     }
 
     private void showViewEventFragment() {
         ViewEventFragment viewEventFragment = new ViewEventFragment();
-        viewEventFragment.setEvent(event);
+        viewEventFragment.setEventAndLoggedInUser(event,user);
         viewEventFragment.setEventFragmentListener(this);
         addFragment(viewEventFragment);
     }

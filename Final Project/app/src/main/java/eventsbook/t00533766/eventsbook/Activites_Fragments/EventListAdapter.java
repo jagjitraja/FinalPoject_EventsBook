@@ -1,7 +1,6 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +12,6 @@ import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.R;
-
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.*;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_INTENT_ACTION;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
 
 /**
  * Created by T00533766 on 3/28/2018.
@@ -51,7 +45,7 @@ public class EventListAdapter extends
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onEventItemClickListener.eventSelectedToView(eventArrayList.get(position));
+                onEventItemClickListener.viewSelectedEvent(eventArrayList.get(position));
             }
         });
     }
@@ -62,6 +56,10 @@ public class EventListAdapter extends
         notifyDataSetChanged();
     }
 
+    public void setEventArrayList(ArrayList<Event> eventArrayList){
+        this.eventArrayList = eventArrayList;
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
@@ -101,13 +99,13 @@ public class EventListAdapter extends
             interestedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onEventItemClickListener.eventItemClicked("INTERESTED",eventArrayList.get(pos));
+                    onEventItemClickListener.eventInterestedOrRegisterClicked("INTERESTED",eventArrayList.get(pos));
                 }
             });
             registerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onEventItemClickListener.eventItemClicked("REGISTER",eventArrayList.get(pos));
+                    onEventItemClickListener.eventInterestedOrRegisterClicked("REGISTER",eventArrayList.get(pos));
                 }
             });
         }

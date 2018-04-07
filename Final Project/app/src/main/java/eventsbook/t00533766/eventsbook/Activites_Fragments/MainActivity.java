@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     public final String EVENTS_NODE = "EVENTS";
     public final static int ADD_EVENT_REQUEST = 500;
 
+    private User loggedInUser;
 
     private RecyclerView recyclerView;
     private EventListAdapter eventListAdapter;
@@ -81,14 +82,14 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             Event addedEvent = dataSnapshot.getValue(Event.class);
-            Log.d(TAG, "-*-*-*-*-*-*-*-*-*-*-*-*--* "+addedEvent);
-
             for (int i = 0;i<eventArrayList.size();i++) {
-                Event event = eventArrayList.get(i);
-                if (addedEvent.getEventID().equals(event.getEventID())){
-                    event = addedEvent;
+                if (addedEvent.getEventID().equals(eventArrayList.get(i).getEventID())){
+                    Log.d(TAG, "-*-*-*-*-*-*-*-*-*-*-*-*--* "+addedEvent);
+                    eventArrayList.set(i, addedEvent);
+                    break;
                 }
             }
+            eventListAdapter.setEventArrayList(eventArrayList);
         }
 
         @Override
@@ -110,6 +111,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -132,6 +135,11 @@ public class MainActivity extends AppCompatActivity
                 updateEvent((Event) intent.getSerializableExtra(Utils.EVENT_DATA));
         }
 
+        String name = firebaseAuth.getCurrentUser().getDisplayName();
+        if (name==null){
+            name = "Not Available";
+        }
+        loggedInUser = new User(firebaseAuth.getUid(), name,firebaseAuth.getCurrentUser().getEmail());
 
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -206,19 +214,11 @@ public class MainActivity extends AppCompatActivity
     private void goToAddEventActivity() {
 
         Intent intent =new Intent(getApplicationContext(),EventDetailActivity.class);
-        String name = firebaseAuth.getCurrentUser().getDisplayName();
-        if (name==null){
-            name = "Not Available";
-        }
         intent.setAction(ADD_INTENT_ACTION);
-        User user = new User(firebaseAuth.getUid(), name
-                ,firebaseAuth.getCurrentUser().getEmail());
-        intent.putExtra(FIRE_BASE_USER_KEY,user);
+        intent.putExtra(FIRE_BASE_USER_KEY,loggedInUser);
         intent.putExtra(INTENT_FRAGMENT_CODE, ADD_FRAGMENT_CODE);
         startActivityForResult(intent,ADD_EVENT_REQUEST);
     }
-
-
 
     private void postEventToDatabase(Event event) {
         databaseReference.push().setValue(event);
@@ -308,21 +308,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void eventItemClicked(String clickedButton, Event event) {
-        Log.d(TAG, "eventItemClicked: ");
+    public void eventInterestedOrRegisterClicked(String clickedButton, Event event) {
+        Log.d(TAG, "eventInterestedOrRegisterClicked: ");
         event.addAttendingUsers(firebaseAuth.getUid());
         updateEvent(event);
     }
 
     @Override
-    public void eventSelectedToView(Event event) {
+    public void viewSelectedEvent(Event event) {
         Intent intent = new Intent(getApplicationContext(),EventDetailActivity.class);
         intent.setAction(EDIT_INTENT_ACTION);
         intent.putExtra(INTENT_FRAGMENT_CODE, VIEW_FRAGMENT_CODE);
         intent.putExtra(VIEW_EVENT_INTENT_KEY,event);
+        intent.putExtra(FIRE_BASE_USER_KEY,loggedInUser);
         startActivity(intent);
 
-        Log.d(TAG, "eventSelectedToView: \n" +
+        Log.d(TAG, "viewSelectedEvent: \n" +
                 "================================\n" +
                 event);
     }

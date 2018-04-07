@@ -1,6 +1,5 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
+import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
@@ -30,6 +30,7 @@ public class ViewEventFragment extends Fragment {
     private TextView eventLocationTextView;
     private Button editEventButton;
     private Event event;
+    private User loggedInUser;
     private ViewEventFragmentListener eventFragmentListener;
 
     public ViewEventFragment() {
@@ -39,8 +40,9 @@ public class ViewEventFragment extends Fragment {
     public void setEventFragmentListener(ViewEventFragmentListener viewEventFragmentListener){
         this.eventFragmentListener = viewEventFragmentListener;
     }
-    public void setEvent(Event event){
+    public void setEventAndLoggedInUser(Event event, User user){
         this.event = event;
+        this.loggedInUser = user;
     }
 
 
@@ -73,6 +75,11 @@ public class ViewEventFragment extends Fragment {
             event = (Event) getActivity().getIntent().getSerializableExtra(Utils.VIEW_EVENT_INTENT_KEY);
         }
 
+        if (!loggedInUser.getUserID().equals(event.getPostedBy().getUserID())){
+            editEventButton.setEnabled(false);
+            editEventButton.setVisibility(View.INVISIBLE);
+        }
+
         eventNameTextView.setText(event.getEventName());
         eventDescriptionTextView.setText(event.getDescription());
         eventDateTextView.setText(event.getStringDate());
@@ -87,13 +94,6 @@ public class ViewEventFragment extends Fragment {
         });
     }
 
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.ViewFragmentEvent(uri);
-        }
-    }
 
     @Override
     public void onDetach() {
