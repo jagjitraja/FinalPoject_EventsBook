@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+            Log.d(TAG, "onChildAdded: "+dataSnapshot.getKey()+"\n"+dataSnapshot.getValue());
             Event addedEvent = dataSnapshot.getValue(Event.class);
             addedEvent.setEventID(dataSnapshot.getKey());
             Log.d(TAG, "\n\n\n\nonChildAdded: "+addedEvent);
@@ -286,10 +287,34 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.events_line) {
             toolbar.setTitle(R.string.app_name);
+            eventListAdapter.setEventArrayList(eventArrayList);
         } else if (id == R.id.posted_events) {
-            toolbar.setTitle(R.string.my_events);
+            toolbar.setTitle(R.string.my_posted_events);
+            ArrayList<Event> myPostedEvents = new ArrayList<>();
+            for (Event event:eventArrayList) {
+                if (event.getPostedBy().getUserID().equals(loggedInUser.getUserID())){
+                    myPostedEvents.add(event);
+                }
+            }
+            eventListAdapter.setEventArrayList(myPostedEvents);
         } else if (id == R.id.attending_events) {
+            toolbar.setTitle(R.string.registered_events);
+            ArrayList<Event> myAttendingEvents = new ArrayList<>();
+            for (Event event:eventArrayList) {
+                if (event.getAttendingUsers().contains(loggedInUser.getUserID())){
+                    myAttendingEvents.add(event);
+                }
+            }
+            eventListAdapter.setEventArrayList(myAttendingEvents);
+        }else if (id == R.id.saved_events) {
             toolbar.setTitle(R.string.saved_events);
+            ArrayList<Event> mySavedEvents = new ArrayList<>();
+            for (Event event:eventArrayList) {
+                if (event.getInterestedUsers().contains(loggedInUser.getUserID())){
+                    mySavedEvents.add(event);
+                }
+            }
+            eventListAdapter.setEventArrayList(mySavedEvents);
         } else if (id == R.id.settings) {
             toolbar.setTitle(R.string.settings);
             Log.d(TAG, "onNavigationItemSelected: ");
@@ -312,9 +337,7 @@ public class MainActivity extends AppCompatActivity
         }else{
             event.removeInterestedUser(loggedInUser.getUserID());
         }
-
-        //event.addAttendingUsers(firebaseAuth.getUid());
-        //updateEvent(event);
+        updateEvent(event);
     }
 
     @Override
@@ -326,6 +349,7 @@ public class MainActivity extends AppCompatActivity
         }else{
             event.removeAttendingUser(loggedInUser.getUserID());
         }
+        updateEvent(event);
     }
 
     @Override
@@ -342,6 +366,8 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "updateEvent: 7777777777777777777"+event+"   \n "+event.getEventID());
         databaseReference.child(event.getEventID()).setValue(event);
     }
+
+
 }
 
 

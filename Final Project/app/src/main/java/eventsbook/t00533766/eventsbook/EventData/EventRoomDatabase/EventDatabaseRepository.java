@@ -23,7 +23,7 @@
 //    }
 //
 //    public LiveData<List<Event>> getEventListLiveData() {
-//        Log.d(TAG, "getEventListLiveData: --------------------");
+//        Log.delete(TAG, "getEventListLiveData: --------------------");
 //        if (listLiveData==null){
 //            try {
 //                listLiveData = new SelectAsyncTask().execute().get();

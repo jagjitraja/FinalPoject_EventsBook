@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import eventsbook.t00533766.eventsbook.Utilities.Utils;
+
 /**
  * Created by T00533766 on 3/16/2018.
  */
@@ -18,14 +20,15 @@ public class Event implements Serializable{
     private User postedBy;
     private String eventName;
     private String description;
-    private Date eventDate;
+    private String eventDate;
     private double eventPrice;
     private String addressLocation;
     private int interestedUsersCount;
     private int attendingUsersCount;
     private ArrayList<String> attendingUsers;
     private ArrayList<String> interestedUsers;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("YY/MM/DD HH:mm");
+
+
 
     public Event(){
         this.eventID = "";
@@ -40,7 +43,7 @@ public class Event implements Serializable{
     }
 
     public Event(String eventID, String eventName,
-                 String description, Date eventDate,
+                 String description, String eventDate,
                  User postedBy,
                  double eventPrice,
                  String addressLocation) {
@@ -92,14 +95,14 @@ public class Event implements Serializable{
         this.postedBy = postedBy;
     }
 
-    public Date getEventDate() {
+    public String getEventDate() {
         return eventDate;
     }
-
-    public String getStringDate(){
-        return dateFormat.format(eventDate);
-    }
-    public void setEventDate(Date eventDate) {
+    public void setEventDate(String eventDate) {
+        if (eventDate.equals("")){
+            this.eventDate = Utils.dateFormat.format(new Date());
+            return;
+        }
         this.eventDate = eventDate;
     }
 
@@ -152,7 +155,9 @@ public class Event implements Serializable{
     @Override
     public String toString() {
         return this.eventID+"\n"+ this.eventName+"\n"+this.eventPrice+"\n"+
-                this.description+"\n"+this.postedBy+"\nINTERESRED => "+this.interestedUsers+"\n ATTENDING => "+this.attendingUsers;
+                this.description+"\n"+this.postedBy+"\nINTERESRED => "+
+                this.interestedUsers+"\n ATTENDING => "+this.attendingUsers+"\n"+
+                this.eventDate;
     }
 
     public void removeAttendingUser(String userID) {

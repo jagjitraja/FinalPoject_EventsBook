@@ -39,9 +39,14 @@
     <string name="settings">Settings</string>
     <string name="interested">Interested</string>
     <string name="register">Register</string>
-    <string name="my_events">My Events</string>
+    <string name="my_posted_events">My Events</string>
     <string name="edit_event">Edit Event</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="remove_event">Remove</string>
+    <string name="register_event">Register</string>
+    <string name="unsave_event">Unsave</string>
+    <string name="interested_event">Interested</string>
+    <string name="registered_events">Registered Events</string>
 </resources>

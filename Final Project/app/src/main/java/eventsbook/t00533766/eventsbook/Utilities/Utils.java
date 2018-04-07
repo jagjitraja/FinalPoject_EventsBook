@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.Activites_Fragments.MainActivity;
@@ -39,6 +40,9 @@ public class Utils {
     private static final int EDIT_EVENT_SUCCESS = 30;
     public final static int EVENT_ADD_SUCCESS = 20;
     public static final String EVENT_DATA = "EVENT ADDED";
+
+
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
 
     private static final String TAG = Utils.class.getName();
 

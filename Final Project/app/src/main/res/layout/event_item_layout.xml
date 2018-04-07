@@ -92,6 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:drawableRight="@drawable/save"
+            android:padding="3dp"
             android:background="@color/cardview_light_background"
             android:text="@string/interested"
             android:textColor="@color/colorPrimary" />
@@ -103,6 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/register"
+            android:padding="3dp"
+            android:drawableRight="@drawable/register"
             android:background="@color/black_overlay"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>

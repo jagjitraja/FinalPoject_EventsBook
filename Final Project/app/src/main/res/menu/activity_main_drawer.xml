@@ -7,7 +7,7 @@
         <item
             android:id="@+id/events_line"
             android:icon="@drawable/ic_dashboard_black_24dp"
-            android:title="Events Line" />
+            android:title="All Events Line" />
     </group>
 
     <item android:title="My Profile &amp; History">
@@ -18,8 +18,12 @@
                 android:title="Posted Events" />
             <item
                 android:id="@+id/attending_events"
+                android:icon="@drawable/save"
+                android:title="Registered Events" />
+            <item
+                android:id="@+id/saved_events"
                 android:icon="@drawable/ic_update_black_24dp"
-                android:title="Upcoming Events" />
+                android:title="Saved Events" />
             <item
                 android:id="@+id/settings"
                 android:icon="@drawable/ic_menu_manage"

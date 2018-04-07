@@ -16,16 +16,17 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
         android:elevation="@dimen/cardview_default_elevation">
-        
+
         <include layout="@layout/content_main"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"/>
-        
+
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/drawer_back"
             android:fitsSystemWindows="true"
             app:itemTextColor="@color/colorPrimaryDark"

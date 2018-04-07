@@ -1,18 +1,23 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
@@ -37,6 +42,8 @@ public class AddEventFragment extends Fragment {
     private Button postEventButton;
     private final int ADDING = 1;
     private final int EDITING = 2;
+
+    private Date selectedDate = new Date(System.currentTimeMillis());
 
     private int EVENT_TASK = ADDING;
 
@@ -66,6 +73,7 @@ public class AddEventFragment extends Fragment {
 
         eventNameEditText = getActivity().findViewById(R.id.event_name_text_view);
         eventDateTextView = getActivity().findViewById(R.id.event_date_val);
+        eventDateTextView.setOnClickListener(dateOnClickListener);
         eventPriceEditText = getActivity().findViewById(R.id.event_price__text_view);
         eventAddressEditText = getActivity().findViewById(R.id.address__text_view);
         eventDescriptionEditText = getActivity().findViewById(R.id.event_description_text_view);
@@ -74,7 +82,7 @@ public class AddEventFragment extends Fragment {
         if (event!=null){
             eventNameEditText.setText(event.getEventName());
             eventDescriptionEditText.setText(event.getDescription());
-            eventDateTextView.setText(event.getStringDate());
+            eventDateTextView.setText(event.getEventDate());
             eventPriceEditText.setText(event.getEventPrice()+"");
             eventAddressEditText.setText(event.getAddressLocation());
         }
@@ -113,8 +121,10 @@ public class AddEventFragment extends Fragment {
         String eventPrice = eventPriceEditText.getText().toString();
         String eventAddress = eventAddressEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
-        Event newEvent = new Event("",eventName,eventDescription,new Date()
+        Event newEvent = new Event("",eventName,eventDescription,Utils.dateFormat.format(new Date())
                 ,user,0.00,eventAddress);
+
+        newEvent.setEventDate(eventDate);
 
         if (event!=null)
             newEvent.setEventID(event.getEventID());
@@ -127,4 +137,28 @@ public class AddEventFragment extends Fragment {
         }
 
     }
+    public void setDate(Date date){
+        this.selectedDate = date;
+    }
+
+    private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
+
+        private Date date = new Date(System.currentTimeMillis());
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onClick(View view) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext());
+            datePickerDialog.show();
+            datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(i,i1,i2);
+                    Date date = calendar.getTime();
+                    eventDateTextView.setText(Utils.dateFormat.format(date));
+                    setDate(date);
+                }
+            });
+        }
+    };
 }

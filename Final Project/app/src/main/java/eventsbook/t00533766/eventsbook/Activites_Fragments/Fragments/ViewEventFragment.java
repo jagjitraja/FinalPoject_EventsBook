@@ -82,7 +82,7 @@ public class ViewEventFragment extends Fragment {
 
         eventNameTextView.setText(event.getEventName());
         eventDescriptionTextView.setText(event.getDescription());
-        eventDateTextView.setText(event.getStringDate());
+        eventDateTextView.setText(event.getEventDate());
         eventCostTextView.setText(event.getEventPrice()+"");
         eventLocationTextView.setText(event.getAddressLocation());
 

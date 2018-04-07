@@ -21,7 +21,7 @@
 //    }
 //
 //    public LiveData<List<Event>> getEventListLiveData(){
-//        Log.d(TAG, "getEventListLiveData: ");
+//        Log.delete(TAG, "getEventListLiveData: ");
 //        return eventDatabaseRepository.getEventListLiveData();
 //    }
 //

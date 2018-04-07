@@ -94,21 +94,27 @@ public class EventListAdapter extends
             final Event event = eventArrayList.get(pos);
             eventNameTextView.setText(event.getEventName());
             eventDescriptionTextView.setText(event.getDescription());
-            eventDateTextView.setText(event.getStringDate());
+            eventDateTextView.setText(event.getEventDate());
             eventPostersNameTextView.setText(event.getPostedBy().getUserName());
             eventCityTextView.setText(event.getAddressLocation());
 
-            boolean registering = true;
-            boolean interested = true;
+            boolean registering;
+            boolean interested;
             if (event.getAttendingUsersCount()>0&&
                     event.getAttendingUsers().contains(loggedInUser.getUserID())){
-                registerButton.setText("Remove");
+                registerButton.setText(R.string.remove_event);
                 registering = false;
+            }else {
+                registerButton.setText(R.string.register_event);
+                registering = true;
             }
             if (event.getInterestedUsersCount()>0&&
                     event.getInterestedUsers().contains(loggedInUser.getUserID())){
-                interestedButton.setText("Unsave");
+                interestedButton.setText(R.string.unsave_event);
                 interested = false;
+            }else {
+                interestedButton.setText(R.string.interested_event);
+                interested = true;
             }
 
             final boolean finalInterested = interested;
