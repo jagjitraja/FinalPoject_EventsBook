@@ -70,13 +70,10 @@ public class MainActivity extends AppCompatActivity
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
             Event addedEvent = dataSnapshot.getValue(Event.class);
-
             addedEvent.setEventID(dataSnapshot.getKey());
             Log.d(TAG, "\n\n\n\nonChildAdded: "+addedEvent);
             //eventArrayList.add(addedEvent);
             eventListAdapter.addEvent(addedEvent);
-
-
         }
 
         @Override
@@ -144,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
+        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this,loggedInUser);
         recyclerView.setAdapter(eventListAdapter);
     }
 
@@ -281,10 +278,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
+
         Log.d(TAG, "onNavigationItemSelected: ");
         int id = item.getItemId();
 
@@ -308,29 +304,45 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void eventInterestedOrRegisterClicked(String clickedButton, Event event) {
-        Log.d(TAG, "eventInterestedOrRegisterClicked: ");
-        event.addAttendingUsers(firebaseAuth.getUid());
-        updateEvent(event);
+    public void eventInterestedClicked(Event event, boolean interested) {
+        Log.d(TAG, "eventInterestedClicked: "+"\n"+event);
+
+        if (interested){
+            event.addInterestedUser(loggedInUser.getUserID());
+        }else{
+            event.removeInterestedUser(loggedInUser.getUserID());
+        }
+
+        //event.addAttendingUsers(firebaseAuth.getUid());
+        //updateEvent(event);
     }
 
     @Override
-    public void viewSelectedEvent(Event event) {
+    public void eventRegisterClicked(Event event, boolean registering) {
+        Log.d(TAG, "eventRegisterClicked: \n"+event);
+
+        if (registering){
+            event.addAttendingUsers(loggedInUser.getUserID());
+        }else{
+            event.removeAttendingUser(loggedInUser.getUserID());
+        }
+    }
+
+    @Override
+    public void viewEventSelected(Event event) {
         Intent intent = new Intent(getApplicationContext(),EventDetailActivity.class);
         intent.setAction(EDIT_INTENT_ACTION);
         intent.putExtra(INTENT_FRAGMENT_CODE, VIEW_FRAGMENT_CODE);
         intent.putExtra(VIEW_EVENT_INTENT_KEY,event);
         intent.putExtra(FIRE_BASE_USER_KEY,loggedInUser);
         startActivity(intent);
-
-        Log.d(TAG, "viewSelectedEvent: \n" +
-                "================================\n" +
-                event);
     }
-
 
     public void updateEvent(Event event){
         Log.d(TAG, "updateEvent: 7777777777777777777"+event+"   \n "+event.getEventID());
         databaseReference.child(event.getEventID()).setValue(event);
     }
 }
+
+
+//TODO: SINGLETON FOR LOGGED IN USER

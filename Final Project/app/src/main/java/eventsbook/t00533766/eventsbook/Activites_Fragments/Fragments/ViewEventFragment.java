@@ -94,7 +94,6 @@ public class ViewEventFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onDetach() {
         super.onDetach();

@@ -4,6 +4,7 @@ import eventsbook.t00533766.eventsbook.EventData.Event;
 
 public interface OnEventItemClick {
 
-    public void eventInterestedOrRegisterClicked(String clickedButton, Event event);
-    public void viewSelectedEvent(Event event);
+    public void eventInterestedClicked(Event event,boolean interested);
+    public void eventRegisterClicked(Event event, boolean registering);
+    public void viewEventSelected(Event event);
 }

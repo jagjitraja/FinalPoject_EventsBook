@@ -152,6 +152,18 @@ public class Event implements Serializable{
     @Override
     public String toString() {
         return this.eventID+"\n"+ this.eventName+"\n"+this.eventPrice+"\n"+
-                this.description+"\n"+this.postedBy;
+                this.description+"\n"+this.postedBy+"\nINTERESRED => "+this.interestedUsers+"\n ATTENDING => "+this.attendingUsers;
+    }
+
+    public void removeAttendingUser(String userID) {
+        this.attendingUsers.remove(userID);
+    }
+
+    public void removeInterestedUser(String userID) {
+        this.interestedUsers.remove(userID);
+    }
+
+    public void addInterestedUser(String userID) {
+        this.interestedUsers.add(userID);
     }
 }

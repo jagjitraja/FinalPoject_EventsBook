@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
+import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 
 /**
@@ -24,12 +25,14 @@ public class EventListAdapter extends
     private ArrayList<Event> eventArrayList;
     private Context context;
     private OnEventItemClick onEventItemClickListener;
+    private User loggedInUser;
 
     public EventListAdapter(ArrayList<Event> eventArrayList,
-                            Context context,OnEventItemClick onEventItemClick) {
+                            Context context, OnEventItemClick onEventItemClick, User loggedInUser) {
         this.eventArrayList = eventArrayList;
         this.context= context;
         this.onEventItemClickListener = onEventItemClick;
+        this.loggedInUser = loggedInUser;
     }
 
     @Override
@@ -45,11 +48,10 @@ public class EventListAdapter extends
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onEventItemClickListener.viewSelectedEvent(eventArrayList.get(position));
+                onEventItemClickListener.viewEventSelected(eventArrayList.get(position));
             }
         });
     }
-
 
     public void addEvent(Event event){
         this.eventArrayList.add(event);
@@ -89,23 +91,39 @@ public class EventListAdapter extends
         }
 
         public void bindDataToView(final int pos){
-            Event event = eventArrayList.get(pos);
+            final Event event = eventArrayList.get(pos);
             eventNameTextView.setText(event.getEventName());
             eventDescriptionTextView.setText(event.getDescription());
             eventDateTextView.setText(event.getStringDate());
             eventPostersNameTextView.setText(event.getPostedBy().getUserName());
             eventCityTextView.setText(event.getAddressLocation());
 
+            boolean registering = true;
+            boolean interested = true;
+            if (event.getAttendingUsersCount()>0&&
+                    event.getAttendingUsers().contains(loggedInUser.getUserID())){
+                registerButton.setText("Remove");
+                registering = false;
+            }
+            if (event.getInterestedUsersCount()>0&&
+                    event.getInterestedUsers().contains(loggedInUser.getUserID())){
+                interestedButton.setText("Unsave");
+                interested = false;
+            }
+
+            final boolean finalInterested = interested;
             interestedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onEventItemClickListener.eventInterestedOrRegisterClicked("INTERESTED",eventArrayList.get(pos));
+                    onEventItemClickListener.
+                            eventInterestedClicked(event, finalInterested);
                 }
             });
+            final boolean finalRegistering = registering;
             registerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onEventItemClickListener.eventInterestedOrRegisterClicked("REGISTER",eventArrayList.get(pos));
+                    onEventItemClickListener.eventRegisterClicked(event, finalRegistering);
                 }
             });
         }
