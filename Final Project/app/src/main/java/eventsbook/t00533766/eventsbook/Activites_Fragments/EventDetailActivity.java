@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -22,6 +24,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
+
 import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.AddEventFragment;
 import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.ViewEventFragment;
 import eventsbook.t00533766.eventsbook.EventData.Event;
@@ -32,10 +36,12 @@ import eventsbook.t00533766.eventsbook.Utilities.Utils;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LATITUDE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LONGITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.FIRE_BASE_USER_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.LOCATION_LATITUDE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.LOCATION_LONGITUDE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LATITUDE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONGITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
 
@@ -54,6 +60,7 @@ public class EventDetailActivity extends FragmentActivity
     private Location location;
     private LocationManager locationManager;
     private LocationRequest locationRequest;
+    Geocoder geocoder;
 
 
     @Override
@@ -62,6 +69,7 @@ public class EventDetailActivity extends FragmentActivity
         setContentView(R.layout.activity_event_detail);
 
         fragmentManager = getSupportFragmentManager();
+        geocoder = new Geocoder(getApplicationContext());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         locationRequest = new LocationRequest().
@@ -151,10 +159,20 @@ public class EventDetailActivity extends FragmentActivity
     @Override
     public void showInMapClicked(Event event) {
         Log.d(TAG, "showInMapClicked: ---------------------------");
-        if (location!=null){
+
+        Address address = null;
+        try {
+            address = (Address) geocoder.getFromLocationName(event.getAddressLocation(),1);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (location!=null && address!=null){
             Intent intent = new Intent(this,MapsActivity.class);
-            intent.putExtra(LOCATION_LATITUDE,location.getLatitude());
-            intent.putExtra(LOCATION_LONGITUDE,location.getLongitude());
+            intent.putExtra(USER_LOCATION_LATITUDE,location.getLatitude());
+            intent.putExtra(USER_LOCATION_LONGITUDE,location.getLongitude());
+            intent.putExtra(EVENT_LOCATION_LATITUDE,address.getLatitude());
+            intent.putExtra(EVENT_LOCATION_LONGITUDE,address.getLongitude());
             startActivity(intent);
         }else {
             getLocation();
@@ -179,7 +197,23 @@ public class EventDetailActivity extends FragmentActivity
     }
 
     @Override
-    public Location getLocationClicked() {
+    public String getLocationClicked() {
+        if (location == null){
+            getLocation();
+        }else {
+            Address address = null;
+            try {
+                address = (Address) geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (address != null) {
+                Log.d(TAG, "getLocationClicked: " + address);
+                return address.getAddressLine(0) + ", " + address.getLocality() + ", " + address.getPostalCode();
+            }
+        }
         return null;
     }
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
@@ -29,6 +30,7 @@ public class ViewEventFragment extends Fragment {
     private TextView eventCostTextView;
     private TextView eventLocationTextView;
     private Button editEventButton;
+    private ImageButton myLocationButton;
     private Event event;
     private User loggedInUser;
     private ViewEventFragmentListener eventFragmentListener;
@@ -69,6 +71,7 @@ public class ViewEventFragment extends Fragment {
         eventCostTextView = getActivity().findViewById(R.id.event_price__text_view);
         eventLocationTextView = getActivity().findViewById(R.id.address__text_view);
         editEventButton = getActivity().findViewById(R.id.edit_event_button);
+        myLocationButton = getActivity().findViewById(R.id.my_location_button);
 
         if (event==null){
             Log.d(TAG, "intializeLayoutItems: ================================");
@@ -90,6 +93,12 @@ public class ViewEventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 eventFragmentListener.editEventClicked(event);
+            }
+        });
+        myLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventFragmentListener.showInMapClicked(event);
             }
         });
     }

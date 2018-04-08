@@ -146,14 +146,14 @@
             android:id="@+id/my_location_button"
             style="@style/label_styles"
             android:layout_width="50dp"
+            android:backgroundTint="@color/red"
             android:layout_height="50dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:background="@drawable/ic_add_location_black_24dp"
             android:contentDescription="@string/my_device_location"
             app:layout_constraintBottom_toBottomOf="@+id/address__text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/address__text_view"
-            app:layout_constraintTop_toTopOf="@+id/address__text_view"
-            android:background="@drawable/ic_my_location_black_24dp"/>
+            app:layout_constraintTop_toTopOf="@+id/address__text_view" />
 
 
     </android.support.constraint.ConstraintLayout>

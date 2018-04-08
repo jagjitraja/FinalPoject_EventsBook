@@ -1,5 +1,6 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -11,6 +12,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import eventsbook.t00533766.eventsbook.R;
+
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LATITUDE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LONGITUDE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LATITUDE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONGITUDE;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -24,6 +30,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
 
@@ -39,10 +47,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        Intent intent = getIntent();
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng eventLocation = null;
+        LatLng userLocation = null;
+        if (intent!=null){
+
+            double userLatitude = intent.getDoubleExtra(USER_LOCATION_LATITUDE,0);
+            double userLongitude = intent.getDoubleExtra(USER_LOCATION_LONGITUDE,0);
+            double eventLatitude = intent.getDoubleExtra(EVENT_LOCATION_LATITUDE,0);
+            double eventLongitude = intent.getDoubleExtra(EVENT_LOCATION_LONGITUDE,0);
+
+            eventLocation = new LatLng(eventLatitude,eventLongitude);
+            userLocation = new LatLng(userLatitude,userLongitude);
+
+            mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event"));
+            mMap.addMarker(new MarkerOptions().position(userLocation).title("Me"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+
+        }
     }
 }

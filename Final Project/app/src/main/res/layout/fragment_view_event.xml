@@ -64,7 +64,6 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/edit_event"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_description_label">
 
@@ -147,19 +146,19 @@ xmlns:tools="http://schemas.android.com/tools">
     app:layout_constraintStart_toEndOf="@+id/location_label"
     app:layout_constraintTop_toBottomOf="@+id/event_price__text_view" />
 
-<ImageButton
-    android:id="@+id/my_location_button"
-    style="@style/label_styles"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_marginBottom="8dp"
-    android:backgroundTint="@color/colorPrimary"
-    android:contentDescription="@string/my_device_location"
-    app:layout_constraintBottom_toBottomOf="@+id/address__text_view"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/address__text_view"
-    app:layout_constraintTop_toTopOf="@+id/address__text_view"
-    app:srcCompat="@drawable/ic_my_location_black_24dp" />
+    <ImageButton
+        android:id="@+id/my_location_button"
+        style="@style/label_styles"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/red"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/ic_place_black_24dp"
+        android:contentDescription="@string/my_device_location"
+        app:layout_constraintBottom_toBottomOf="@+id/address__text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/address__text_view"
+        app:layout_constraintTop_toTopOf="@+id/address__text_view" />
 
 
 </android.support.constraint.ConstraintLayout>

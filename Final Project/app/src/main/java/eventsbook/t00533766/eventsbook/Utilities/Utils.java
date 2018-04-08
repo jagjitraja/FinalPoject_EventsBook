@@ -32,8 +32,10 @@ public class Utils {
     public static final String EVENT_DATA = "EVENT ADDED";
 
     public static final int LOCATION_REQUEST_CODE = 40;
-    public static final String LOCATION_LATITUDE = "LOCATION LATTITUDE";
-    public static final String LOCATION_LONGITUDE = "LOCATION LONGITUDE";
+    public static final String USER_LOCATION_LATITUDE = "USER LOCATION LATTITUDE";
+    public static final String USER_LOCATION_LONGITUDE = "USER LOCATION LONGITUDE";
+    public static final String EVENT_LOCATION_LATITUDE = "EVENT LOCATION LATTITUDE";
+    public static final String EVENT_LOCATION_LONGITUDE = "EVENT LOCATION LONGITUDE";
 
 
 

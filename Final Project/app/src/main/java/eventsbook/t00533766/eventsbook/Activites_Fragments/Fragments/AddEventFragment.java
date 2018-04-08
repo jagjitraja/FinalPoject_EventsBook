@@ -1,7 +1,6 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
 import android.app.DatePickerDialog;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -118,7 +117,7 @@ public class AddEventFragment extends Fragment {
     public interface AddEventFragmentListener {
         void PostEvent(Event event);
         void UpdateEvent(Event event);
-        Location getLocationClicked();
+        String getLocationClicked();
     }
 
     public void postEvent() {
@@ -173,7 +172,11 @@ public class AddEventFragment extends Fragment {
     private View.OnClickListener locationOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            eventFragmentListener.getLocationClicked();
+            String address = eventFragmentListener.getLocationClicked();
+            if(address!=null){
+                Log.d(TAG, "onClick: "+address);
+                eventAddressEditText.setText(address);
+            }
         }
     };
 
