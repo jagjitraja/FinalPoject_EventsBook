@@ -150,8 +150,8 @@ xmlns:tools="http://schemas.android.com/tools">
 <ImageButton
     android:id="@+id/my_location_button"
     style="@style/label_styles"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
     android:layout_marginBottom="8dp"
     android:backgroundTint="@color/colorPrimary"
     android:contentDescription="@string/my_device_location"

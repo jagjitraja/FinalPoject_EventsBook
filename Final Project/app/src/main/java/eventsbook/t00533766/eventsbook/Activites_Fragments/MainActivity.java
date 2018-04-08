@@ -365,6 +365,8 @@ public class MainActivity extends AppCompatActivity
     public void updateEvent(Event event){
         Log.d(TAG, "updateEvent: 7777777777777777777"+event+"   \n "+event.getEventID());
         databaseReference.child(event.getEventID()).setValue(event);
+        Utils.showToast(getApplicationContext(),"Updating Event, Refreshing Events List ");
+        toolbar.setTitle(R.string.app_name);
     }
 
 

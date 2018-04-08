@@ -9,4 +9,6 @@
     <color name="drawer_back">#445056</color>
     <color name="white">#ffffff</color>
     <color name="red">#d15158</color>
+    <color name="rippleColor">#DDD</color>
+    <color name="backgroundColor">#779</color>
 </resources>

@@ -50,7 +50,7 @@
         android:id="@+id/splash_button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/ripple_effect"
         android:fontFamily="casual"
         android:onClick="login"
         android:text="@string/login"

@@ -104,5 +104,6 @@ public class ViewEventFragment extends Fragment {
         // TODO: Update argument type and name
         void ViewFragmentEvent(Uri uri);
         void editEventClicked(Event event);
+        void showInMapClicked(Event event);
     }
 }

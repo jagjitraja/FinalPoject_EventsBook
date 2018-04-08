@@ -1,24 +1,14 @@
 package eventsbook.t00533766.eventsbook.Utilities;
 
-import android.arch.persistence.room.TypeConverter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
-import eventsbook.t00533766.eventsbook.Activites_Fragments.MainActivity;
-import eventsbook.t00533766.eventsbook.EventData.Event;
-import eventsbook.t00533766.eventsbook.EventData.User;
 
 /**
  * Created by T00533766 on 3/16/2018.
@@ -40,6 +30,11 @@ public class Utils {
     private static final int EDIT_EVENT_SUCCESS = 30;
     public final static int EVENT_ADD_SUCCESS = 20;
     public static final String EVENT_DATA = "EVENT ADDED";
+
+    public static final int LOCATION_REQUEST_CODE = 40;
+    public static final String LOCATION_LATITUDE = "LOCATION LATTITUDE";
+    public static final String LOCATION_LONGITUDE = "LOCATION LONGITUDE";
+
 
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
@@ -70,6 +65,10 @@ public class Utils {
         } else {
             snackbar.setAction(actiontext, clickListener).show();
         }
+    }
+
+    public static void showToast(Context context, String message){
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();;
     }
 
 

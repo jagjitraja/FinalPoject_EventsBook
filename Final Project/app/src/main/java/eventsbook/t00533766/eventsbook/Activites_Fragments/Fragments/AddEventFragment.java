@@ -1,7 +1,7 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -40,6 +41,8 @@ public class AddEventFragment extends Fragment {
     private EditText eventAddressEditText;
     private EditText eventDescriptionEditText;
     private Button postEventButton;
+    private ImageButton myLocationButton;
+
     private final int ADDING = 1;
     private final int EDITING = 2;
 
@@ -78,12 +81,14 @@ public class AddEventFragment extends Fragment {
         eventAddressEditText = getActivity().findViewById(R.id.address__text_view);
         eventDescriptionEditText = getActivity().findViewById(R.id.event_description_text_view);
         postEventButton = getActivity().findViewById(R.id.post_event_button);
+        myLocationButton = getActivity().findViewById(R.id.my_location_button);
+        myLocationButton.setOnClickListener(locationOnClickListener);
 
-        if (event!=null){
+        if (event != null) {
             eventNameEditText.setText(event.getEventName());
             eventDescriptionEditText.setText(event.getDescription());
             eventDateTextView.setText(event.getEventDate());
-            eventPriceEditText.setText(event.getEventPrice()+"");
+            eventPriceEditText.setText(event.getEventPrice() + "");
             eventAddressEditText.setText(event.getAddressLocation());
         }
         postEventButton.setOnClickListener(new View.OnClickListener() {
@@ -97,8 +102,9 @@ public class AddEventFragment extends Fragment {
 
     public void setUser(User user) {
         this.user = user;
-        Log.d(TAG, "setUser: ==============="+this.user+"=----------------------"+user);
+        Log.d(TAG, "setUser: ===============" + this.user + "=----------------------" + user);
     }
+
     public void setEvent(Event event) {
         this.event = event;
         EVENT_TASK = EDITING;
@@ -112,6 +118,7 @@ public class AddEventFragment extends Fragment {
     public interface AddEventFragmentListener {
         void PostEvent(Event event);
         void UpdateEvent(Event event);
+        Location getLocationClicked();
     }
 
     public void postEvent() {
@@ -121,29 +128,31 @@ public class AddEventFragment extends Fragment {
         String eventPrice = eventPriceEditText.getText().toString();
         String eventAddress = eventAddressEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
-        Event newEvent = new Event("",eventName,eventDescription,Utils.dateFormat.format(new Date())
-                ,user,0.00,eventAddress);
+        Event newEvent = new Event("", eventName, eventDescription, Utils.dateFormat.format(new Date())
+                , user, 0.00, eventAddress);
 
         newEvent.setEventDate(eventDate);
 
-        if (event!=null)
+        if (event != null)
             newEvent.setEventID(event.getEventID());
 
-        Log.d(TAG, user+"\n\n\npostEvent: ******************************************"+newEvent);
-        if (EVENT_TASK ==ADDING) {
+        Log.d(TAG, user + "\n\n\npostEvent: ******************************************" + newEvent);
+        if (EVENT_TASK == ADDING) {
             eventFragmentListener.PostEvent(newEvent);
-        }else if (EVENT_TASK == EDITING){
+        } else if (EVENT_TASK == EDITING) {
             eventFragmentListener.UpdateEvent(newEvent);
         }
 
     }
-    public void setDate(Date date){
+
+    public void setDate(Date date) {
         this.selectedDate = date;
     }
 
     private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
 
         private Date date = new Date(System.currentTimeMillis());
+
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onClick(View view) {
@@ -153,7 +162,7 @@ public class AddEventFragment extends Fragment {
                 @Override
                 public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(i,i1,i2);
+                    calendar.set(i, i1, i2);
                     Date date = calendar.getTime();
                     eventDateTextView.setText(Utils.dateFormat.format(date));
                     setDate(date);
@@ -161,4 +170,15 @@ public class AddEventFragment extends Fragment {
             });
         }
     };
+    private View.OnClickListener locationOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            eventFragmentListener.getLocationClicked();
+        }
+    };
+
 }
+
+
+
+//TODO: ADDRESS SEARCH WHEN ENTERING ADDRESS
