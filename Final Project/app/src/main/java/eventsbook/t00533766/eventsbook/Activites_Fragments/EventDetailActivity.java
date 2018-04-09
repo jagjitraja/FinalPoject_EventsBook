@@ -2,6 +2,9 @@ package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -16,15 +19,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.AddEventFragment;
 import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.ViewEventFragment;
@@ -54,8 +65,47 @@ public class EventDetailActivity extends FragmentActivity
     private User user;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private LocationCallback locationCallback;
+    private  AlertDialog.Builder builder;
 
+
+    private OnCompleteListener<Location> locationCompleteListener = new OnCompleteListener<Location>() {
+        @Override
+        public void onComplete(@NonNull Task<Location> task) {
+            if (task.isSuccessful()){
+                location = task.getResult();
+
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                    TextView textView = findViewById(R.id.address__text_view);
+                    textView.setText(addressList.get(0).getAddressLine(0));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }else {
+                Utils.showToast(getApplicationContext(), "Couldnt get location");
+            }
+        }
+    };
+
+
+
+
+
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            if (locationResult != null) {
+                location = locationResult.getLastLocation();
+                Log.d(TAG, "onLocationResult: "+location.getLatitude()+"   "+location.getLongitude());
+            } else {
+                Utils.showToast(getApplicationContext(), "Failed to get locaiton, Enter an addresss");
+            }
+        }
+    };
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location location;
     private LocationManager locationManager;
@@ -72,23 +122,12 @@ public class EventDetailActivity extends FragmentActivity
         geocoder = new Geocoder(getApplicationContext());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
-        locationRequest = new LocationRequest().
-                setInterval(500).setMaxWaitTime(1000).setFastestInterval(1000);
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                Log.d(TAG, "onLocationResult: ");
-                if (locationResult != null) {
-                    location = locationResult.getLastLocation();
-                    Log.d(TAG, "onLocationResult: "+location.getLatitude()+"   "+location.getLongitude());
-                } else {
-                    Utils.showToast(getApplicationContext(), "Failed to get locaiton");
-                }
-            }
-        };
 
-        if (locationManager != null && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+        locationRequest = new LocationRequest().
+                setInterval(150000).setMaxWaitTime(1000).setFastestInterval(1000);
+
+        if (locationManager != null &&
+                (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))) {
             getLocation();
         } else {
@@ -111,7 +150,6 @@ public class EventDetailActivity extends FragmentActivity
     }
 
     private void replaceFragment(Fragment fragment) {
-
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
@@ -138,8 +176,6 @@ public class EventDetailActivity extends FragmentActivity
         addFragment(addEventFragment);
     }
 
-
-
     @Override
     public void ViewFragmentEvent(Uri uri) {
 
@@ -149,7 +185,6 @@ public class EventDetailActivity extends FragmentActivity
     public void editEventClicked(Event event) {
         getIntent().setAction(Utils.EDIT_INTENT_ACTION);
         AddEventFragment addEventFragment = new AddEventFragment();
-        Log.d(TAG, "editEventClicked: e" + event);
         addEventFragment.setEvent(event);
         addEventFragment.setUser(user);
         addEventFragment.setEventFragmentListener(this);
@@ -158,11 +193,10 @@ public class EventDetailActivity extends FragmentActivity
 
     @Override
     public void showInMapClicked(Event event) {
-        Log.d(TAG, "showInMapClicked: ---------------------------");
-
         Address address = null;
         try {
-            address = (Address) geocoder.getFromLocationName(event.getAddressLocation(),1);
+            address = (Address)
+                    geocoder.getFromLocationName(event.getAddressLocation(),1);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -226,19 +260,11 @@ public class EventDetailActivity extends FragmentActivity
 
         if (requestCode == Utils.LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Utils.showToast(this, "LOCATION GRANTED");
                 getLocation();
             } else {
                 ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION);
             }
         }
-    }
-
-    private boolean hasLocationPermission() {
-        return ActivityCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestLocationPermission() {
@@ -257,7 +283,9 @@ public class EventDetailActivity extends FragmentActivity
                         PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission();
         } else {
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(locationCompleteListener);
+            fusedLocationProviderClient.requestLocationUpdates
+                    (locationRequest, locationCallback, null);
         }
     }
 
