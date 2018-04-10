@@ -9,6 +9,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -51,7 +54,13 @@ import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE
 
 public class EventDetailActivity extends FragmentActivity
         implements AddEventFragment.AddEventFragmentListener,
-        ViewEventFragment.ViewEventFragmentListener {
+        ViewEventFragment.ViewEventFragmentListener,
+        NfcAdapter.OnNdefPushCompleteCallback,
+        NfcAdapter.CreateNdefMessageCallback{
+
+
+    private static final String EVENT_SAVE_INSTANCE_KEY = "EVENT_SAVE_INSTANCE_KEY";
+    private static final String USER_SAVE_INSTANCE_KEY = "USER_SAVE_INSTANCE_KEY";
 
     private final String TAG = EventDetailActivity.class.getSimpleName();
     private Event event;
@@ -284,4 +293,36 @@ public class EventDetailActivity extends FragmentActivity
     }
 
 
+    @Override
+    public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
+        return null;
+    }
+
+    @Override
+    public void onNdefPushComplete(NfcEvent nfcEvent) {
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(EVENT_SAVE_INSTANCE_KEY,event);
+        outState.putSerializable(USER_SAVE_INSTANCE_KEY,user);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState!=null) {
+            this.event = (Event) savedInstanceState.getSerializable(EVENT_SAVE_INSTANCE_KEY);
+            this.user = (User) savedInstanceState.getSerializable(USER_SAVE_INSTANCE_KEY);
+
+            AddEventFragment addEventFragment = (AddEventFragment)
+                    fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+            if (addEventFragment!=null) {
+                addEventFragment.setEvent(event);
+                addEventFragment.setUser(user);
+            }
+        }
+    }
 }

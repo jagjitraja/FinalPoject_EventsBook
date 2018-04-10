@@ -17,18 +17,22 @@
             style="@style/label_styles"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/input_fields_height"
+            android:layout_marginTop="8dp"
+            android:fontFamily="serif"
             android:text="@string/describe_this_event"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="220dp"
-            app:layout_constraintTop_toBottomOf="@+id/location_label"/>
+            app:layout_constraintTop_toBottomOf="@+id/address_edit_text" />
 
         <TextView
             android:id="@+id/event_name_label"
             style="@style/label_styles"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/input_fields_height"
+            android:fontFamily="serif"
             android:text="@string/event_name"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,9 +41,12 @@
             style="@style/label_styles"
             android:layout_width="@dimen/input_fields_width"
             android:layout_height="@dimen/input_fields_height"
+            android:fontFamily="monospace"
             android:hint="@string/events_name"
             android:maxLength="20"
             android:maxLines="1"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/event_name_label"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +56,9 @@
             style="@style/label_styles"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/input_fields_height"
+            android:fontFamily="serif"
             android:text="@string/date"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_name_label" />
 
@@ -59,8 +68,10 @@
             android:layout_width="@dimen/input_fields_width"
             android:layout_height="@dimen/input_fields_height"
             android:background="@color/colorPrimary"
-            android:textColor="@color/white"
+            android:fontFamily="monospace"
             android:hint="DD/MM/YY"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/event_name_text_view"
             app:layout_constraintTop_toBottomOf="@+id/event_name_text_view" />
@@ -71,12 +82,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:maxLines="12"
-            android:gravity="start"
-            android:minHeight="@dimen/input_fields_height"
+            android:fontFamily="monospace"
             android:hint="@string/event_description"
             android:inputType="textMultiLine"
-            android:textColor="@color/colorPrimaryDark"
+            android:maxLines="12"
+            android:minHeight="@dimen/input_fields_height"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description_label" />
@@ -87,7 +99,9 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/input_fields_height"
             android:layout_marginStart="8dp"
+            android:fontFamily="serif"
             android:text="@string/price"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
 
@@ -99,9 +113,12 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
+            android:fontFamily="monospace"
             android:hint="@string/hint_cost"
             android:inputType="numberDecimal"
             android:maxLength="5"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cost_label"
             app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
@@ -127,18 +144,27 @@
             android:layout_height="@dimen/input_fields_height"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="serif"
             android:text="@string/address"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cost_label" />
 
         <EditText
             android:id="@+id/address_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/label_styles"
-            android:maxLines="1"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:hint="@string/event_address"
-            android:inputType="textPostalAddress"
+            android:inputType="textMultiLine"
+            android:textAlignment="textEnd"
+            android:lines="3"
+            android:maxLines="3"
+            android:maxLength="50"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:scrollHorizontally="false"
             app:layout_constraintStart_toEndOf="@+id/location_label"
             app:layout_constraintTop_toBottomOf="@+id/event_price__text_view" />
 

@@ -29,6 +29,8 @@ public class ViewEventFragment extends Fragment {
     private TextView eventDateTextView;
     private TextView eventCostTextView;
     private TextView eventLocationTextView;
+    private TextView attendingUsersTextView;
+    private TextView interestedUsersTextView;
     private Button editEventButton;
     private ImageButton myLocationButton;
     private Event event;
@@ -72,6 +74,8 @@ public class ViewEventFragment extends Fragment {
         eventLocationTextView = getActivity().findViewById(R.id.address_edit_text);
         editEventButton = getActivity().findViewById(R.id.edit_event_button);
         myLocationButton = getActivity().findViewById(R.id.my_location_button);
+        interestedUsersTextView = getActivity().findViewById(R.id.interestedUsersValue);
+        attendingUsersTextView = getActivity().findViewById(R.id.attendingUsersValue);
 
         if (event==null){
             event = (Event) getActivity().getIntent().getSerializableExtra(Utils.VIEW_EVENT_INTENT_KEY);
@@ -88,6 +92,8 @@ public class ViewEventFragment extends Fragment {
         eventCostTextView.setText(event.getEventPrice()+"");
         Log.d(TAG, "intializeLayoutItems: "+event.getAddressLocation());
         eventLocationTextView.setText(event.getAddressLocation());
+        attendingUsersTextView.setText(event.getAttendingUsersCount()+"");
+        interestedUsersTextView.setText(event.getInterestedUsersCount()+"");
 
         editEventButton.setOnClickListener(new View.OnClickListener() {
             @Override

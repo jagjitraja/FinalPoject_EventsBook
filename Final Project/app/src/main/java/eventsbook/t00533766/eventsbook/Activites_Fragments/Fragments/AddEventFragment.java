@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 
 public class AddEventFragment extends Fragment {
+
 
     private AddEventFragmentListener eventFragmentListener;
 
@@ -69,10 +71,6 @@ public class AddEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        intializeLayout();
-    }
-
-    private void intializeLayout() {
 
         eventNameEditText = getActivity().findViewById(R.id.event_name_text_view);
         eventDateTextView = getActivity().findViewById(R.id.event_date_val);
@@ -84,6 +82,11 @@ public class AddEventFragment extends Fragment {
         myLocationButton = getActivity().findViewById(R.id.my_location_button);
         myLocationButton.setOnClickListener(locationOnClickListener);
 
+        intializeLayout();
+    }
+
+    private void intializeLayout() {
+
         if (event != null) {
             eventNameEditText.setText(event.getEventName());
             eventDescriptionEditText.setText(event.getDescription());
@@ -91,6 +94,8 @@ public class AddEventFragment extends Fragment {
             eventPriceEditText.setText(event.getEventPrice() + "");
             eventAddressEditText.setText(event.getAddressLocation());
         }
+
+
         postEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,8 +140,17 @@ public class AddEventFragment extends Fragment {
         String eventPrice = eventPriceEditText.getText().toString();
         String eventAddress = eventAddressEditText.getText().toString();
         String eventDescription = eventDescriptionEditText.getText().toString();
+
+        if (TextUtils.isEmpty(eventName)||TextUtils.isEmpty(eventDate)||TextUtils.isEmpty(eventPrice)
+                ||TextUtils.isEmpty(eventAddress)||TextUtils.isEmpty(eventDescription)){
+
+            Utils.showToast(getContext(),"Please fill out all fields");
+            return;
+        }
+
+
         Event newEvent = new Event("", eventName, eventDescription, Utils.dateFormat.format(new Date())
-                , user, 0.00, eventAddress);
+                , user, Double.parseDouble(eventPrice), eventAddress);
 
         newEvent.setEventDate(eventDate);
 
@@ -184,12 +198,13 @@ public class AddEventFragment extends Fragment {
             if(address!=null){
                 Log.d(TAG, "onClick: "+address);
                 eventAddressEditText.setText(address);
+            }else {
+                Utils.showToast(getContext(),"Failed to obtain location :(");
             }
         }
     };
 
 }
-
 
 
 //TODO: ADDRESS SEARCH WHEN ENTERING ADDRESS

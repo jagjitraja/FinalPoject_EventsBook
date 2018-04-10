@@ -1,164 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_description"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="8dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/event_description_label">
+
 <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
 android:layout_height="match_parent"
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools">
 
-<TextView
-    android:id="@+id/event_description_label"
-    style="@style/label_styles"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/input_fields_height"
-    android:text="@string/describe_this_event"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/location_label"/>
+    <TextView
+        android:id="@+id/interestedUsersValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:text="0"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/interestedUsersLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintStart_toEndOf="@+id/interestedUsersLabel"
+        app:layout_constraintTop_toBottomOf="@+id/attendingUsersValue" />
 
-<TextView
-    android:id="@+id/event_name_label"
-    style="@style/label_styles"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/input_fields_height"
-    android:text="@string/event_name"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/attendingUsersValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:text="0"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="@+id/event_description_text_view"
+        app:layout_constraintStart_toEndOf="@+id/attendingUsersLabel"
+        app:layout_constraintTop_toBottomOf="@+id/event_description_text_view" />
 
-<TextView
-    android:id="@+id/event_name_text_view"
-    style="@style/label_styles"
-    android:layout_width="@dimen/input_fields_width"
-    android:layout_height="@dimen/input_fields_height"
-    android:hint="@string/events_name"
-    android:maxLength="20"
-    android:maxLines="1"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/event_name_label"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/interestedUsersLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Number of interested users:"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attendingUsersLabel" />
 
-<TextView
-    android:id="@+id/event_date_label"
-    style="@style/label_styles"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/input_fields_height"
-    android:text="@string/date"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/event_name_label" />
+    <TextView
+        android:id="@+id/attendingUsersLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Number of attending users:"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_description_text_view" />
 
-<TextView
-    android:id="@+id/event_date__text_view"
-    style="@style/label_styles"
-    android:layout_width="@dimen/input_fields_width"
-    android:layout_height="@dimen/input_fields_height"
-    android:hint="DD/MM/YY"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="@+id/event_name_text_view"
-    app:layout_constraintTop_toBottomOf="@+id/event_name_text_view" />
+    <TextView
+        android:id="@+id/event_description_label"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/describe_this_event"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address_edit_text" />
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/scroll_description"
+    <TextView
+        android:id="@+id/event_name_label"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/event_name"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/event_name_text_view"
+        style="@style/label_styles"
+        android:layout_width="@dimen/input_fields_width"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:hint="@string/events_name"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/event_name_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/event_date_label"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/date"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_name_label" />
+
+    <TextView
+        android:id="@+id/event_date__text_view"
+        style="@style/label_styles"
+        android:layout_width="@dimen/input_fields_width"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:hint="DD/MM/YY"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/event_date_label"
+        app:layout_constraintTop_toBottomOf="@+id/event_name_text_view" />
+
+
+    <TextView
+        android:id="@+id/event_description_text_view"
+        style="@style/label_styles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:gravity="start"
+        android:hint="@string/event_description"
+        android:inputType="textMultiLine"
+        android:maxLines="12"
+        android:minHeight="@dimen/input_fields_height"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_description_label">
-
-        <TextView
-            android:id="@+id/event_description_text_view"
-            style="@style/label_styles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start"
-            android:hint="@string/event_description"
-            android:inputType="textMultiLine"
-            android:maxLines="12"
-            android:minHeight="@dimen/input_fields_height"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_description_label" />
-
-    </ScrollView>
-
-<TextView
-    android:id="@+id/cost_label"
-    style="@style/label_styles"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/input_fields_height"
-    android:layout_marginStart="8dp"
-    android:text="@string/price"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
-
-<TextView
-    android:id="@+id/event_price__text_view"
-    style="@style/label_styles"
-    android:layout_width="@dimen/cost_check_box_height"
-    android:layout_height="@dimen/input_fields_height"
-    android:layout_marginEnd="8dp"
-    android:layout_marginTop="8dp"
-    android:ems="10"
-    android:hint="@string/hint_cost"
-    android:inputType="numberDecimal"
-    android:maxLength="5"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/cost_label"
-    app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
-
-<Button
-    android:id="@+id/edit_event_button"
-    style="@style/label_styles"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:backgroundTint="@color/cardview_dark_background"
-    android:text="@string/edit_event"
-    android:textColor="@color/cardview_light_background"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_description_label" />
 
 
-<TextView
-    android:id="@+id/location_label"
-    style="@style/label_styles"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/input_fields_height"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:text="@string/address"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/cost_label" />
+    <TextView
+        android:id="@+id/cost_label"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/price"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
 
-<TextView
-    android:id="@+id/address_edit_text"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:ems="10"
-    style="@style/label_styles"
-    android:maxLines="5"
-    android:hint="@string/event_address"
-    android:inputType="textPostalAddress"
-    app:layout_constraintStart_toEndOf="@+id/location_label"
-    app:layout_constraintTop_toBottomOf="@+id/event_price__text_view" />
+    <TextView
+        android:id="@+id/event_price__text_view"
+        style="@style/label_styles"
+        android:layout_width="@dimen/cost_check_box_height"
+        android:layout_height="@dimen/input_fields_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:hint="@string/hint_cost"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/event_date__text_view"
+        app:layout_constraintTop_toBottomOf="@+id/event_date__text_view" />
+
+    <Button
+        android:id="@+id/edit_event_button"
+        style="@style/label_styles"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:text="@string/edit_event"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/interestedUsersLabel" />
+
+
+    <TextView
+        android:id="@+id/location_label"
+        style="@style/label_styles"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/address"
+        android:textSize="18sp"
+        android:typeface="serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cost_label" />
+
+    <TextView
+        android:id="@+id/address_edit_text"
+        style="@style/label_styles"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="monospace"
+        android:hint="@string/event_address"
+        android:lines="3"
+        android:maxLines="3"
+        android:maxLength="50"
+        android:textColor="@color/white"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:scrollHorizontally="true"
+        android:textColorHighlight="?android:attr/colorActivatedHighlight"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/location_label"
+        app:layout_constraintStart_toEndOf="@+id/location_label"
+        app:layout_constraintTop_toTopOf="@+id/location_label" />
 
     <ImageButton
         android:id="@+id/my_location_button"
         style="@style/label_styles"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:backgroundTint="@color/red"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/ic_place_black_24dp"
+        android:backgroundTint="@color/red"
         android:contentDescription="@string/my_device_location"
-        app:layout_constraintBottom_toBottomOf="@+id/address_edit_text"
+        app:layout_constraintBottom_toBottomOf="@+id/location_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/address_edit_text"
-        app:layout_constraintTop_toTopOf="@+id/address_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/event_price__text_view" />
 
 
 </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
