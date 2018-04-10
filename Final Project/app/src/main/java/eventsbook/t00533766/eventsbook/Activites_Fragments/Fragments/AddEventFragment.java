@@ -1,6 +1,7 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
 import android.app.DatePickerDialog;
+import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -77,7 +78,7 @@ public class AddEventFragment extends Fragment {
         eventDateTextView = getActivity().findViewById(R.id.event_date_val);
         eventDateTextView.setOnClickListener(dateOnClickListener);
         eventPriceEditText = getActivity().findViewById(R.id.event_price__text_view);
-        eventAddressEditText = getActivity().findViewById(R.id.address__text_view);
+        eventAddressEditText = getActivity().findViewById(R.id.address_edit_text);
         eventDescriptionEditText = getActivity().findViewById(R.id.event_description_text_view);
         postEventButton = getActivity().findViewById(R.id.post_event_button);
         myLocationButton = getActivity().findViewById(R.id.my_location_button);
@@ -111,6 +112,13 @@ public class AddEventFragment extends Fragment {
 
     public void setEventFragmentListener(AddEventFragmentListener eventFragmentListener) {
         this.eventFragmentListener = eventFragmentListener;
+    }
+
+    public void updateLocationEditText(Address address) {
+        eventAddressEditText = getActivity().findViewById(R.id.address_edit_text);
+        if (eventAddressEditText!=null){
+            eventAddressEditText.setText(address.getAddressLine(0));
+        }
     }
 
 

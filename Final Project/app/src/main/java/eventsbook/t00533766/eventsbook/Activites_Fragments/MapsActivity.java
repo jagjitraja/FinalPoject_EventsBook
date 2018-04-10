@@ -1,8 +1,10 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,6 +12,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import eventsbook.t00533766.eventsbook.R;
 
@@ -20,6 +33,7 @@ import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONG
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String TAG = MapsActivity.class.getSimpleName();
     private GoogleMap mMap;
 
     @Override
@@ -49,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         Intent intent = getIntent();
 
+        Log.d(TAG, "onMapReady: ");
         LatLng eventLocation = null;
         LatLng userLocation = null;
         if (intent!=null){
@@ -61,10 +76,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             eventLocation = new LatLng(eventLatitude,eventLongitude);
             userLocation = new LatLng(userLatitude,userLongitude);
 
+
+            Polyline polyline = mMap.addPolyline(new PolylineOptions().add(userLocation,eventLocation));
+
             mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event"));
             mMap.addMarker(new MarkerOptions().position(userLocation).title("Me"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLocation));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+
+            mMap.animateCamera( CameraUpdateFactory.zoomTo( 5 ) );
 
         }
     }

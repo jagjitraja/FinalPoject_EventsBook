@@ -2,6 +2,7 @@ package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class EventListAdapter extends
     @Override
     public EventItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemview = LayoutInflater.from(context).inflate(R.layout.event_item_layout,parent,false);
+
         return new EventItemHolder(itemview);
     }
 
@@ -54,6 +56,7 @@ public class EventListAdapter extends
     }
 
     public void addEvent(Event event){
+        Log.d(TAG, "addEvent: "+eventArrayList);
         this.eventArrayList.add(event);
         notifyDataSetChanged();
     }
@@ -122,14 +125,14 @@ public class EventListAdapter extends
                 @Override
                 public void onClick(View view) {
                     onEventItemClickListener.
-                            eventInterestedClicked(event, finalInterested);
+                            eventInterestedClicked(event);
                 }
             });
             final boolean finalRegistering = registering;
             registerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onEventItemClickListener.eventRegisterClicked(event, finalRegistering);
+                    onEventItemClickListener.eventRegisterClicked(event);
                 }
             });
         }

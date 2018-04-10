@@ -42,6 +42,9 @@ public class Utils {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
 
     private static final String TAG = Utils.class.getName();
+    public static String ADD_FRAGMENT = "ADD_FRAGMENT";
+    public static String VIEW_FRAGMENT = "VIEW_FRAGMENT";
+
 
     public static void goToActivity(final Intent intent,
                                     int delay, final Context context){

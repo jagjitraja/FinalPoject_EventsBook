@@ -46,7 +46,11 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnEventItemClick {
 
-
+//TODO: NFC VIEW EVENT
+    // TODO: SHArE BROADCAST
+    //TODO: SEARCH
+    //TODO: ADD GOOGLE CALENDER
+    // TODO: EVENT REPLIES
     public final String EVENTS_NODE = "EVENTS";
     public final static int ADD_EVENT_REQUEST = 500;
 
@@ -329,10 +333,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void eventInterestedClicked(Event event, boolean interested) {
+    public void eventInterestedClicked(Event event) {
         Log.d(TAG, "eventInterestedClicked: "+"\n"+event);
 
-        if (interested){
+        if (!event.getInterestedUsers().contains(loggedInUser.getUserID())){
             event.addInterestedUser(loggedInUser.getUserID());
         }else{
             event.removeInterestedUser(loggedInUser.getUserID());
@@ -341,10 +345,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void eventRegisterClicked(Event event, boolean registering) {
+    public void eventRegisterClicked(Event event) {
         Log.d(TAG, "eventRegisterClicked: \n"+event);
 
-        if (registering){
+        if (!event.getAttendingUsers().contains(loggedInUser.getUserID())){
             event.addAttendingUsers(loggedInUser.getUserID());
         }else{
             event.removeAttendingUser(loggedInUser.getUserID());

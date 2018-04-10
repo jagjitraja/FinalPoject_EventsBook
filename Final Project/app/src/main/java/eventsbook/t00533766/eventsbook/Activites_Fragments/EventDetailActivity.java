@@ -2,9 +2,6 @@ package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -19,11 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -34,8 +27,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.AddEventFragment;
 import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.ViewEventFragment;
@@ -65,7 +58,6 @@ public class EventDetailActivity extends FragmentActivity
     private User user;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private  AlertDialog.Builder builder;
 
 
     private OnCompleteListener<Location> locationCompleteListener = new OnCompleteListener<Location>() {
@@ -73,12 +65,13 @@ public class EventDetailActivity extends FragmentActivity
         public void onComplete(@NonNull Task<Location> task) {
             if (task.isSuccessful()){
                 location = task.getResult();
-
-                Geocoder geocoder = new Geocoder(getApplicationContext());
+                if (location!=null)
                 try {
                     List<Address> addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-                    TextView textView = findViewById(R.id.address__text_view);
-                    textView.setText(addressList.get(0).getAddressLine(0));
+                    AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+                    if (addEventFragment!=null){
+                        addEventFragment.updateLocationEditText(addressList.get(0));
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -89,10 +82,6 @@ public class EventDetailActivity extends FragmentActivity
             }
         }
     };
-
-
-
-
 
     private LocationCallback locationCallback = new LocationCallback() {
         @Override
@@ -119,7 +108,7 @@ public class EventDetailActivity extends FragmentActivity
         setContentView(R.layout.activity_event_detail);
 
         fragmentManager = getSupportFragmentManager();
-        geocoder = new Geocoder(getApplicationContext());
+        geocoder = new Geocoder(getApplicationContext(),Locale.CANADA);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
@@ -143,19 +132,19 @@ public class EventDetailActivity extends FragmentActivity
             if (code.equals(ADD_FRAGMENT_CODE)) {
                 showAddEventFragment();
             } else if (code.equals(VIEW_FRAGMENT_CODE)) {
-                showViewEventFragment();
                 event = (Event) intent.getSerializableExtra(VIEW_EVENT_INTENT_KEY);
+                showViewEventFragment();
             }
         }
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment, String tag) {
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.replace(R.id.fragment_container, fragment,tag);
         fragmentTransaction.commit();
     }
 
-    private void addFragment(Fragment fragment) {
+    private void addFragment(Fragment fragment, String tag) {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragment);
         fragmentTransaction.disallowAddToBackStack();
@@ -166,14 +155,14 @@ public class EventDetailActivity extends FragmentActivity
         ViewEventFragment viewEventFragment = new ViewEventFragment();
         viewEventFragment.setEventAndLoggedInUser(event, user);
         viewEventFragment.setEventFragmentListener(this);
-        addFragment(viewEventFragment);
+        addFragment(viewEventFragment,Utils.VIEW_FRAGMENT);
     }
 
     private void showAddEventFragment() {
         AddEventFragment addEventFragment = new AddEventFragment();
         addEventFragment.setEventFragmentListener(this);
         addEventFragment.setUser(user);
-        addFragment(addEventFragment);
+        addFragment(addEventFragment,Utils.ADD_FRAGMENT);
     }
 
     @Override
@@ -188,28 +177,31 @@ public class EventDetailActivity extends FragmentActivity
         addEventFragment.setEvent(event);
         addEventFragment.setUser(user);
         addEventFragment.setEventFragmentListener(this);
-        replaceFragment(addEventFragment);
+        replaceFragment(addEventFragment, Utils.ADD_FRAGMENT);
     }
 
     @Override
     public void showInMapClicked(Event event) {
-        Address address = null;
+        List<Address> addresses = null;
         try {
-            address = (Address)
-                    geocoder.getFromLocationName(event.getAddressLocation(),1);
 
+            addresses =  geocoder.getFromLocationName(event.getAddressLocation(),1);
+            Log.d(TAG, addresses.toString());
+            Log.d(TAG, "showInMapClicked: "+event.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (location!=null && address!=null){
             Intent intent = new Intent(this,MapsActivity.class);
+        if (location!=null && addresses !=null){
+            Address address = addresses.get(0);
+
             intent.putExtra(USER_LOCATION_LATITUDE,location.getLatitude());
             intent.putExtra(USER_LOCATION_LONGITUDE,location.getLongitude());
             intent.putExtra(EVENT_LOCATION_LATITUDE,address.getLatitude());
             intent.putExtra(EVENT_LOCATION_LONGITUDE,address.getLongitude());
             startActivity(intent);
-        }else {
-            getLocation();
+        }else if (location==null){
+            Utils.showToast(getApplicationContext(),"Couldnt get Event Location");
         }
     }
 
@@ -235,9 +227,10 @@ public class EventDetailActivity extends FragmentActivity
         if (location == null){
             getLocation();
         }else {
-            Address address = null;
+            List<Address> address = null;
             try {
-                address = (Address) geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                address =  geocoder.getFromLocation(location.getLatitude(),
+                        location.getLongitude(),1);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -245,7 +238,8 @@ public class EventDetailActivity extends FragmentActivity
 
             if (address != null) {
                 Log.d(TAG, "getLocationClicked: " + address);
-                return address.getAddressLine(0) + ", " + address.getLocality() + ", " + address.getPostalCode();
+                return address.get(0).getAddressLine(0) + ", " +
+                        address.get(0).getLocality() + ", " + address.get(0).getPostalCode();
             }
         }
         return null;

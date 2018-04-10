@@ -49,4 +49,5 @@
     <string name="unsave_event">Unsave</string>
     <string name="interested_event">Interested</string>
     <string name="registered_events">Registered Events</string>
+    <string name="reply">Reply</string>
 </resources>

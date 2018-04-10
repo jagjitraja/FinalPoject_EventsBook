@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     android:background="@drawable/event_item_ripple"
     android:layout_margin="5dp">
 
@@ -38,7 +38,8 @@
     <TextView
         android:id="@+id/eventCity"
         style="@style/label_styles"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
+        android:lines="2"
         android:textColor="@color/black_overlay"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -80,6 +81,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,22 +94,24 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:background="@drawable/interested_ripple"
             android:drawableRight="@drawable/save"
             android:padding="3dp"
-            android:background="@drawable/interested_ripple"
             android:text="@string/interested"
             android:textColor="@color/colorPrimary" />
 
         <Button
             android:id="@+id/register_button"
-            android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="@string/register"
-            android:padding="3dp"
-            android:drawableRight="@drawable/register"
             android:background="@drawable/register_ripple"
+            android:drawableRight="@drawable/register"
+            android:padding="3dp"
+            android:text="@string/register"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
+
+
 </android.support.constraint.ConstraintLayout>

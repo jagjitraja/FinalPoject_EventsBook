@@ -54,12 +54,12 @@ public class ViewEventFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d(TAG, "onCreateView: ");
         return inflater.inflate(R.layout.fragment_view_event,container,false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         intializeLayoutItems();
     }
 
@@ -69,12 +69,11 @@ public class ViewEventFragment extends Fragment {
         eventDescriptionTextView = getActivity().findViewById(R.id.event_description_text_view);
         eventDateTextView = getActivity().findViewById(R.id.event_date__text_view);
         eventCostTextView = getActivity().findViewById(R.id.event_price__text_view);
-        eventLocationTextView = getActivity().findViewById(R.id.address__text_view);
+        eventLocationTextView = getActivity().findViewById(R.id.address_edit_text);
         editEventButton = getActivity().findViewById(R.id.edit_event_button);
         myLocationButton = getActivity().findViewById(R.id.my_location_button);
 
         if (event==null){
-            Log.d(TAG, "intializeLayoutItems: ================================");
             event = (Event) getActivity().getIntent().getSerializableExtra(Utils.VIEW_EVENT_INTENT_KEY);
         }
 
@@ -87,6 +86,7 @@ public class ViewEventFragment extends Fragment {
         eventDescriptionTextView.setText(event.getDescription());
         eventDateTextView.setText(event.getEventDate());
         eventCostTextView.setText(event.getEventPrice()+"");
+        Log.d(TAG, "intializeLayoutItems: "+event.getAddressLocation());
         eventLocationTextView.setText(event.getAddressLocation());
 
         editEventButton.setOnClickListener(new View.OnClickListener() {

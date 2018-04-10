@@ -135,12 +135,12 @@ xmlns:tools="http://schemas.android.com/tools">
     app:layout_constraintTop_toBottomOf="@+id/cost_label" />
 
 <TextView
-    android:id="@+id/address__text_view"
-    android:layout_width="wrap_content"
+    android:id="@+id/address_edit_text"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:ems="10"
     style="@style/label_styles"
-    android:maxLines="1"
+    android:maxLines="5"
     android:hint="@string/event_address"
     android:inputType="textPostalAddress"
     app:layout_constraintStart_toEndOf="@+id/location_label"
@@ -155,10 +155,10 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_marginBottom="8dp"
         android:background="@drawable/ic_place_black_24dp"
         android:contentDescription="@string/my_device_location"
-        app:layout_constraintBottom_toBottomOf="@+id/address__text_view"
+        app:layout_constraintBottom_toBottomOf="@+id/address_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/address__text_view"
-        app:layout_constraintTop_toTopOf="@+id/address__text_view" />
+        app:layout_constraintStart_toEndOf="@+id/address_edit_text"
+        app:layout_constraintTop_toTopOf="@+id/address_edit_text" />
 
 
 </android.support.constraint.ConstraintLayout>
