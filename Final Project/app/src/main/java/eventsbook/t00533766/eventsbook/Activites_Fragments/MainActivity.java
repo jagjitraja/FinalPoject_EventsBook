@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "updateEvent: 7777777777777777777"+event+"   \n "+event.getEventID());
         databaseReference.child(event.getEventID()).setValue(event);
         Utils.showToast(getApplicationContext(),"Updating Event, Refreshing Events List ");
-        eventListAdapter.notifyDataSetChanged();
+
         toolbar.setTitle(R.string.app_name);
     }
 

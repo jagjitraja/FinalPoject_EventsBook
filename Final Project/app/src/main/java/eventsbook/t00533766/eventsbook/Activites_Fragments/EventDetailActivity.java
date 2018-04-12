@@ -37,7 +37,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -131,6 +130,18 @@ public class EventDetailActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
 
+        if (savedInstanceState != null) {
+            this.event = (Event) savedInstanceState.getSerializable(EVENT_SAVE_INSTANCE_KEY);
+            this.user = (User) savedInstanceState.getSerializable(USER_SAVE_INSTANCE_KEY);
+
+            Log.d(TAG, "AAAAAAAAAAAAAAAAAAAAAAAAAAA: --------------------------");
+            AddEventFragment addEventFragment = (AddEventFragment)
+                    fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+            if (addEventFragment != null) {
+                addEventFragment.setEvent(event);
+                addEventFragment.setUser(user);
+            }
+        }
 
 
         fragmentManager = getSupportFragmentManager();
@@ -162,7 +173,6 @@ public class EventDetailActivity extends FragmentActivity
                 showViewEventFragment();
             }
         }
-
         firebaseStorage = FirebaseStorage.getInstance("gs://eventify-jsb.appspot.com");
         storageReference = firebaseStorage.getReference();
 
