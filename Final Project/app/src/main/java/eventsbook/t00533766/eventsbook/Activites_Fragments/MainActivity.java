@@ -1,8 +1,11 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +34,7 @@ import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.Notifications.NotificationUtils;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private ChildEventListener childEventListener = new ChildEventListener() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -79,6 +84,9 @@ public class MainActivity extends AppCompatActivity
             Log.d(TAG, "\n\n\n\nonChildAdded: "+addedEvent);
             //eventArrayList.add(addedEvent);
             eventListAdapter.addEvent(addedEvent);
+
+            //NotificationUtils.createNotification(getApplicationContext(),addedEvent,loggedInUser);
+
         }
 
         @Override
@@ -111,6 +119,7 @@ public class MainActivity extends AppCompatActivity
     };
     public final String TAG = MainActivity.class.getSimpleName();
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -370,6 +379,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "updateEvent: 7777777777777777777"+event+"   \n "+event.getEventID());
         databaseReference.child(event.getEventID()).setValue(event);
         Utils.showToast(getApplicationContext(),"Updating Event, Refreshing Events List ");
+        eventListAdapter.notifyDataSetChanged();
         toolbar.setTitle(R.string.app_name);
     }
 

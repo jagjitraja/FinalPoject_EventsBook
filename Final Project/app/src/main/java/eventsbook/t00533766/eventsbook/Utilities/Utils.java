@@ -31,12 +31,18 @@ public class Utils {
     public final static int EVENT_ADD_SUCCESS = 20;
     public static final String EVENT_DATA = "EVENT ADDED";
 
+    public static final String NEW_EVENT_NOTIFICATION_ACTION = "NEW EVENT ACTION";
+
     public static final int LOCATION_REQUEST_CODE = 40;
     public static final String USER_LOCATION_LATITUDE = "USER LOCATION LATTITUDE";
     public static final String USER_LOCATION_LONGITUDE = "USER LOCATION LONGITUDE";
     public static final String EVENT_LOCATION_LATITUDE = "EVENT LOCATION LATTITUDE";
     public static final String EVENT_LOCATION_LONGITUDE = "EVENT LOCATION LONGITUDE";
+    public static final String EVENT_MESSAGE_TOPIC = "EVENT_MESSAGE_TOPIC";
 
+    public static final int IMAGE_CAPTURE_REQUEST_CODE = 11;
+    public static final String EVENTS_IMAGES = "EVENT_IMAGES";
+    public static final String SHARED_PREFS = "SHARED_PREFS";
 
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");

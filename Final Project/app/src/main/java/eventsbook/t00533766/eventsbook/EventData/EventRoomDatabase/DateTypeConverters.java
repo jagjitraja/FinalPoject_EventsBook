@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook.Utilities;
+package eventsbook.t00533766.eventsbook.EventData.EventRoomDatabase;
 
 import android.arch.persistence.room.TypeConverter;
 import android.util.Log;

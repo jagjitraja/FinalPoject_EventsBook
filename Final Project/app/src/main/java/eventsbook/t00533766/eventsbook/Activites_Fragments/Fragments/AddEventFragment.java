@@ -1,6 +1,8 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -44,6 +47,7 @@ public class AddEventFragment extends Fragment {
     private EditText eventDescriptionEditText;
     private Button postEventButton;
     private ImageButton myLocationButton;
+    private ImageView eventImage;
 
     private final int ADDING = 1;
     private final int EDITING = 2;
@@ -51,6 +55,7 @@ public class AddEventFragment extends Fragment {
     private Date selectedDate = new Date(System.currentTimeMillis());
 
     private int EVENT_TASK = ADDING;
+    private Bitmap eventBitMap;
 
     public AddEventFragment() {
         // Required empty public constructor
@@ -81,6 +86,13 @@ public class AddEventFragment extends Fragment {
         postEventButton = getActivity().findViewById(R.id.post_event_button);
         myLocationButton = getActivity().findViewById(R.id.my_location_button);
         myLocationButton.setOnClickListener(locationOnClickListener);
+        eventImage = getActivity().findViewById(R.id.event_imageView);
+        eventImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventFragmentListener.takePictureClicked();
+            }
+        });
 
         intializeLayout();
     }
@@ -94,8 +106,6 @@ public class AddEventFragment extends Fragment {
             eventPriceEditText.setText(event.getEventPrice() + "");
             eventAddressEditText.setText(event.getAddressLocation());
         }
-
-
         postEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,11 +136,20 @@ public class AddEventFragment extends Fragment {
         }
     }
 
+    public void setEventBitMap(Bitmap eventBitMap) {
+        this.eventBitMap = eventBitMap;
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(),eventBitMap);
+        eventImage.setBackground(bitmapDrawable);
+        Log.d(TAG, "setEventBitMap: ");
+    }
+
+
 
     public interface AddEventFragmentListener {
         void PostEvent(Event event);
         void UpdateEvent(Event event);
         String getLocationClicked();
+        void takePictureClicked();
     }
 
     public void postEvent() {
