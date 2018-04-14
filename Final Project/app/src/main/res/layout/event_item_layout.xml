@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
+    android:maxHeight="400dp"
     android:background="@color/white"
     android:layout_margin="5dp">
 
@@ -69,14 +70,17 @@
         style="@style/label_styles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="start"
         android:maxLines="5"
         android:text="-------------------------EVENT DESCRIPTION------------"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black_overlay"
-        app:layout_constraintTop_toBottomOf="@+id/event_image"
-        tools:layout_editor_absoluteX="12dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_image" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -117,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:maxHeight="200dp"
+        android:maxHeight="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventname"

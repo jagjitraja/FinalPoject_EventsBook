@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
@@ -33,7 +36,9 @@ public class ViewEventFragment extends Fragment {
     private TextView attendingUsersTextView;
     private TextView interestedUsersTextView;
     private Button editEventButton;
+    private Button shareEventButton;
     private ImageButton myLocationButton;
+    private ImageView eventImage;
     private Event event;
     private User loggedInUser;
     private ViewEventFragmentListener eventFragmentListener;
@@ -74,6 +79,8 @@ public class ViewEventFragment extends Fragment {
         myLocationButton = getActivity().findViewById(R.id.my_location_button);
         interestedUsersTextView = getActivity().findViewById(R.id.interestedUsersValue);
         attendingUsersTextView = getActivity().findViewById(R.id.attendingUsersValue);
+        eventImage = getActivity().findViewById(R.id.event_imageView);
+        shareEventButton = getActivity().findViewById(R.id.share_event_button);
 
         if (event==null){
             event = (Event) getActivity().getIntent().getSerializableExtra(Utils.VIEW_EVENT_INTENT_KEY);
@@ -105,6 +112,16 @@ public class ViewEventFragment extends Fragment {
                 eventFragmentListener.showInMapClicked(event);
             }
         });
+        shareEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventFragmentListener.shareEventClicked(event);
+            }
+        });
+
+        Glide.with(getContext())
+                .load(event.getStorageURL())
+                .into(eventImage);
     }
 
     @Override
@@ -115,8 +132,8 @@ public class ViewEventFragment extends Fragment {
 
     public interface ViewEventFragmentListener {
         // TODO: Update argument type and name
-        void ViewFragmentEvent(Uri uri);
         void editEventClicked(Event event);
         void showInMapClicked(Event event);
+        void shareEventClicked(Event event);
     }
 }

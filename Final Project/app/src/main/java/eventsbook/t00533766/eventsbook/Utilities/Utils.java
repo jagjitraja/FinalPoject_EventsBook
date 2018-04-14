@@ -45,6 +45,7 @@ public class Utils {
     public static final int IMAGE_CAPTURE_REQUEST_CODE = 11;
     public static final String EVENTS_IMAGES = "EVENT_IMAGES";
     public static final String SHARED_PREFS = "SHARED_PREFS";
+    public static final String SHARE_EVENT_KEY = "SHARE EVENT";
 
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");

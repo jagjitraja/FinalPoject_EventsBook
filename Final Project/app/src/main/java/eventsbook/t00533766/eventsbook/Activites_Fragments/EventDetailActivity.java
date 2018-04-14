@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -200,10 +201,6 @@ public class EventDetailActivity extends FragmentActivity
         addFragment(addEventFragment, Utils.ADD_FRAGMENT);
     }
 
-    @Override
-    public void ViewFragmentEvent(Uri uri) {
-
-    }
 
     @Override
     public void editEventClicked(Event event) {
@@ -228,16 +225,29 @@ public class EventDetailActivity extends FragmentActivity
         }
         Intent intent = new Intent(this, MapsActivity.class);
         if (location != null && addresses != null) {
-            Address address = addresses.get(0);
-
             intent.putExtra(USER_LOCATION_LATITUDE, location.getLatitude());
             intent.putExtra(USER_LOCATION_LONGITUDE, location.getLongitude());
-            intent.putExtra(EVENT_LOCATION_LATITUDE, address.getLatitude());
-            intent.putExtra(EVENT_LOCATION_LONGITUDE, address.getLongitude());
+
+            if (addresses.size()>0) {
+                Address address = addresses.get(0);
+                intent.putExtra(EVENT_LOCATION_LATITUDE, address.getLatitude());
+                intent.putExtra(EVENT_LOCATION_LONGITUDE, address.getLongitude());
+                Utils.showToast(getApplicationContext(), "Couldnt get Event Location");
+            }
             startActivity(intent);
         } else if (location == null) {
-            Utils.showToast(getApplicationContext(), "Couldnt get Event Location");
+            Utils.showToast(getApplicationContext(), "Couldnt get User Location");
         }
+    }
+
+    @Override
+    public void shareEventClicked(Event event) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TITLE,event.getEventName());
+        intent.putExtra(Intent.EXTRA_TEXT,event.toString());
+        intent.setType("text/plain");
+        startActivity(intent);
     }
 
     @Override
