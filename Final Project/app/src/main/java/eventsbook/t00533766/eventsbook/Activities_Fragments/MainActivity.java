@@ -1,6 +1,8 @@
-package eventsbook.t00533766.eventsbook.Activites_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -36,17 +39,16 @@ import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
-import eventsbook.t00533766.eventsbook.Utilities.Notifications.NotificationUtils;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_INTENT_ACTION;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.FIRE_BASE_USER_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.hasInternet;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -78,12 +80,14 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+
             Log.d(TAG, "onChildAdded: "+dataSnapshot.getKey()+"\n"+dataSnapshot.getValue());
             Event addedEvent = dataSnapshot.getValue(Event.class);
             if (addedEvent != null) {
                 addedEvent.setEventID(dataSnapshot.getKey());
                 eventListAdapter.addEvent(addedEvent);
             }
+
             Log.d(TAG, "\n\n\n\nonChildAdded: "+addedEvent);
 
             //NotificationUtils.createNotification(getApplicationContext(),addedEvent,loggedInUser);
@@ -94,8 +98,8 @@ public class MainActivity extends AppCompatActivity
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
             Event addedEvent = dataSnapshot.getValue(Event.class);
             for (int i = 0;i<eventArrayList.size();i++) {
-                if (addedEvent.getEventID().equals(eventArrayList.get(i).getEventID())){
-                    Log.d(TAG, "-*-*-*-*-*-*-*-*-*-*-*-*--* "+addedEvent);
+                if (addedEvent != null && addedEvent.getEventID().equals(eventArrayList.get(i).getEventID())) {
+                    Log.d(TAG, "-*-*-*-*-*-*-*-*-*-*-*-*--* " + addedEvent);
                     eventArrayList.set(i, addedEvent);
                     break;
                 }
@@ -125,7 +129,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -153,6 +156,12 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setLayoutManager(linearLayoutManager);
         eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
         recyclerView.setAdapter(eventListAdapter);
+
+
+
+        if (!hasInternet(getApplicationContext())){
+            Utils.showToast(getApplicationContext(),"Device is offline, some features may not be available :(");
+        }
     }
 
 
@@ -160,7 +169,6 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +176,6 @@ public class MainActivity extends AppCompatActivity
                 goToAddEventActivity();
             }
         });
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -227,7 +234,6 @@ public class MainActivity extends AppCompatActivity
 
     private void postEventToDatabase(Event event) {
         databaseReference.push().setValue(event);
-
     }
 
     @Override
@@ -247,7 +253,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //TODO REFRESH ARRAY LIST AFTER UPDATING
     private void goToSplashActivity() {
         Utils.goToActivity(new Intent(getApplicationContext(),
                         SplashIntroActivity.class),
@@ -269,20 +274,27 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

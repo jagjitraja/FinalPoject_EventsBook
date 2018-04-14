@@ -3,14 +3,12 @@ package eventsbook.t00533766.eventsbook.Utilities.Notifications;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import eventsbook.t00533766.eventsbook.Activites_Fragments.EventDetailActivity;
+import eventsbook.t00533766.eventsbook.Activities_Fragments.EventDetailActivity;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
 
 /**

@@ -1,10 +1,9 @@
-package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Fragments;
 
 import android.app.DatePickerDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="eventsbook.t00533766.eventsbook.Activites_Fragments.AddEventActivity">
+        tools:context="eventsbook.t00533766.eventsbook.Activities_Fragments.AddEventActivity">
 
         <ImageView
             android:id="@+id/event_imageView"
@@ -59,7 +59,7 @@
             android:maxLength="20"
             android:maxLines="1"
             android:textAlignment="textEnd"
-            android:textColor="@color/white"
+            android:textColor="@color/cream"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_imageView"
             app:layout_constraintStart_toEndOf="@+id/event_name_label"
@@ -85,7 +85,7 @@
             android:fontFamily="monospace"
             android:hint="DD/MM/YY"
             android:textAlignment="textEnd"
-            android:textColor="@color/white"
+            android:textColor="@color/cream"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/event_name_text_view"
             app:layout_constraintTop_toBottomOf="@+id/event_name_text_view" />
@@ -102,7 +102,7 @@
             android:maxLines="12"
             android:minHeight="@dimen/input_fields_height"
             android:textAlignment="textEnd"
-            android:textColor="@color/white"
+            android:textColor="@color/cream"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description_label" />
@@ -132,7 +132,7 @@
             android:inputType="numberDecimal"
             android:maxLength="5"
             android:textAlignment="textEnd"
-            android:textColor="@color/white"
+            android:textColor="@color/cream"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cost_label"
             app:layout_constraintTop_toBottomOf="@+id/event_date_label" />
@@ -176,7 +176,7 @@
             android:lines="3"
             android:maxLines="3"
             android:maxLength="50"
-            android:textColor="@color/white"
+            android:textColor="@color/cream"
             android:layout_weight="1"
             android:scrollHorizontally="false"
             app:layout_constraintStart_toEndOf="@+id/location_label"

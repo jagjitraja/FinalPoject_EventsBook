@@ -1,15 +1,17 @@
-package eventsbook.t00533766.eventsbook.Activites_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
@@ -22,7 +24,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -35,7 +36,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -44,8 +44,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.AddEventFragment;
-import eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments.ViewEventFragment;
+import eventsbook.t00533766.eventsbook.Activities_Fragments.Fragments.AddEventFragment;
+import eventsbook.t00533766.eventsbook.Activities_Fragments.Fragments.ViewEventFragment;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
@@ -57,13 +57,12 @@ import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LATITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LONGITUDE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.FIRE_BASE_USER_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LATITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONGITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.dateFormat;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.hasInternet;
 
 public class EventDetailActivity extends FragmentActivity
         implements AddEventFragment.AddEventFragmentListener,
@@ -394,42 +393,47 @@ public class EventDetailActivity extends FragmentActivity
         if (requestCode == Utils.IMAGE_CAPTURE_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             if (extras != null) {
-                final Bitmap imageBitmap = (Bitmap) extras.get("data");
-                final StorageReference eventImages = storageReference.child(Utils.EVENTS_IMAGES);
-                StorageReference thisEventImage = eventImages.child(event.getEventID());
 
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                if (hasInternet(getApplicationContext())) {
 
-                byte[] bitmapBytes = byteArrayOutputStream.toByteArray();
-                UploadTask uploadTask = thisEventImage.putBytes(bitmapBytes);
-                Log.d(TAG, "onActivityResult: ***********************************");
-                uploadTask.addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Utils.showToast(getApplicationContext(), "Image upload complete");
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    final Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    final StorageReference eventImages = storageReference.child(Utils.EVENTS_IMAGES);
+                    StorageReference thisEventImage = eventImages.child(event.getEventID());
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
 
-                        AddEventFragment addEventFragment = (AddEventFragment)
-                                fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
-                        if (addEventFragment != null) {
-                            addEventFragment.setEventBitMap(imageBitmap);
-                            if (downloadUrl != null) {
-                                Log.d(TAG, "onSuccess: "+downloadUrl);
-                                event.setStorageURL(downloadUrl.toString());
+                    byte[] bitmapBytes = byteArrayOutputStream.toByteArray();
+                    UploadTask uploadTask = thisEventImage.putBytes(bitmapBytes);
+                    Log.d(TAG, "onActivityResult: ***********************************");
+                    uploadTask.addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Utils.showToast(getApplicationContext(), "Image upload complete");
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                            AddEventFragment addEventFragment = (AddEventFragment)
+                                    fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+                            if (addEventFragment != null) {
+                                addEventFragment.setEventBitMap(imageBitmap);
+                                if (downloadUrl != null) {
+                                    Log.d(TAG, "onSuccess: " + downloadUrl);
+                                    event.setStorageURL(downloadUrl.toString());
+                                }
+                                addEventFragment.setEvent(event);
                             }
-                            addEventFragment.setEvent(event);
                         }
-                    }
-                });
+                    });
 
-                uploadTask.addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Utils.showToast(getApplicationContext(), "Image upload failed");
+                    uploadTask.addOnFailureListener(this, new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Utils.showToast(getApplicationContext(), "Image upload failed");
 
-                    }
-                });
+                        }
+                    });
+                }else {
+                    Utils.showToast(getApplicationContext(),"Sorry, we cant save images when device is offline :(");
+                }
 
 
             }
@@ -437,6 +441,7 @@ public class EventDetailActivity extends FragmentActivity
             Utils.showToast(getApplicationContext(), "Failed to save Image");
         }
     }
+
 
 
 }

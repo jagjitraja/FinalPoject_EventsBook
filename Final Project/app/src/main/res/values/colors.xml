@@ -7,8 +7,9 @@
     <color name="black_overlay">#ba000000</color>
     <color name="event_item_background">#b730ecf6</color>
     <color name="drawer_back">#445056</color>
-    <color name="white">#e0c5b0</color>
+    <color name="cream">#e0c5b0</color>
     <color name="red">#d15158</color>
+    <color name="white">#FFFF</color>
     <color name="rippleColor">#DDD</color>
     <color name="backgroundColor">#779</color>
 </resources>

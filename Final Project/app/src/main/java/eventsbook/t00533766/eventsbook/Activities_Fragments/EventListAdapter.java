@@ -1,8 +1,6 @@
-package eventsbook.t00533766.eventsbook.Activites_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;

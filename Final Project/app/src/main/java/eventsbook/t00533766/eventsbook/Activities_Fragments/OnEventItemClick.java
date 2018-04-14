@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook.Activites_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 

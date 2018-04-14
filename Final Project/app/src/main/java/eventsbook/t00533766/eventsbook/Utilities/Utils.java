@@ -2,6 +2,7 @@ package eventsbook.t00533766.eventsbook.Utilities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -85,6 +86,10 @@ public class Utils {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();;
     }
 
+    public static boolean hasInternet(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
 
 

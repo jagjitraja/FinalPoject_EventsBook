@@ -11,7 +11,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
-import eventsbook.t00533766.eventsbook.Activites_Fragments.MainActivity;
+import eventsbook.t00533766.eventsbook.Activities_Fragments.MainActivity;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;

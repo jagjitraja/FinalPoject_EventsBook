@@ -1,6 +1,5 @@
-package eventsbook.t00533766.eventsbook.Activites_Fragments.Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
