@@ -22,8 +22,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
@@ -56,10 +59,8 @@ public class AddEventFragment extends Fragment {
     private Date selectedDate = new Date(System.currentTimeMillis());
 
     private int EVENT_TASK = ADDING;
-    private Bitmap eventBitMap;
 
     public AddEventFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -99,6 +100,7 @@ public class AddEventFragment extends Fragment {
         intializeLayout();
     }
 
+
     private void intializeLayout() {
 
         Log.d(TAG, "-----------------------------------------: "+(event==null));
@@ -109,6 +111,9 @@ public class AddEventFragment extends Fragment {
             eventDateTextView.setText(event.getEventDate());
             eventPriceEditText.setText(event.getEventPrice() + "");
             eventAddressEditText.setText(event.getAddressLocation());
+            Glide.with(getContext())
+                    .load(event.getStorageURL())
+                    .into(eventImage);
         }
         postEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +125,6 @@ public class AddEventFragment extends Fragment {
 
     public void setEvent(Event event) {
         this.event = event;
-        EVENT_TASK = EDITING;
     }
 
     public void setEventFragmentListener(AddEventFragmentListener eventFragmentListener) {
@@ -135,10 +139,8 @@ public class AddEventFragment extends Fragment {
     }
 
     public void setEventBitMap(Bitmap eventBitMap) {
-        this.eventBitMap = eventBitMap;
         BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(),eventBitMap);
         eventImage.setBackground(bitmapDrawable);
-        Log.d(TAG, "setEventBitMap: ");
     }
 
 
@@ -150,6 +152,10 @@ public class AddEventFragment extends Fragment {
     }
 
     public void postEvent() {
+
+        if (event==null){
+            event = new Event();
+        }
 
         String eventName = eventNameEditText.getText().toString();
         String eventDate = eventDateTextView.getText().toString();
@@ -169,12 +175,11 @@ public class AddEventFragment extends Fragment {
         event.setAddressLocation(eventAddress);
         event.setDescription(eventDescription);
         event.setEventDate(eventDate);
-
-
+        
         Log.d(TAG, user + "\n\n\npostEvent: ******************************************" + event);
-        if (EVENT_TASK == ADDING) {
+        if (Objects.equals(getActivity().getIntent().getAction(), Utils.ADD_INTENT_ACTION)) {
             eventFragmentListener.PostEvent(event);
-        } else if (EVENT_TASK == EDITING) {
+        } else if (Objects.equals(getActivity().getIntent().getAction(), Utils.EDIT_INTENT_ACTION)) {
             eventFragmentListener.UpdateEvent(event);
         }
 

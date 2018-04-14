@@ -67,6 +67,10 @@ public class ViewEventFragment extends Fragment {
         intializeLayoutItems();
     }
 
+    public void setEvent(Event event){
+        this.event = event;
+    }
+
     public void intializeLayoutItems() {
 
         eventNameTextView = getActivity().findViewById(R.id.event_name_text_view);
@@ -81,9 +85,6 @@ public class ViewEventFragment extends Fragment {
         eventImage = getActivity().findViewById(R.id.event_imageView);
         shareEventButton = getActivity().findViewById(R.id.share_event_button);
 
-        if (event==null){
-            event = (Event) getActivity().getIntent().getSerializableExtra(Utils.VIEW_EVENT_INTENT_KEY);
-        }
 
         if (!loggedInUser.getUserID().equals(event.getPostedBy().getUserID())){
             editEventButton.setEnabled(false);

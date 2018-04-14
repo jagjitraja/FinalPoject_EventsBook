@@ -52,16 +52,13 @@ import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LATITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LONGITUDE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LATITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONGITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.hasInternet;
 
 public class EventDetailActivity extends FragmentActivity
@@ -70,9 +67,7 @@ public class EventDetailActivity extends FragmentActivity
         NfcAdapter.OnNdefPushCompleteCallback,
         NfcAdapter.CreateNdefMessageCallback {
 
-
     private static final String EVENT_SAVE_INSTANCE_KEY = "EVENT_SAVE_INSTANCE_KEY";
-    private static final String USER_SAVE_INSTANCE_KEY = "USER_SAVE_INSTANCE_KEY";
 
     private final String TAG = EventDetailActivity.class.getSimpleName();
     private Event event;
@@ -130,22 +125,20 @@ public class EventDetailActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+        fragmentManager = getSupportFragmentManager();
+        geocoder = new Geocoder(getApplicationContext(), Locale.CANADA);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
         if (savedInstanceState != null) {
             this.event = (Event) savedInstanceState.getSerializable(EVENT_SAVE_INSTANCE_KEY);
 
-            AddEventFragment addEventFragment = (AddEventFragment)
-                    fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+            AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
             if (addEventFragment != null) {
                 addEventFragment.setEvent(event);
             }
         }
 
-
-        fragmentManager = getSupportFragmentManager();
-        geocoder = new Geocoder(getApplicationContext(), Locale.CANADA);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
         locationRequest = new LocationRequest().
                 setInterval(150000).setMaxWaitTime(1000).setFastestInterval(1000);
@@ -159,15 +152,13 @@ public class EventDetailActivity extends FragmentActivity
                     (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
         }
 
+
         Intent intent = getIntent();
         if (intent.getAction().equals(Utils.ADD_INTENT_ACTION)) {
-            String code = intent.getStringExtra(INTENT_FRAGMENT_CODE);
-            if (code.equals(ADD_FRAGMENT_CODE)) {
                 showAddEventFragment();
-            } else if (code.equals(VIEW_FRAGMENT_CODE)) {
-                event = (Event) intent.getSerializableExtra(VIEW_EVENT_INTENT_KEY);
-                showViewEventFragment();
-            }
+        }else {
+            event = (Event) intent.getSerializableExtra(Utils.EVENT_DATA);
+            showViewEventFragment();
         }
         user = LoggedInUserSingleton.getLoggedInUser();
         firebaseStorage = FirebaseStorage.getInstance(Utils.EVENT_IMAGES_STORAGE);
@@ -177,36 +168,48 @@ public class EventDetailActivity extends FragmentActivity
 
     private void replaceFragment(Fragment fragment, String tag) {
         fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragmentManager.findFragmentByTag(Utils.VIEW_FRAGMENT));
         fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
         fragmentTransaction.commit();
+        Log.d(TAG, "editEventClicked: "+fragmentManager.getFragments().toString());
     }
 
     private void addFragment(Fragment fragment, String tag) {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment);
-        fragmentTransaction.disallowAddToBackStack();
-        fragmentTransaction.commit();
+        if (!fragmentManager.getFragments().contains(fragment)) {
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.fragment_container, fragment, tag);
+            fragmentTransaction.commit();
+        }
     }
 
     private void showViewEventFragment() {
-        ViewEventFragment viewEventFragment = new ViewEventFragment();
-        viewEventFragment.setEventFragmentListener(this);
+        ViewEventFragment viewEventFragment = (ViewEventFragment) fragmentManager.findFragmentByTag(Utils.VIEW_FRAGMENT);
+        if (viewEventFragment == null){
+            viewEventFragment = new ViewEventFragment();
+            viewEventFragment.setEventFragmentListener(this);
+        }
+        viewEventFragment.setEvent(event);
         addFragment(viewEventFragment, Utils.VIEW_FRAGMENT);
     }
 
     private void showAddEventFragment() {
-        AddEventFragment addEventFragment = new AddEventFragment();
-        addEventFragment.setEventFragmentListener(this);
+        AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+        if (addEventFragment == null){
+            addEventFragment = new AddEventFragment();
+            addEventFragment.setEventFragmentListener(this);
+        }
         addFragment(addEventFragment, Utils.ADD_FRAGMENT);
     }
 
 
     @Override
     public void editEventClicked(Event event) {
-        Log.d(TAG, "editEventClicked: ");
         getIntent().setAction(Utils.EDIT_INTENT_ACTION);
-        AddEventFragment addEventFragment = new AddEventFragment();
-        addEventFragment.setEventFragmentListener(this);
+        AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+        if (addEventFragment == null){
+            addEventFragment = new AddEventFragment();
+            addEventFragment.setEventFragmentListener(this);
+        }
         addEventFragment.setEvent(event);
         replaceFragment(addEventFragment, Utils.ADD_FRAGMENT);
     }
@@ -393,12 +396,18 @@ public class EventDetailActivity extends FragmentActivity
         if (requestCode == Utils.IMAGE_CAPTURE_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             if (extras != null) {
-
                 if (hasInternet(getApplicationContext())) {
 
                     final Bitmap imageBitmap = (Bitmap) extras.get("data");
                     final StorageReference eventImages = storageReference.child(Utils.EVENTS_IMAGES);
-                    StorageReference thisEventImage = eventImages.child(event.getEventID());
+                    if (event==null){
+                        Log.d(TAG, "onActivityResult: ADDING NEW EVENT IMAGE");
+                        event = new Event();
+                    }
+                    if (event.getImageID().isEmpty()){
+                        event.setImageID(System.currentTimeMillis()+"");
+                    }
+                    StorageReference thisEventImage = eventImages.child(event.getImageID());
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
 
@@ -423,19 +432,15 @@ public class EventDetailActivity extends FragmentActivity
                             }
                         }
                     });
-
                     uploadTask.addOnFailureListener(this, new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Utils.showToast(getApplicationContext(), "Image upload failed");
-
                         }
                     });
                 }else {
                     Utils.showToast(getApplicationContext(),"Sorry, we cant save images when device is offline :(");
                 }
-
-
             }
         } else {
             Utils.showToast(getApplicationContext(), "Failed to save Image");

@@ -20,18 +20,12 @@ public class Utils {
     public static final String EVENT_NODE = "EVENTS";
 
     public static final String VIEW_EVENT_INTENT_KEY = "VIEW EVENT";
-    public static final String EDIT_EVENT_INTENT_KEY = "EDIT EVENT";
     public final static String FIRE_BASE_USER_KEY = "FIREBASE_USER";
 
     public static final String ADD_INTENT_ACTION = "ADD_INTENT_ACTION";
-    public static final String EDIT_INTENT_ACTION = "ADD_INTENT_ACTION";
+    public static final String VIEW_INTENT_ACTION = "VIEW_INTENT_ACTION";
+    public static final String EDIT_INTENT_ACTION = "EDIT_INTENT_ACTION";
 
-    public static final String INTENT_FRAGMENT_CODE ="ADD_EVENT";
-    public static final String ADD_FRAGMENT_CODE ="ADD_EVENT";
-    public static final String VIEW_FRAGMENT_CODE ="VIEW_EVENT";
-
-    private static final int EDIT_EVENT_SUCCESS = 30;
-    public final static int EVENT_ADD_SUCCESS = 20;
     public static final String EVENT_DATA = "EVENT ADDED";
 
     public static final String NEW_EVENT_NOTIFICATION_ACTION = "NEW EVENT ACTION";
@@ -41,12 +35,9 @@ public class Utils {
     public static final String USER_LOCATION_LONGITUDE = "USER LOCATION LONGITUDE";
     public static final String EVENT_LOCATION_LATITUDE = "EVENT LOCATION LATTITUDE";
     public static final String EVENT_LOCATION_LONGITUDE = "EVENT LOCATION LONGITUDE";
-    public static final String EVENT_MESSAGE_TOPIC = "EVENT_MESSAGE_TOPIC";
 
     public static final int IMAGE_CAPTURE_REQUEST_CODE = 11;
     public static final String EVENTS_IMAGES = "EVENT_IMAGES";
-    public static final String SHARED_PREFS = "SHARED_PREFS";
-    public static final String SHARE_EVENT_KEY = "SHARE EVENT";
 
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");

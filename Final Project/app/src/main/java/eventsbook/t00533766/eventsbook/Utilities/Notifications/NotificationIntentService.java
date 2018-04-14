@@ -8,8 +8,6 @@ import eventsbook.t00533766.eventsbook.Activities_Fragments.EventDetailActivity;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
 
 /**
  * Created by T00533766 on 4/11/2018.
@@ -30,7 +28,6 @@ public class NotificationIntentService extends IntentService{
             String action = intent.getAction();
             if (action.equals(Utils.NEW_EVENT_NOTIFICATION_ACTION)){
                 intent.setAction(EDIT_INTENT_ACTION);
-                intent.putExtra(INTENT_FRAGMENT_CODE, VIEW_FRAGMENT_CODE);
                 intent.setClass(getApplicationContext(), EventDetailActivity.class);
                 startActivity(intent);
             }

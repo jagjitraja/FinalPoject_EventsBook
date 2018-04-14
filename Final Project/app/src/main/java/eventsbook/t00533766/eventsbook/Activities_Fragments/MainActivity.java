@@ -41,13 +41,11 @@ import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.ADD_INTENT_ACTION;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.INTENT_FRAGMENT_CODE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_FRAGMENT_CODE;
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.hasInternet;
 
 public class MainActivity extends AppCompatActivity
@@ -157,8 +155,6 @@ public class MainActivity extends AppCompatActivity
         eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
         recyclerView.setAdapter(eventListAdapter);
 
-
-
         if (!hasInternet(getApplicationContext())){
             Utils.showToast(getApplicationContext(),"Device is offline, some features may not be available :(");
         }
@@ -228,7 +224,6 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent =new Intent(getApplicationContext(),EventDetailActivity.class);
         intent.setAction(ADD_INTENT_ACTION);
-        intent.putExtra(INTENT_FRAGMENT_CODE, ADD_FRAGMENT_CODE);
         startActivityForResult(intent,ADD_EVENT_REQUEST);
     }
 
@@ -374,9 +369,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void viewEventSelected(Event event) {
         Intent intent = new Intent(getApplicationContext(),EventDetailActivity.class);
-        intent.setAction(EDIT_INTENT_ACTION);
-        intent.putExtra(INTENT_FRAGMENT_CODE, VIEW_FRAGMENT_CODE);
-        intent.putExtra(VIEW_EVENT_INTENT_KEY,event);
+        intent.setAction(VIEW_INTENT_ACTION);
+        intent.putExtra(EVENT_DATA,event);
         startActivity(intent);
     }
 

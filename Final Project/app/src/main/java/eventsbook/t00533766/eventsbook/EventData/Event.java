@@ -29,6 +29,7 @@ public class Event implements Serializable{
     private ArrayList<String> attendingUsers;
     private ArrayList<String> interestedUsers;
     private String storageURL;
+    private String imageID;
 
 
 
@@ -43,6 +44,7 @@ public class Event implements Serializable{
         this.eventPrice = 0;
         this.addressLocation = "";
         storageURL = "";
+        imageID = "";
     }
 
     public Event(String eventID, String eventName,
@@ -157,7 +159,8 @@ public class Event implements Serializable{
 
     @Override
     public String toString() {
-        return "Attend "+this.eventName+"\n"+" for only "+this.eventPrice+"\n"
+        return this.eventID+"**********************************************\n"+
+                "Attend "+this.eventName+"\n"+" for only "+this.eventPrice+"\n"
                 +"DESCRIPTION=> "+ this.description+"\n"+"Hosted By=> "+this.postedBy+"\nADDRESSS => "+
                 this.addressLocation+
                 this.interestedUsers+"\n ATTENDING => "+this.attendingUsers+"\n"+
@@ -184,4 +187,10 @@ public class Event implements Serializable{
         this.storageURL = storageURL;
     }
 
+    public String getImageID() {
+        return imageID;
+    }
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
+    }
 }
