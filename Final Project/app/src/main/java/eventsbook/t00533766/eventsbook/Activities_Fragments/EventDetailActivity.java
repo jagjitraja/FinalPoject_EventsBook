@@ -85,6 +85,7 @@ public class EventDetailActivity extends FragmentActivity
             if (task.isSuccessful()) {
                 location = task.getResult();
                 if (location != null)
+
                     try {
                         List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
@@ -141,7 +142,7 @@ public class EventDetailActivity extends FragmentActivity
 
 
         locationRequest = new LocationRequest().
-                setInterval(150000).setMaxWaitTime(1000).setFastestInterval(1000);
+                setInterval(1500000).setMaxWaitTime(100000).setFastestInterval(10000);
 
         if (locationManager != null &&
                 (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||

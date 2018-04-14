@@ -1,11 +1,10 @@
 package eventsbook.t00533766.eventsbook.EventData;
 
 
-import android.net.Uri;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -100,6 +99,15 @@ public class Event implements Serializable{
         this.postedBy = postedBy;
     }
 
+    public long getEventDateinMillis(){
+        Date date = new Date();
+        try {
+            date = Utils.dateFormat.parse(eventDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
+    }
     public String getEventDate() {
         return eventDate;
     }
@@ -165,6 +173,7 @@ public class Event implements Serializable{
                 this.addressLocation+
                 this.interestedUsers+"\n ATTENDING => "+this.attendingUsers+"\n"+
                 this.eventDate+"\n"+
+                "\n"+ getEventDateinMillis()+"\n"+
                 this.storageURL;
     }
 

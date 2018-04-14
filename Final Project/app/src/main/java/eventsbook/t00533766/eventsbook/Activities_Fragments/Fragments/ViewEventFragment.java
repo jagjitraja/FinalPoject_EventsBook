@@ -19,7 +19,6 @@ import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
-import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 public class ViewEventFragment extends Fragment {
 

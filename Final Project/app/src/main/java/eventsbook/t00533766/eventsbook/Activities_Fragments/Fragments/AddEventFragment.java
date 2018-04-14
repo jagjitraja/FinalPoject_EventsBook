@@ -175,7 +175,7 @@ public class AddEventFragment extends Fragment {
         event.setAddressLocation(eventAddress);
         event.setDescription(eventDescription);
         event.setEventDate(eventDate);
-        
+
         Log.d(TAG, user + "\n\n\npostEvent: ******************************************" + event);
         if (Objects.equals(getActivity().getIntent().getAction(), Utils.ADD_INTENT_ACTION)) {
             eventFragmentListener.PostEvent(event);
@@ -224,6 +224,5 @@ public class AddEventFragment extends Fragment {
     };
 
 }
-
 
 //TODO: ADDRESS SEARCH WHEN ENTERING ADDRESS

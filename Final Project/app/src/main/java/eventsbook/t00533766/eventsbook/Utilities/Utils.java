@@ -37,6 +37,7 @@ public class Utils {
     public static final String EVENT_LOCATION_LONGITUDE = "EVENT LOCATION LONGITUDE";
 
     public static final int IMAGE_CAPTURE_REQUEST_CODE = 11;
+    public static final int CALENDER_REQUEST_CODE = 15;
     public static final String EVENTS_IMAGES = "EVENT_IMAGES";
 
 
