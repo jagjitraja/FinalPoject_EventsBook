@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import java.util.Date;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 
@@ -64,6 +66,7 @@ public class AddEventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        user = LoggedInUserSingleton.getLoggedInUser();
     }
 
     @Override
@@ -99,6 +102,8 @@ public class AddEventFragment extends Fragment {
 
     private void intializeLayout() {
 
+        Log.d(TAG, "-----------------------------------------: "+(event==null));
+
         if (event != null) {
             eventNameEditText.setText(event.getEventName());
             eventDescriptionEditText.setText(event.getDescription());
@@ -112,12 +117,6 @@ public class AddEventFragment extends Fragment {
                 postEvent();
             }
         });
-    }
-
-
-    public void setUser(User user) {
-        this.user = user;
-        Log.d(TAG, "setUser: ===============" + this.user + "=----------------------" + user);
     }
 
     public void setEvent(Event event) {
@@ -144,7 +143,6 @@ public class AddEventFragment extends Fragment {
     }
 
 
-
     public interface AddEventFragmentListener {
         void PostEvent(Event event);
         void UpdateEvent(Event event);
@@ -167,20 +165,18 @@ public class AddEventFragment extends Fragment {
             return;
         }
 
+        event.setEventName(eventName);
+        event.setEventPrice(Double.parseDouble(eventPrice));
+        event.setAddressLocation(eventAddress);
+        event.setDescription(eventDescription);
+        event.setEventDate(eventDate);
 
-        Event newEvent = new Event("", eventName, eventDescription, Utils.dateFormat.format(new Date())
-                , user, Double.parseDouble(eventPrice), eventAddress);
 
-        newEvent.setEventDate(eventDate);
-
-        if (event != null)
-            newEvent.setEventID(event.getEventID());
-
-        Log.d(TAG, user + "\n\n\npostEvent: ******************************************" + newEvent);
+        Log.d(TAG, user + "\n\n\npostEvent: ******************************************" + event);
         if (EVENT_TASK == ADDING) {
-            eventFragmentListener.PostEvent(newEvent);
+            eventFragmentListener.PostEvent(event);
         } else if (EVENT_TASK == EDITING) {
-            eventFragmentListener.UpdateEvent(newEvent);
+            eventFragmentListener.UpdateEvent(event);
         }
 
     }

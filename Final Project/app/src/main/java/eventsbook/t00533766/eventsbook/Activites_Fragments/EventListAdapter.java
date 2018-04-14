@@ -1,19 +1,28 @@
 package eventsbook.t00533766.eventsbook.Activites_Fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
+import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 /**
  * Created by T00533766 on 3/28/2018.
@@ -27,13 +36,15 @@ public class EventListAdapter extends
     private Context context;
     private OnEventItemClick onEventItemClickListener;
     private User loggedInUser;
+    private FirebaseStorage firebaseStorage;
 
     public EventListAdapter(ArrayList<Event> eventArrayList,
-                            Context context, OnEventItemClick onEventItemClick, User loggedInUser) {
+                            Context context, OnEventItemClick onEventItemClick) {
         this.eventArrayList = eventArrayList;
         this.context= context;
         this.onEventItemClickListener = onEventItemClick;
-        this.loggedInUser = loggedInUser;
+        this.loggedInUser = LoggedInUserSingleton.getLoggedInUser();
+        firebaseStorage = FirebaseStorage.getInstance(Utils.EVENT_IMAGES_STORAGE);
     }
 
     @Override
@@ -56,9 +67,9 @@ public class EventListAdapter extends
     }
 
     public void addEvent(Event event){
-        Log.d(TAG, "addEvent: "+eventArrayList);
         this.eventArrayList.add(event);
         notifyDataSetChanged();
+        Log.d(TAG, "addEvent: "+eventArrayList);
     }
 
     public void setEventArrayList(ArrayList<Event> eventArrayList){
@@ -80,6 +91,7 @@ public class EventListAdapter extends
         TextView eventDescriptionTextView;
         Button interestedButton;
         Button registerButton;
+        ImageView eventImage;
 
         public EventItemHolder(final View itemView) {
             super(itemView);
@@ -90,6 +102,7 @@ public class EventListAdapter extends
             registerButton = itemView.findViewById(R.id.register_button);
             eventPostersNameTextView = itemView.findViewById(R.id.posters_name);
             eventCityTextView = itemView.findViewById(R.id.eventCity);
+            eventImage = itemView.findViewById(R.id.event_image);
 
         }
 
@@ -102,25 +115,19 @@ public class EventListAdapter extends
             eventCityTextView.setText(event.getAddressLocation());
 
             boolean registering;
-            boolean interested;
             if (event.getAttendingUsersCount()>0&&
                     event.getAttendingUsers().contains(loggedInUser.getUserID())){
                 registerButton.setText(R.string.remove_event);
-                registering = false;
             }else {
                 registerButton.setText(R.string.register_event);
-                registering = true;
             }
             if (event.getInterestedUsersCount()>0&&
                     event.getInterestedUsers().contains(loggedInUser.getUserID())){
                 interestedButton.setText(R.string.unsave_event);
-                interested = false;
             }else {
                 interestedButton.setText(R.string.interested_event);
-                interested = true;
             }
 
-            final boolean finalInterested = interested;
             interestedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -128,13 +135,21 @@ public class EventListAdapter extends
                             eventInterestedClicked(event);
                 }
             });
-            final boolean finalRegistering = registering;
             registerButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onEventItemClickListener.eventRegisterClicked(event);
                 }
             });
+
+            //LOAD IMAGES IN RECYCLER
+            Glide.with(context)
+                    .load(event.getStorageURL())
+                    .into(eventImage);
+
+
         }
     }
 }
+
+//TODO BUG WHEN EDITING EVENT RIGHT AFTER ADDING  WITHOUT RELAUNCHING APP

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="300dp"
     android:background="@color/white"
     android:layout_margin="5dp">
 
@@ -16,8 +16,8 @@
         android:layout_marginTop="8dp"
         android:text="Posters Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textStyle="bold"
         android:textColor="@color/black_overlay"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,11 +26,11 @@
         style="@style/label_styles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black_overlay"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Event Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black_overlay"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posters_name" />
@@ -39,53 +39,52 @@
         android:id="@+id/eventCity"
         style="@style/label_styles"
         android:layout_width="100dp"
-        android:lines="2"
-        android:textColor="@color/black_overlay"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:gravity="right"
+        android:lines="2"
         android:text="Event City"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/black_overlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eventdate" />
+
     <TextView
         android:id="@+id/eventdate"
         style="@style/label_styles"
-        android:textColor="@color/black_overlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:gravity="right"
         android:text="Event Date"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/black_overlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/eventdesctiption"
-        android:layout_width="match_parent"
-        android:textColor="@color/black_overlay"
-        android:layout_height="wrap_content"
         style="@style/label_styles"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        android:maxLines="5"
         android:text="-------------------------EVENT DESCRIPTION------------"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:maxLines="5"
-        app:layout_constraintTop_toBottomOf="@+id/eventname" />
+        android:textColor="@color/black_overlay"
+        app:layout_constraintTop_toBottomOf="@+id/event_image"
+        tools:layout_editor_absoluteX="12dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/eventdesctiption">
 
 
         <Button
@@ -112,6 +111,17 @@
             android:text="@string/register"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/event_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxHeight="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventname"
+        android:src="@mipmap/ic_launcher_round" />
 
 
 </android.support.constraint.ConstraintLayout>

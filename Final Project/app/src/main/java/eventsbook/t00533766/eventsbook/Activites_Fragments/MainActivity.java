@@ -29,11 +29,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
 import eventsbook.t00533766.eventsbook.Utilities.Notifications.NotificationUtils;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity
     //TODO: SEARCH
     //TODO: ADD GOOGLE CALENDER
     // TODO: EVENT REPLIES
-    public final String EVENTS_NODE = "EVENTS";
     public final static int ADD_EVENT_REQUEST = 500;
 
     private User loggedInUser;
@@ -80,10 +81,11 @@ public class MainActivity extends AppCompatActivity
 
             Log.d(TAG, "onChildAdded: "+dataSnapshot.getKey()+"\n"+dataSnapshot.getValue());
             Event addedEvent = dataSnapshot.getValue(Event.class);
-            addedEvent.setEventID(dataSnapshot.getKey());
+            if (addedEvent != null) {
+                addedEvent.setEventID(dataSnapshot.getKey());
+                eventListAdapter.addEvent(addedEvent);
+            }
             Log.d(TAG, "\n\n\n\nonChildAdded: "+addedEvent);
-            //eventArrayList.add(addedEvent);
-            eventListAdapter.addEvent(addedEvent);
 
             //NotificationUtils.createNotification(getApplicationContext(),addedEvent,loggedInUser);
 
@@ -104,7 +106,8 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-            Log.d(TAG, "onChildRemoved: ");
+            Log.d(TAG, "onChildRemoved: "+dataSnapshot.getKey()+"\n"+dataSnapshot.getValue());
+
         }
 
         @Override
@@ -146,16 +149,10 @@ public class MainActivity extends AppCompatActivity
                 updateEvent((Event) intent.getSerializableExtra(Utils.EVENT_DATA));
         }
 
-        String name = firebaseAuth.getCurrentUser().getDisplayName();
-        if (name==null){
-            name = "Not Available";
-        }
-        loggedInUser = new User(firebaseAuth.getUid(), name,firebaseAuth.getCurrentUser().getEmail());
-
         recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this,loggedInUser);
+        eventListAdapter = new EventListAdapter(eventArrayList,getApplicationContext(),this);
         recyclerView.setAdapter(eventListAdapter);
     }
 
@@ -190,9 +187,7 @@ public class MainActivity extends AppCompatActivity
         };
 
         drawer.addDrawerListener(toggle);
-        
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -201,8 +196,9 @@ public class MainActivity extends AppCompatActivity
     private void initializeFireBase() {
         if (firebaseAuth.getCurrentUser()!=null) {
             firebaseDatabase = FireBaseUtils.getFirebaseDatabase();
-            databaseReference = firebaseDatabase.getReference().child(EVENTS_NODE);
+            databaseReference = firebaseDatabase.getReference().child(Utils.EVENT_NODE);
             setChildEventListener();
+            loggedInUser = LoggedInUserSingleton.getLoggedInUser();
         }
     }
 
@@ -226,7 +222,6 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent =new Intent(getApplicationContext(),EventDetailActivity.class);
         intent.setAction(ADD_INTENT_ACTION);
-        intent.putExtra(FIRE_BASE_USER_KEY,loggedInUser);
         intent.putExtra(INTENT_FRAGMENT_CODE, ADD_FRAGMENT_CODE);
         startActivityForResult(intent,ADD_EVENT_REQUEST);
     }
@@ -371,20 +366,17 @@ public class MainActivity extends AppCompatActivity
         intent.setAction(EDIT_INTENT_ACTION);
         intent.putExtra(INTENT_FRAGMENT_CODE, VIEW_FRAGMENT_CODE);
         intent.putExtra(VIEW_EVENT_INTENT_KEY,event);
-        intent.putExtra(FIRE_BASE_USER_KEY,loggedInUser);
         startActivity(intent);
     }
 
     public void updateEvent(Event event){
         Log.d(TAG, "updateEvent: 7777777777777777777"+event+"   \n "+event.getEventID());
-        databaseReference.child(event.getEventID()).setValue(event);
-        Utils.showToast(getApplicationContext(),"Updating Event, Refreshing Events List ");
-
-        toolbar.setTitle(R.string.app_name);
+        if (!Objects.equals(event.getEventID(), "")) {
+            databaseReference.child(event.getEventID()).setValue(event);
+            Utils.showToast(getApplicationContext(), "Updating Event, Refreshing Events List ");
+            toolbar.setTitle(R.string.app_name);
+        }
     }
 
 
 }
-
-
-//TODO: SINGLETON FOR LOGGED IN USER

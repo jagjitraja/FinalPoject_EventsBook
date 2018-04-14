@@ -1,6 +1,7 @@
 package eventsbook.t00533766.eventsbook.EventData;
 
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class Event implements Serializable{
     private int attendingUsersCount;
     private ArrayList<String> attendingUsers;
     private ArrayList<String> interestedUsers;
+    private String storageURL;
 
 
 
@@ -40,6 +42,7 @@ public class Event implements Serializable{
         this.interestedUsers = new ArrayList<>();
         this.eventPrice = 0;
         this.addressLocation = "";
+        storageURL = "";
     }
 
     public Event(String eventID, String eventName,
@@ -158,7 +161,8 @@ public class Event implements Serializable{
                 +"DESCRIPTION=> "+ this.description+"\n"+"POSTER=> "+this.postedBy+"\nADDRESSS => "+
                 this.addressLocation+
                 this.interestedUsers+"\n ATTENDING => "+this.attendingUsers+"\n"+
-                this.eventDate;
+                this.eventDate+"\n"+
+                this.storageURL;
     }
 
     public void removeAttendingUser(String userID) {
@@ -172,4 +176,12 @@ public class Event implements Serializable{
     public void addInterestedUser(String userID) {
         this.interestedUsers.add(userID);
     }
+
+    public String getStorageURL() {
+        return storageURL;
+    }
+    public void setStorageURL(String storageURL) {
+        this.storageURL = storageURL;
+    }
+
 }

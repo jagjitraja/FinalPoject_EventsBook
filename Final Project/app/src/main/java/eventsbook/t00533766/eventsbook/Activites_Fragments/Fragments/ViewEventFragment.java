@@ -16,6 +16,7 @@ import android.widget.TextView;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.User;
 import eventsbook.t00533766.eventsbook.R;
+import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 public class ViewEventFragment extends Fragment {
@@ -44,10 +45,6 @@ public class ViewEventFragment extends Fragment {
     public void setEventFragmentListener(ViewEventFragmentListener viewEventFragmentListener){
         this.eventFragmentListener = viewEventFragmentListener;
     }
-    public void setEventAndLoggedInUser(Event event, User user){
-        this.event = event;
-        this.loggedInUser = user;
-    }
 
 
     @Override
@@ -55,6 +52,7 @@ public class ViewEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.d(TAG, "onCreateView: ");
+        loggedInUser = LoggedInUserSingleton.getLoggedInUser();
         return inflater.inflate(R.layout.fragment_view_event,container,false);
     }
 
