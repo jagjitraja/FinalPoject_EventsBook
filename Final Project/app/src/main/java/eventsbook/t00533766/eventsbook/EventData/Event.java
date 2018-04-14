@@ -157,8 +157,8 @@ public class Event implements Serializable{
 
     @Override
     public String toString() {
-        return "ID=> "+this.eventID+"\n"+ "NAME=> "+this.eventName+"\n"+"PRICE=> "+this.eventPrice+"\n"
-                +"DESCRIPTION=> "+ this.description+"\n"+"POSTER=> "+this.postedBy+"\nADDRESSS => "+
+        return "Attend "+this.eventName+"\n"+" for only "+this.eventPrice+"\n"
+                +"DESCRIPTION=> "+ this.description+"\n"+"Hosted By=> "+this.postedBy+"\nADDRESSS => "+
                 this.addressLocation+
                 this.interestedUsers+"\n ATTENDING => "+this.attendingUsers+"\n"+
                 this.eventDate+"\n"+

@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity
         OnEventItemClick {
 
 //TODO: NFC VIEW EVENT
-    // TODO: SHArE BROADCAST
     //TODO: SEARCH
     //TODO: ADD GOOGLE CALENDER
     // TODO: EVENT REPLIES
