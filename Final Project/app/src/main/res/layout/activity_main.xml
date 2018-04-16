@@ -15,6 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
+        android:background="?attr/selectableItemBackground"
+        android:backgroundTint="@color/black_overlay"
+        android:backgroundTintMode="src_over"
         android:elevation="@dimen/cardview_default_elevation">
 
         <include layout="@layout/content_main"
@@ -27,7 +30,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:layout_marginTop="?attr/actionBarSize"
-            android:background="@color/drawer_back"
             android:fitsSystemWindows="true"
             app:itemTextColor="@color/colorPrimaryDark"
             app:headerLayout="@layout/nav_header_main"

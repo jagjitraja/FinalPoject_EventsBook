@@ -94,7 +94,6 @@ public class ViewEventFragment extends Fragment {
         eventDescriptionTextView.setText(event.getDescription());
         eventDateTextView.setText(event.getEventDate());
         eventCostTextView.setText(event.getEventPrice()+"");
-        Log.d(TAG, "intializeLayoutItems: "+event.getAddressLocation());
         eventLocationTextView.setText(event.getAddressLocation());
         attendingUsersTextView.setText(event.getAttendingUsersCount()+"");
         interestedUsersTextView.setText(event.getInterestedUsersCount()+"");
@@ -130,7 +129,6 @@ public class ViewEventFragment extends Fragment {
     }
 
     public interface ViewEventFragmentListener {
-        // TODO: Update argument type and name
         void editEventClicked(Event event);
         void showInMapClicked(Event event);
         void shareEventClicked(Event event);

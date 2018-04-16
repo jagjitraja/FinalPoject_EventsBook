@@ -377,6 +377,7 @@ public class MainActivity extends AppCompatActivity
             eventListAdapter.setEventArrayList(mySavedEvents);
         } else if (id == R.id.settings) {
             toolbar.setTitle(R.string.settings);
+            startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
             Log.d(TAG, "onNavigationItemSelected: ");
         } else if (id == R.id.sign_out) {
             firebaseAuth.signOut();
