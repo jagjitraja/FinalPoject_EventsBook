@@ -5,9 +5,11 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -88,15 +91,13 @@ public class MainActivity extends AppCompatActivity
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 
-           // Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
+            // Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
             Event addedEvent = dataSnapshot.getValue(Event.class);
             if (addedEvent != null) {
                 addedEvent.setEventID(dataSnapshot.getKey());
                 eventListAdapter.addEvent(addedEvent);
             }
-
             //NotificationUtils.createNotification(getApplicationContext(),addedEvent,loggedInUser);
-
         }
 
         @Override
@@ -123,12 +124,22 @@ public class MainActivity extends AppCompatActivity
     public final String TAG = MainActivity.class.getSimpleName();
 
     private AdView adView;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        int addCount = 0;
+        SharedPreferences sharedPreferences = getSharedPreferences("AD_COUNTER", MODE_PRIVATE);
+        if (sharedPreferences.contains("ADD_COUNT")) {
+            addCount = sharedPreferences.getInt("ADD_COUNT", 0);
+            addCount++;
+            sharedPreferences.edit().putInt("ADD_COUNT", addCount).apply();
+        } else {
+            sharedPreferences.edit().putInt("ADD_COUNT", 0).apply();
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
         eventArrayList = new ArrayList<>();
@@ -162,46 +173,99 @@ public class MainActivity extends AppCompatActivity
         requestCalenderPermission();
 
 
+        Log.d(TAG, "onCreate: 0000000000000000000000000000000000                  " + addCount);
         adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("E3EE1D13EDAEB3017D14B72B162321EC")
-                .build();
-        adView.loadAd(adRequest);
-        adView.setAdListener(new AdListener(){
+        if (addCount % 5 == 0) {
+            AdRequest adRequest = new AdRequest.Builder()
+                    //TEST DEVICE
+                    .addTestDevice("E3EE1D13EDAEB3017D14B72B162321EC")
+                    .build();
+            adView.loadAd(adRequest);
+            //TODO
+            adView.setAdListener(new AdListener() {
 
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                Log.d(TAG, "onAdLoaded: ");
-            }
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    Log.d(TAG, "onAdLoaded: ");
+                }
 
-            @Override
-            public void onAdFailedToLoad(int i) {
-                super.onAdFailedToLoad(i);
-                Log.d(TAG, "onAdFailedToLoad: ");
-            }
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                    Log.d(TAG, "onAdFailedToLoad: ");
+                }
 
-            @Override
-            public void onAdOpened() {
-                super.onAdOpened();
-                Log.d(TAG, "onAdOpened: ");
-            }
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                    Log.d(TAG, "onAdOpened: ");
+                }
 
-            @Override
-            public void onAdLeftApplication() {
-                super.onAdLeftApplication();
-                Log.d(TAG, "onAdLeftApplication: ");
-            }
+                @Override
+                public void onAdLeftApplication() {
+                    super.onAdLeftApplication();
+                    Log.d(TAG, "onAdLeftApplication: ");
+                }
 
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                Log.d(TAG, "onAdClosed: ");
-            }
-        });
+                @Override
+                public void onAdClosed() {
+                    super.onAdClosed();
+                    Log.d(TAG, "onAdClosed: ");
+                }
+            });
+            //AUTO HIDE
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    adView.setVisibility(View.INVISIBLE);
+                }
+            }, 150000);
+        }
+
+        if (addCount%9==0) {
+            InterstitialAd ad = new InterstitialAd(getApplicationContext());
+            ad.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            ad.loadAd(new AdRequest.Builder().addTestDevice("E3EE1D13EDAEB3017D14B72B162321EC").build());
+            ad.setAdListener(new AdListener() {
+
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    Log.d(TAG, "onAdLoaded: ");
+                }
+
+                @Override
+                public void onAdFailedToLoad(int i) {
+                    super.onAdFailedToLoad(i);
+                    Log.d(TAG, "onAdFailedToLoad: ");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                    Log.d(TAG, "onAdOpened: ");
+                }
+
+                @Override
+                public void onAdLeftApplication() {
+                    super.onAdLeftApplication();
+                    Log.d(TAG, "onAdLeftApplication: ");
+                }
+
+                @Override
+                public void onAdClosed() {
+                    super.onAdClosed();
+                    Log.d(TAG, "onAdClosed: ");
+                }
+            });
+        }
+
+
     }
 
-    
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -218,7 +282,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
 
 
     private void initializeUIElements() {
@@ -297,14 +360,14 @@ public class MainActivity extends AppCompatActivity
 
     private void insertEventInCalender(Event event) {
 
-        Log.d(TAG, "insertEventInCalender: "+event);
+        Log.d(TAG, "insertEventInCalender: " + event);
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_CALENDAR)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_CALENDAR},
                     Utils.CALENDER_REQUEST_CODE);
-        }else{
+        } else {
             Intent intent = new Intent(Intent.ACTION_INSERT)
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, event.getEventDateinMillis())
@@ -321,9 +384,9 @@ public class MainActivity extends AppCompatActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 
-        if (requestCode==Utils.CALENDER_REQUEST_CODE){
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                Utils.showToast(getApplicationContext(),"Calender Sync disabled :(");
+        if (requestCode == Utils.CALENDER_REQUEST_CODE) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Utils.showToast(getApplicationContext(), "Calender Sync disabled :(");
             }
         }
 
@@ -428,7 +491,7 @@ public class MainActivity extends AppCompatActivity
             eventListAdapter.setEventArrayList(mySavedEvents);
         } else if (id == R.id.settings) {
             toolbar.setTitle(R.string.settings);
-            startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
             Log.d(TAG, "onNavigationItemSelected: ");
         } else if (id == R.id.sign_out) {
             firebaseAuth.signOut();
