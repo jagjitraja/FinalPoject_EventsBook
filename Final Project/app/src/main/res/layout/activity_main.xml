@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="eventsbook.t00533766.eventsbook.Activities_Fragments.MainActivity">
+    tools:context="eventsbook.t00533766.eventsbook.Activities_Fragments.Activities.MainActivity">
     
     
     <android.support.v4.widget.DrawerLayout
@@ -51,4 +51,5 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     
     </android.support.design.widget.AppBarLayout>
+
 </android.support.design.widget.CoordinatorLayout>

@@ -56,8 +56,6 @@ public class AddEventFragment extends Fragment {
     private final int ADDING = 1;
     private final int EDITING = 2;
 
-    private Date selectedDate = new Date(System.currentTimeMillis());
-
     private int EVENT_TASK = ADDING;
 
     public AddEventFragment() {
@@ -186,7 +184,6 @@ public class AddEventFragment extends Fragment {
     }
 
     public void setDate(Date date) {
-        this.selectedDate = date;
     }
 
     private View.OnClickListener dateOnClickListener = new View.OnClickListener() {

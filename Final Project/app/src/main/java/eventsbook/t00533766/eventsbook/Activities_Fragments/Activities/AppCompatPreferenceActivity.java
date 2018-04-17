@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook.Activities_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

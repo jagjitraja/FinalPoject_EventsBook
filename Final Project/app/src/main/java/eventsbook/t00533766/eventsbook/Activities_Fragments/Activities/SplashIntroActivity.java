@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook.Activities_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
@@ -37,6 +38,8 @@ public class SplashIntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_intro);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        MobileAds.initialize(this, getString(R.string.ad_app_id));
+
 
         //temp
        // goToMainActivity();

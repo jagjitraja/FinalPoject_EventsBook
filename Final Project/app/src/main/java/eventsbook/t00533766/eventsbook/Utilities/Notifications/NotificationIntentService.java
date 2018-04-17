@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import eventsbook.t00533766.eventsbook.Activities_Fragments.EventDetailActivity;
+import eventsbook.t00533766.eventsbook.Activities_Fragments.Activities.EventDetailActivity;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;

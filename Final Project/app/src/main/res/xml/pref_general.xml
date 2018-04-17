@@ -21,11 +21,5 @@
         android:singleLine="true"
         android:title="Profile Email" />
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="cache_switch"
-        android:summary="Save data locally on device"
-        android:title="Local Cache" />
-    
 
 </PreferenceScreen>

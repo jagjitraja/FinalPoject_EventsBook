@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/splash_view"
-    tools:context="eventsbook.t00533766.eventsbook.Activities_Fragments.SplashIntroActivity">
+    tools:context="eventsbook.t00533766.eventsbook.Activities_Fragments.Activities.SplashIntroActivity">
 
     <TextView
         android:id="@+id/fullscreen_content"

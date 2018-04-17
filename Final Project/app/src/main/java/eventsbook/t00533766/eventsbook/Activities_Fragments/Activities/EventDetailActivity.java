@@ -1,8 +1,7 @@
-package eventsbook.t00533766.eventsbook.Activities_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,8 +9,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
@@ -58,7 +55,6 @@ import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LAT
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LONGITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LATITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONGITUDE;
-import static eventsbook.t00533766.eventsbook.Utilities.Utils.VIEW_EVENT_INTENT_KEY;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.hasInternet;
 
 public class EventDetailActivity extends FragmentActivity

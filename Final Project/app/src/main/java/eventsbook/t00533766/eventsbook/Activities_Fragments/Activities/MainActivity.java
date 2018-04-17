@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook.Activities_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,6 +28,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +43,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import eventsbook.t00533766.eventsbook.Activities_Fragments.EventListAdapter;
+import eventsbook.t00533766.eventsbook.Activities_Fragments.OnEventItemClick;
 import eventsbook.t00533766.eventsbook.EventData.Event;
 import eventsbook.t00533766.eventsbook.EventData.FireBaseUtils;
 import eventsbook.t00533766.eventsbook.EventData.User;
@@ -82,14 +88,12 @@ public class MainActivity extends AppCompatActivity
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
 
-            Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
+           // Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
             Event addedEvent = dataSnapshot.getValue(Event.class);
             if (addedEvent != null) {
                 addedEvent.setEventID(dataSnapshot.getKey());
                 eventListAdapter.addEvent(addedEvent);
             }
-
-            Log.d(TAG, "\n\n\n\nonChildAdded: " + addedEvent);
 
             //NotificationUtils.createNotification(getApplicationContext(),addedEvent,loggedInUser);
 
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity
     };
     public final String TAG = MainActivity.class.getSimpleName();
 
+    private AdView adView;
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +160,52 @@ public class MainActivity extends AppCompatActivity
         }
 
         requestCalenderPermission();
+
+
+        adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("E3EE1D13EDAEB3017D14B72B162321EC")
+                .build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener(){
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.d(TAG, "onAdLoaded: ");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                Log.d(TAG, "onAdFailedToLoad: ");
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+                Log.d(TAG, "onAdOpened: ");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+                Log.d(TAG, "onAdLeftApplication: ");
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Log.d(TAG, "onAdClosed: ");
+            }
+        });
+    }
+
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        toolbar.setTitle(R.string.app_name);
     }
 
     private void requestCalenderPermission() {

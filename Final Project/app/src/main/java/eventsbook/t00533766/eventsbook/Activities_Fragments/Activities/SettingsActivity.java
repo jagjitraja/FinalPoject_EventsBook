@@ -1,29 +1,19 @@
-package eventsbook.t00533766.eventsbook.Activities_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.SwitchPreference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -60,24 +49,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(final Preference preference, Object o) {
 
-            if (preference instanceof SwitchPreference) {
-
-                if (preference.getKey().equals("cache_switch")) {
-
-                    if (((SwitchPreference) preference).isChecked()) {
-                        //SYNC DIABLED
-                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                        firebaseDatabase.setPersistenceEnabled(false);
-                        Log.d(TAG, "onPreferenceChange: CHECKED");
-                    } else {
-
-                        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-                        firebaseDatabase.setPersistenceEnabled(true);
-                        Log.d(TAG, "onPreferenceChange: UNCHECKED");
-                    }
-
-                }
-            } else if (preference instanceof EditTextPreference) {
+            if (preference instanceof EditTextPreference) {
 
                 if (preference.getKey().equals("user_display_name")) {
 
@@ -111,7 +83,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                         firebaseUser.updateEmail(newEmail);
                         firebaseUser.sendEmailVerification();
-                        Utils.showToast(preference.getContext(),"Email Updated, A verification email. has been sent");
+                        Utils.showToast(preference.getContext(),"Email Updated, A verification email has been sent");
                     }else {
                         Utils.showToast(preference.getContext(),"Invalid Email Entered");
                     }
@@ -207,7 +179,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference("user_display_name"));
             bindPreferenceSummaryToValue(findPreference("user_email_address"));
-            bindPreferenceSummaryToValue(findPreference("cache_switch"));
         }
 
         @Override

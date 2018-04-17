@@ -38,10 +38,10 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Activities_Fragments.MapsActivity"
+            android:name=".Activities_Fragments.Activities.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".Activities_Fragments.SplashIntroActivity"
+            android:name=".Activities_Fragments.Activities.SplashIntroActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_splash_intro"
             android:theme="@style/Theme.Design.NoActionBar">
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities_Fragments.MainActivity"
+            android:name=".Activities_Fragments.Activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -63,7 +63,7 @@
             <!-- android:resource="@xml/searchable" /> -->
         </activity>
         <activity
-            android:name=".Activities_Fragments.EventDetailActivity"
+            android:name=".Activities_Fragments.Activities.EventDetailActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -74,8 +74,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities_Fragments.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:name=".Activities_Fragments.Activities.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
     </application>
 
 </manifest>

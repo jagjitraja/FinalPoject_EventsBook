@@ -1,4 +1,4 @@
-package eventsbook.t00533766.eventsbook.Activities_Fragments;
+package eventsbook.t00533766.eventsbook.Activities_Fragments.Activities;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
