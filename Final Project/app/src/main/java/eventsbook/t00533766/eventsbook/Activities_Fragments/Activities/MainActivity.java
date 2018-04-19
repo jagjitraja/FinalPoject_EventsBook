@@ -48,6 +48,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -97,7 +98,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-
             // Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
             Event addedEvent = dataSnapshot.getValue(Event.class);
             if (addedEvent != null) {
@@ -126,6 +126,38 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onCancelled(DatabaseError databaseError) {
             Log.d(TAG, "onCancelled: ");
+        }
+    };
+
+    private ChildEventListener filterListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+             Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
+            Event addedEvent = dataSnapshot.getValue(Event.class);
+             if (addedEvent != null) {
+                addedEvent.setEventID(dataSnapshot.getKey());
+                eventListAdapter.addEvent(addedEvent);
+            }
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
         }
     };
     public final String TAG = MainActivity.class.getSimpleName();
@@ -268,8 +300,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-
-
     }
 
 
@@ -464,8 +494,16 @@ public class MainActivity extends AppCompatActivity
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(i, i1, i2);
                     Date date = calendar.getTime();
-                    Query eventsAfterDate = databaseReference.orderByChild("eventDate");
-                    eventsAfterDate.addChildEventListener(childEventListener);
+                    Query eventsAfterDate = null;
+                    Log.d(TAG, "-*-*-*-*-*-*-*-*-*-*onDateSet: "+Utils.dateFormat.format(date));
+                    Log.d(TAG, "onDateSet: "+databaseReference.orderByChild("eventDate")
+                            .equalTo(String.valueOf(Utils.dateFormat.format(date))));
+
+                    eventsAfterDate = databaseReference.orderByChild("eventDate")
+                            .equalTo(String.valueOf(Utils.dateFormat.format(date)));
+                    eventsAfterDate.addChildEventListener(filterListener);
+                    eventArrayList.clear();
+                    eventListAdapter.setEventArrayList(eventArrayList);
                 }
             });
 
