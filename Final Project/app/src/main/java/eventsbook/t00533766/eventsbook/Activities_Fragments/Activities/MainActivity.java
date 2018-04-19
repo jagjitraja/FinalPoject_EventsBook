@@ -72,24 +72,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnEventItemClick {
 
-    //TODO: NFC VIEW EVENT
-    //TODO: SEARCH
-    //TODO: ADD GOOGLE CALENDER
     // TODO: EVENT REPLIES
     public final static int ADD_EVENT_REQUEST = 500;
 
     private User loggedInUser;
 
-    private RecyclerView recyclerView;
     private EventListAdapter eventListAdapter;
 
     private ArrayList<Event> eventArrayList;
     private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
     private DrawerLayout drawer;
-    private FloatingActionButton fab;
     private Toolbar toolbar;
 
 
@@ -199,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 updateEvent((Event) intent.getSerializableExtra(Utils.EVENT_DATA));
         }
 
-        recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         eventListAdapter = new EventListAdapter(eventArrayList, getApplicationContext(), this);
@@ -325,7 +319,7 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -357,7 +351,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeFireBase() {
         if (firebaseAuth.getCurrentUser() != null) {
-            firebaseDatabase = FireBaseUtils.getFirebaseDatabase();
+            FirebaseDatabase firebaseDatabase = FireBaseUtils.getFirebaseDatabase();
             databaseReference = firebaseDatabase.getReference().child(Utils.EVENT_NODE);
             setChildEventListener();
             loggedInUser = LoggedInUserSingleton.getLoggedInUser();
@@ -486,7 +480,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.filter_events) {
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-            datePickerDialog.setTitle("View Events occuring on or after selected Date");
+            datePickerDialog.setTitle(getString(R.string.filter_date_prompt));
             datePickerDialog.show();
             datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -573,6 +567,7 @@ public class MainActivity extends AppCompatActivity
             event.removeInterestedUser(loggedInUser.getUserID());
         }
         updateEvent(event);
+        insertEventInCalender(event);
     }
 
     @Override
@@ -585,6 +580,7 @@ public class MainActivity extends AppCompatActivity
             event.removeAttendingUser(loggedInUser.getUserID());
         }
         updateEvent(event);
+        insertEventInCalender(event);
     }
 
     @Override

@@ -218,4 +218,5 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="ad_app_id">ca-app-pub-9025045306689476~9423715333</string>
     <string name="filter">Filter by Date</string>
+    <string name="filter_date_prompt">View events occurring on selected Date</string>
 </resources>
