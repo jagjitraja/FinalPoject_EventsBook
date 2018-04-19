@@ -11,9 +11,13 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -35,11 +39,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import eventsbook.t00533766.eventsbook.Activities_Fragments.Fragments.AddEventFragment;
 import eventsbook.t00533766.eventsbook.Activities_Fragments.Fragments.ViewEventFragment;
@@ -64,6 +70,7 @@ public class EventDetailActivity extends FragmentActivity
         NfcAdapter.CreateNdefMessageCallback {
 
     private static final String EVENT_SAVE_INSTANCE_KEY = "EVENT_SAVE_INSTANCE_KEY";
+    private static final int NDEF_SENT = 0;
 
     private final String TAG = EventDetailActivity.class.getSimpleName();
     private Event event;
@@ -74,6 +81,7 @@ public class EventDetailActivity extends FragmentActivity
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
 
+    private Gson gson = new Gson();
 
     private OnCompleteListener<Location> locationCompleteListener = new OnCompleteListener<Location>() {
         @Override
@@ -115,27 +123,23 @@ public class EventDetailActivity extends FragmentActivity
     private Location location;
     private LocationManager locationManager;
     private LocationRequest locationRequest;
-    Geocoder geocoder;
+    private Geocoder geocoder;
+    private NfcAdapter nfcAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+
         fragmentManager = getSupportFragmentManager();
         geocoder = new Geocoder(getApplicationContext(), Locale.CANADA);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
-        if (savedInstanceState != null) {
-            this.event = (Event) savedInstanceState.getSerializable(EVENT_SAVE_INSTANCE_KEY);
-
-            AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
-            if (addEventFragment != null) {
-                addEventFragment.setEvent(event);
-            }
-        }
-
+        user = LoggedInUserSingleton.getLoggedInUser();
+        firebaseStorage = FirebaseStorage.getInstance(Utils.EVENT_IMAGES_STORAGE);
+        storageReference = firebaseStorage.getReference();
 
         locationRequest = new LocationRequest().
                 setInterval(1500000).setMaxWaitTime(100000).setFastestInterval(10000);
@@ -150,6 +154,20 @@ public class EventDetailActivity extends FragmentActivity
         }
 
 
+        if (Objects.equals(getIntent().getAction(), NfcAdapter.ACTION_NDEF_DISCOVERED)){
+            processIntent();
+            return;
+        }
+
+        if (savedInstanceState != null) {
+            this.event = (Event) savedInstanceState.getSerializable(EVENT_SAVE_INSTANCE_KEY);
+            AddEventFragment addEventFragment = (AddEventFragment) fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
+            if (addEventFragment != null) {
+                addEventFragment.setEvent(event);
+            }
+        }
+
+
         Intent intent = getIntent();
         if (intent.getAction().equals(Utils.ADD_INTENT_ACTION)) {
                 showAddEventFragment();
@@ -157,9 +175,14 @@ public class EventDetailActivity extends FragmentActivity
             event = (Event) intent.getSerializableExtra(Utils.EVENT_DATA);
             showViewEventFragment();
         }
-        user = LoggedInUserSingleton.getLoggedInUser();
-        firebaseStorage = FirebaseStorage.getInstance(Utils.EVENT_IMAGES_STORAGE);
-        storageReference = firebaseStorage.getReference();
+
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter==null){
+            Utils.showToast(this,"NFC not supported");
+        }else {
+            nfcAdapter.setNdefPushMessageCallback(this,this);
+            nfcAdapter.setOnNdefPushCompleteCallback(this,this);
+        }
 
     }
 
@@ -353,29 +376,71 @@ public class EventDetailActivity extends FragmentActivity
 
     @Override
     public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
-        return null;
+        String ndefEvent =  gson.toJson(event);
+
+        NdefRecord ndefRecord = new NdefRecord(NdefRecord.TNF_WELL_KNOWN,
+                NdefRecord.RTD_TEXT,
+                new byte[0],
+                ndefEvent.getBytes());
+
+        NdefMessage ndefMessage = new NdefMessage(new NdefRecord[]{ndefRecord});
+        return ndefMessage;
     }
 
     @Override
     public void onNdefPushComplete(NfcEvent nfcEvent) {
 
+       handler.obtainMessage(NDEF_SENT).sendToTarget();
     }
 
+    private final Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case NDEF_SENT:
+                    Utils.showToast(getApplicationContext(), "Event sent!");
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Objects.equals(getIntent().getAction(), NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+            processIntent();
+        }
+    }
+
+    private void processIntent() {
+        Parcelable[] rawMsgs = getIntent().getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        // only one message sent during the beam
+        if (rawMsgs!=null) {
+            NdefMessage msg = (NdefMessage) rawMsgs[0];
+            String receievedEventJSON = new String(msg.getRecords()[0].getPayload());
+            event = gson.fromJson(receievedEventJSON,Event.class);
+            showViewEventFragment();
+        }
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(EVENT_SAVE_INSTANCE_KEY, event);
         super.onSaveInstanceState(outState);
-        Log.d(TAG, "onSaveInstanceState: --------------------------");
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.d(TAG, "4444444444444444444444444444");
         if (savedInstanceState != null) {
             this.event = (Event) savedInstanceState.getSerializable(EVENT_SAVE_INSTANCE_KEY);
-
-            Log.d(TAG, "onRestoreInstanceState: --------------------------");
             AddEventFragment addEventFragment = (AddEventFragment)
                     fragmentManager.findFragmentByTag(Utils.ADD_FRAGMENT);
             if (addEventFragment != null) {
