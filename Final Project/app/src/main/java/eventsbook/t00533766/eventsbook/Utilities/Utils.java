@@ -39,6 +39,7 @@ public class Utils {
     public static final int IMAGE_CAPTURE_REQUEST_CODE = 11;
     public static final int CALENDER_REQUEST_CODE = 15;
     public static final String EVENTS_IMAGES = "EVENT_IMAGES";
+    public static final String DELETE_INTENT_ACTION = "DELETE_INTENT_ACTION";
 
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");

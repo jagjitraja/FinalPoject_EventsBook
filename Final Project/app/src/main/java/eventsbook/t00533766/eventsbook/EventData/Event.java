@@ -171,10 +171,8 @@ public class Event implements Serializable{
                 "Attend "+this.eventName+"\n"+" for only "+this.eventPrice+"\n"
                 +"DESCRIPTION=> "+ this.description+"\n"+"Hosted By=> "+this.postedBy+"\nADDRESSS => "+
                 this.addressLocation+
-                this.interestedUsers+"\n ATTENDING => "+this.attendingUsers+"\n"+
                 this.eventDate+"\n"+
-                "\n"+ getEventDateinMillis()+"\n"+
-                this.storageURL;
+                this.eventID;
     }
 
     public void removeAttendingUser(String userID) {

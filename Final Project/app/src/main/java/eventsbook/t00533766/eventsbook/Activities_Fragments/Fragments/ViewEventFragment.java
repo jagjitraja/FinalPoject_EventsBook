@@ -35,6 +35,7 @@ public class ViewEventFragment extends Fragment {
     private TextView interestedUsersTextView;
     private Button editEventButton;
     private Button shareEventButton;
+    private Button deleteEventButton;
     private ImageButton myLocationButton;
     private ImageView eventImage;
     private Event event;
@@ -83,11 +84,14 @@ public class ViewEventFragment extends Fragment {
         attendingUsersTextView = getActivity().findViewById(R.id.attendingUsersValue);
         eventImage = getActivity().findViewById(R.id.event_imageView);
         shareEventButton = getActivity().findViewById(R.id.share_event_button);
+        deleteEventButton = getActivity().findViewById(R.id.delete_button);
 
 
         if (!loggedInUser.getUserID().equals(event.getPostedBy().getUserID())){
             editEventButton.setEnabled(false);
             editEventButton.setVisibility(View.INVISIBLE);
+            deleteEventButton.setEnabled(false);
+            deleteEventButton.setVisibility(View.INVISIBLE);
         }
 
         eventNameTextView.setText(event.getEventName());
@@ -98,6 +102,12 @@ public class ViewEventFragment extends Fragment {
         attendingUsersTextView.setText(event.getAttendingUsersCount()+"");
         interestedUsersTextView.setText(event.getInterestedUsersCount()+"");
 
+        deleteEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventFragmentListener.deleteEventClicked(event);
+            }
+        });
         editEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,5 +142,6 @@ public class ViewEventFragment extends Fragment {
         void editEventClicked(Event event);
         void showInMapClicked(Event event);
         void shareEventClicked(Event event);
+        void deleteEventClicked(Event event);
     }
 }

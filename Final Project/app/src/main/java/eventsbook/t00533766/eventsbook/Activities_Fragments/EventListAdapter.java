@@ -79,6 +79,11 @@ public class EventListAdapter extends
         return eventArrayList.size();
     }
 
+    public void removeEvent(Event deletedEvent) {
+        eventArrayList.remove(deletedEvent);
+        notifyDataSetChanged();
+    }
+
     public class EventItemHolder extends RecyclerView.ViewHolder {
 
         TextView eventNameTextView;
@@ -143,7 +148,6 @@ public class EventListAdapter extends
             Glide.with(context)
                     .load(event.getStorageURL())
                     .into(eventImage);
-
 
         }
     }

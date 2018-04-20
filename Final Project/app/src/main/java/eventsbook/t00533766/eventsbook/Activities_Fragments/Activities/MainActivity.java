@@ -109,6 +109,11 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             Log.d(TAG, "onChildRemoved: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
+            Event deletedEvent = dataSnapshot.getValue(Event.class);
+            if (deletedEvent != null) {
+                deletedEvent.setEventID(dataSnapshot.getKey());
+                eventListAdapter.removeEvent(deletedEvent);
+            }
 
         }
 
@@ -123,37 +128,6 @@ public class MainActivity extends AppCompatActivity
         }
     };
 
-    private ChildEventListener filterListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-             Log.d(TAG, "onChildAdded: " + dataSnapshot.getKey() + "\n" + dataSnapshot.getValue());
-            Event addedEvent = dataSnapshot.getValue(Event.class);
-             if (addedEvent != null) {
-                addedEvent.setEventID(dataSnapshot.getKey());
-                eventListAdapter.addEvent(addedEvent);
-            }
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };
     public final String TAG = MainActivity.class.getSimpleName();
 
     private AdView adView;
@@ -189,8 +163,12 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         if (intent.getAction() != null) {
-            if (intent.getAction().equalsIgnoreCase(Utils.EDIT_INTENT_ACTION))
+            if (intent.getAction().equalsIgnoreCase(Utils.EDIT_INTENT_ACTION)) {
                 updateEvent((Event) intent.getSerializableExtra(Utils.EVENT_DATA));
+            }else if (intent.getAction().equals(Utils.DELETE_INTENT_ACTION)){
+                Log.d(TAG, "onCreate: 99999999\n\n\n\n\n9999999999999999999\n\n\n99999/n/n/n/n/n\n\n\n\n\n\n999999999");
+                deleteEvent((Event) intent.getSerializableExtra(Utils.EVENT_DATA));
+            }
         }
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -204,9 +182,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         requestCalenderPermission();
-
-
-        Log.d(TAG, "onCreate: 0000000000000000000000000000000000                  " + addCount);
+        
         adView = findViewById(R.id.adView);
         if (addCount % 5 == 0) {
             AdRequest adRequest = new AdRequest.Builder()
@@ -255,47 +231,9 @@ public class MainActivity extends AppCompatActivity
                     adView.setVisibility(View.INVISIBLE);
                 }
             }, 150000);
-        }
 
-        if (addCount%9==0) {
-            InterstitialAd ad = new InterstitialAd(getApplicationContext());
-            ad.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-            ad.loadAd(new AdRequest.Builder().addTestDevice("E3EE1D13EDAEB3017D14B72B162321EC").build());
-            ad.setAdListener(new AdListener() {
-
-                @Override
-                public void onAdLoaded() {
-                    super.onAdLoaded();
-                    Log.d(TAG, "onAdLoaded: ");
-                }
-
-                @Override
-                public void onAdFailedToLoad(int i) {
-                    super.onAdFailedToLoad(i);
-                    Log.d(TAG, "onAdFailedToLoad: ");
-                }
-
-                @Override
-                public void onAdOpened() {
-                    super.onAdOpened();
-                    Log.d(TAG, "onAdOpened: ");
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    super.onAdLeftApplication();
-                    Log.d(TAG, "onAdLeftApplication: ");
-                }
-
-                @Override
-                public void onAdClosed() {
-                    super.onAdClosed();
-                    Log.d(TAG, "onAdClosed: ");
-                }
-            });
         }
     }
-
 
     @Override
     protected void onResume() {
@@ -313,7 +251,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
 
     private void initializeUIElements() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -460,13 +397,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-//        SearchManager searchManager =
-//                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-//        if (searchManager != null) {
-//            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//            searchView.setIconifiedByDefault(false);
-//        }
         return true;
     }
 
@@ -495,7 +425,7 @@ public class MainActivity extends AppCompatActivity
 
                     eventsAfterDate = databaseReference.orderByChild("eventDate")
                             .equalTo(String.valueOf(Utils.dateFormat.format(date)));
-                    eventsAfterDate.addChildEventListener(filterListener);
+                    eventsAfterDate.addChildEventListener(childEventListener);
                     eventArrayList.clear();
                     eventListAdapter.setEventArrayList(eventArrayList);
                 }
@@ -546,7 +476,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.settings) {
             toolbar.setTitle(R.string.settings);
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-            Log.d(TAG, "onNavigationItemSelected: ");
         } else if (id == R.id.sign_out) {
             firebaseAuth.signOut();
             goToSplashActivity();
@@ -559,28 +488,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void eventInterestedClicked(Event event) {
-        Log.d(TAG, "eventInterestedClicked: " + "\n" + event);
 
         if (!event.getInterestedUsers().contains(loggedInUser.getUserID())) {
             event.addInterestedUser(loggedInUser.getUserID());
+            insertEventInCalender(event);
         } else {
             event.removeInterestedUser(loggedInUser.getUserID());
         }
         updateEvent(event);
-        insertEventInCalender(event);
     }
 
     @Override
     public void eventRegisterClicked(Event event) {
-        Log.d(TAG, "eventRegisterClicked: \n" + event);
 
         if (!event.getAttendingUsers().contains(loggedInUser.getUserID())) {
             event.addAttendingUsers(loggedInUser.getUserID());
+            insertEventInCalender(event);
         } else {
             event.removeAttendingUser(loggedInUser.getUserID());
         }
         updateEvent(event);
-        insertEventInCalender(event);
     }
 
     @Override
@@ -620,5 +547,10 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+    }
+
+    private void deleteEvent(Event event) {
+        Log.d(TAG, "deleteEvent: 33333333333333333333333333"+event.getEventID());
+        databaseReference.child(event.getEventID()).removeValue();
     }
 }

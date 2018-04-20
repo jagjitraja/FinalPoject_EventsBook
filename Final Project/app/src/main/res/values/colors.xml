@@ -12,4 +12,5 @@
     <color name="white">#FFFF</color>
     <color name="rippleColor">#DDD</color>
     <color name="backgroundColor">#779</color>
+    <color name="blue" >#508dd2</color>
 </resources>

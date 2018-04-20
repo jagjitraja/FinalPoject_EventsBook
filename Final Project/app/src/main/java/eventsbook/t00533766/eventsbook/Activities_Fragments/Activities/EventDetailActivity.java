@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,6 +56,7 @@ import eventsbook.t00533766.eventsbook.R;
 import eventsbook.t00533766.eventsbook.Utilities.LoggedInUserSingleton;
 import eventsbook.t00533766.eventsbook.Utilities.Utils;
 
+import static eventsbook.t00533766.eventsbook.Utilities.Utils.DELETE_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EDIT_INTENT_ACTION;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_DATA;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.EVENT_LOCATION_LATITUDE;
@@ -269,6 +271,15 @@ public class EventDetailActivity extends FragmentActivity
         intent.putExtra(Intent.EXTRA_TITLE,event.getEventName());
         intent.putExtra(Intent.EXTRA_TEXT,event.toString());
         intent.setType("text/plain");
+        startActivity(intent);
+    }
+
+    @Override
+    public void deleteEventClicked(Event event) {
+        Log.d(TAG, "deleteEventClicked: "+event);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra(EVENT_DATA, event);
+        intent.setAction(DELETE_INTENT_ACTION);
         startActivity(intent);
     }
 

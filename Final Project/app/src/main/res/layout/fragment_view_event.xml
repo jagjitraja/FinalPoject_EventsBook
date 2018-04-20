@@ -174,34 +174,46 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/interestedUsersLabel">
 
             <Button
-                android:id="@+id/edit_event_button"
+                android:id="@+id/delete_button"
+                style="?android:attr/actionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_weight="1"
-                android:text="@string/edit_event"
-                android:background="@drawable/register_ripple"
-                style="?android:attr/actionButtonStyle"
                 android:layout_margin="2dp"
+                android:drawableEnd="@drawable/delete"
+                android:background="@color/red"
+                android:text="@string/delete" />
+
+            <Button
+                android:id="@+id/edit_event_button"
+                style="?android:attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/register_ripple"
                 android:drawableEnd="@drawable/ic_menu_manage"
+                android:text="@string/edit_event"
                 android:textColor="@color/cardview_light_background" />
 
             <Button
                 android:id="@+id/share_event_button"
+                style="?android:attr/actionButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
-                style="?android:attr/actionButtonStyle"
-                android:layout_weight="1"
                 android:layout_margin="2dp"
-                android:text="@string/share"
-                android:background="@color/red"
+                android:layout_weight="1"
+                android:background="@color/blue"
                 android:drawableEnd="@drawable/ic_menu_share"
-                android:textColor="@color/colorPrimary" />
+                android:text="@string/share"
+                android:textColor="@color/black_overlay" />
 
         </LinearLayout>
 
