@@ -5,7 +5,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_maps">Map</string>
 
-    <string name="title_activity_splash_intro">SplashIntroActivity</string>
+    <string name="title_activity_splash_intro">EventBook</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="title_launch_screen">EventsBook</string>
     <string name="slogan">Invite all and Get Planning</string>
