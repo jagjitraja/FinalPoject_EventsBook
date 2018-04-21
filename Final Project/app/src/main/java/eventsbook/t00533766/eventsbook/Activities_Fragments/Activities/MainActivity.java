@@ -432,6 +432,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.events_line) {
             toolbar.setTitle(R.string.app_name);
+            Query eventsAfterDate = null;
+            eventsAfterDate = databaseReference.orderByChild("eventDate");
+            eventsAfterDate.addChildEventListener(childEventListener);
+            eventArrayList.clear();
             eventListAdapter.setEventArrayList(eventArrayList);
         } else if (id == R.id.posted_events) {
             toolbar.setTitle(R.string.my_posted_events);
