@@ -248,20 +248,21 @@ public class EventDetailActivity extends FragmentActivity
             e.printStackTrace();
         }
         Intent intent = new Intent(this, MapsActivity.class);
-        if (location != null && addresses != null) {
+        if (location != null) {
             intent.putExtra(USER_LOCATION_LATITUDE, location.getLatitude());
             intent.putExtra(USER_LOCATION_LONGITUDE, location.getLongitude());
-
-            if (addresses.size()>0) {
-                Address address = addresses.get(0);
-                intent.putExtra(EVENT_LOCATION_LATITUDE, address.getLatitude());
-                intent.putExtra(EVENT_LOCATION_LONGITUDE, address.getLongitude());
-                Utils.showToast(getApplicationContext(), "Couldnt get Event Location");
-            }
-            startActivity(intent);
-        } else if (location == null) {
-            Utils.showToast(getApplicationContext(), "Couldnt get User Location");
+        }else {
+            Utils.showToast(getApplicationContext(),"Couldnt get user location");
         }
+        if (addresses != null && addresses.size() > 0) {
+            Address address = addresses.get(0);
+            intent.putExtra(EVENT_LOCATION_LATITUDE, address.getLatitude());
+            intent.putExtra(EVENT_LOCATION_LONGITUDE, address.getLongitude());
+        }else{
+            Utils.showToast(getApplicationContext(), "Couldnt get Event Location");
+        }
+        startActivity(intent);
+
     }
 
     @Override

@@ -25,12 +25,6 @@ public class SplashIntroActivity extends AppCompatActivity {
     private final static int SIGN_IN_CODE = 152;
     private final String TAG = SplashIntroActivity.class.getName();
 
-//    private View.OnClickListener tryAgainListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//            showSignInScreen();
-//        }
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +34,6 @@ public class SplashIntroActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         MobileAds.initialize(this, getString(R.string.ad_app_id));
 
-
-        //temp
-       // goToMainActivity();
     }
 
     private void goToMainActivity() {

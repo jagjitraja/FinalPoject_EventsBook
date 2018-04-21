@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Log.d(TAG, "onChildAdded: ");
             Event addedEvent = dataSnapshot.getValue(Event.class);
             if (addedEvent != null) {
                 addedEvent.setEventID(dataSnapshot.getKey());
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
 
+            if (eventListAdapter!=null)
+                eventListAdapter.notifyDataSetChanged();
             Utils.showToast(getApplicationContext(),"Event Deleted");
 
         }
@@ -142,6 +145,12 @@ public class MainActivity extends AppCompatActivity
         firebaseAuth = FirebaseAuth.getInstance();
         eventArrayList = new ArrayList<>();
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        eventListAdapter = new EventListAdapter(eventArrayList, getApplicationContext(), this);
+        recyclerView.setAdapter(eventListAdapter);
+
         initializeUIElements();
         if (firebaseAuth.getCurrentUser() == null) {
             //Utils.showSnackBar(findViewById(R.id.main_activity),
@@ -160,12 +169,6 @@ public class MainActivity extends AppCompatActivity
                 deleteEvent((Event) intent.getSerializableExtra(Utils.EVENT_DATA));
             }
         }
-
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        eventListAdapter = new EventListAdapter(eventArrayList, getApplicationContext(), this);
-        recyclerView.setAdapter(eventListAdapter);
 
         if (!hasInternet(getApplicationContext())) {
             Utils.showToast(getApplicationContext(), "Device is offline, some features may not be available :(");
@@ -282,7 +285,12 @@ public class MainActivity extends AppCompatActivity
 
     private void setChildEventListener() {
         if (databaseReference != null) {
-            databaseReference.addChildEventListener(childEventListener);
+            Log.d(TAG, "setChildEventListener: ");
+            Query eventsAfterDate = null;
+            eventsAfterDate = databaseReference.orderByChild("eventDate");
+            eventsAfterDate.addChildEventListener(childEventListener);
+            eventArrayList.clear();
+            eventListAdapter.setEventArrayList(eventArrayList);
         }
     }
 
@@ -306,9 +314,7 @@ public class MainActivity extends AppCompatActivity
 
     private void postEventToDatabase(Event event) {
         databaseReference.push().setValue(event);
-
         insertEventInCalender(event);
-
     }
 
     private void insertEventInCalender(Event event) {
@@ -347,12 +353,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case ADD_EVENT_REQUEST:
                 if (resultCode == RESULT_OK) {
                     Event event = (Event) data.getSerializableExtra(EVENT_DATA);
                     eventListAdapter.addEvent(event);
+                    eventListAdapter.notifyDataSetChanged();
                     postEventToDatabase(event);
                 }
                 break;
@@ -493,6 +499,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void viewEventSelected(Event event) {
+        Log.d(TAG, "viewEventSelected: "+event);
         Intent intent = new Intent(getApplicationContext(), EventDetailActivity.class);
         intent.setAction(VIEW_INTENT_ACTION);
         intent.putExtra(EVENT_DATA, event);
@@ -528,6 +535,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void deleteEvent(Event event) {
-        databaseReference.child(event.getEventID()).removeValue();
+        eventListAdapter.removeEvent(event);
+        if (event.getEventID().length()>0)
+            databaseReference.child(event.getEventID()).removeValue();
+        Log.d(TAG, "deleteEvent: "+event.getEventID()+"                "+databaseReference.child(event.getEventID()));
+
     }
 }

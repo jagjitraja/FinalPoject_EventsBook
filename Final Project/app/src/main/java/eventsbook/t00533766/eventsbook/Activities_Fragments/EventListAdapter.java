@@ -33,7 +33,6 @@ public class EventListAdapter extends
     private Context context;
     private OnEventItemClick onEventItemClickListener;
     private User loggedInUser;
-    private FirebaseStorage firebaseStorage;
 
     public EventListAdapter(ArrayList<Event> eventArrayList,
                             Context context, OnEventItemClick onEventItemClick) {
@@ -41,7 +40,7 @@ public class EventListAdapter extends
         this.context= context;
         this.onEventItemClickListener = onEventItemClick;
         this.loggedInUser = LoggedInUserSingleton.getLoggedInUser();
-        firebaseStorage = FirebaseStorage.getInstance(Utils.EVENT_IMAGES_STORAGE);
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance(Utils.EVENT_IMAGES_STORAGE);
     }
 
     @Override
@@ -66,7 +65,6 @@ public class EventListAdapter extends
     public void addEvent(Event event){
         this.eventArrayList.add(event);
         notifyDataSetChanged();
-        Log.d(TAG, "addEvent: "+eventArrayList);
     }
 
     public void setEventArrayList(ArrayList<Event> eventArrayList){
@@ -116,7 +114,6 @@ public class EventListAdapter extends
             eventPostersNameTextView.setText(event.getPostedBy().getUserName());
             eventCityTextView.setText(event.getAddressLocation());
 
-            boolean registering;
             if (event.getAttendingUsersCount()>0&&
                     event.getAttendingUsers().contains(loggedInUser.getUserID())){
                 registerButton.setText(R.string.remove_event);
