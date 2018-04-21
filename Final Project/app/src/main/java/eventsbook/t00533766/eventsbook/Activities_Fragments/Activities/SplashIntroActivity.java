@@ -44,11 +44,9 @@ public class SplashIntroActivity extends AppCompatActivity {
 
     }
 
-    //TODO - Connect and get location, and updates from database
-    //TODO - Show icon and spinner
-
     private void showSignInScreen() {
 
+        //PROMPT USERS TO LOGIN
         AuthUI authUI = AuthUI.getInstance();
 
         startActivityForResult(authUI.createSignInIntentBuilder()

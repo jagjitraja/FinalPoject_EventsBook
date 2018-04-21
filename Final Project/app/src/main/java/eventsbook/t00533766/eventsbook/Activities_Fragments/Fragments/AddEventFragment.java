@@ -183,9 +183,6 @@ public class AddEventFragment extends Fragment {
 
     }
 
-    public void setDate(Date date) {
-    }
-
     private View.OnClickListener dateOnClickListener = new View.OnClickListener() {
 
         private Date date = new Date(System.currentTimeMillis());
@@ -202,7 +199,6 @@ public class AddEventFragment extends Fragment {
                     calendar.set(i, i1, i2);
                     Date date = calendar.getTime();
                     eventDateTextView.setText(Utils.dateFormat.format(date));
-                    setDate(date);
                 }
             });
         }

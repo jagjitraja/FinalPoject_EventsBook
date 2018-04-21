@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             Log.d(TAG, "onChildAdded: ");
+            //CHECK NEW EVENT ADDED AND AD IT TO THE LIST ADAPTER
             Event addedEvent = dataSnapshot.getValue(Event.class);
             if (addedEvent != null) {
                 addedEvent.setEventID(dataSnapshot.getKey());
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
 
+            //REMOVE EVENT IF DELETED
             if (eventListAdapter!=null)
                 eventListAdapter.notifyDataSetChanged();
             Utils.showToast(getApplicationContext(),"Event Deleted");
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         int addCount = 0;
+        //COUNT TO CHECK NUMBER OF TIMES APP WAS LAUNCHED
         SharedPreferences sharedPreferences = getSharedPreferences("AD_COUNTER", MODE_PRIVATE);
         if (sharedPreferences.contains("ADD_COUNT")) {
             addCount = sharedPreferences.getInt("ADD_COUNT", 0);
@@ -161,6 +164,8 @@ public class MainActivity extends AppCompatActivity
         }
         initializeFireBase();
 
+
+        //CHECK THE INTENT ACTION TO SEE IF IT WAS FROM EDITING OR DELETEING AN INTENT
         Intent intent = getIntent();
         if (intent.getAction() != null) {
             if (intent.getAction().equalsIgnoreCase(Utils.EDIT_INTENT_ACTION)) {
@@ -175,7 +180,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         requestCalenderPermission();
-        
+
+        //DISPLAY AD IF USER LAUNCHES THE APP THE FIFTH TIME
         adView = findViewById(R.id.adView);
         if (addCount % 5 == 0) {
             AdRequest adRequest = new AdRequest.Builder()
@@ -229,6 +235,8 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle(R.string.app_name);
     }
 
+
+    //REQUEST CALENDER WRITE ACCESS
     private void requestCalenderPermission() {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.WRITE_CALENDAR)
@@ -274,6 +282,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    //INITIALIZE FIREBASE AND GET A REFERENCE TO THE EVENTS NODE
     private void initializeFireBase() {
         if (firebaseAuth.getCurrentUser() != null) {
             FirebaseDatabase firebaseDatabase = FireBaseUtils.getFirebaseDatabase();
@@ -283,6 +292,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //SET CHILD EVENT LISTENER AND REFRESH DATA WHEN LAUNCHED
     private void setChildEventListener() {
         if (databaseReference != null) {
             Log.d(TAG, "setChildEventListener: ");
@@ -306,7 +316,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void goToAddEventActivity() {
-
         Intent intent = new Intent(getApplicationContext(), EventDetailActivity.class);
         intent.setAction(ADD_INTENT_ACTION);
         startActivityForResult(intent, ADD_EVENT_REQUEST);
@@ -317,6 +326,7 @@ public class MainActivity extends AppCompatActivity
         insertEventInCalender(event);
     }
 
+    //CREATE INTENT TO SAVE IN DEVICE CALENDER
     private void insertEventInCalender(Event event) {
 
         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
@@ -341,7 +351,6 @@ public class MainActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-
         if (requestCode == Utils.CALENDER_REQUEST_CODE) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Utils.showToast(getApplicationContext(), "Calender Sync disabled :(");
@@ -355,6 +364,7 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case ADD_EVENT_REQUEST:
+                //IF ACTIVITY RETURNS FROM ADDING AN EVENT, IT WILL ADD TO ADAPTER AND REFRESH
                 if (resultCode == RESULT_OK) {
                     Event event = (Event) data.getSerializableExtra(EVENT_DATA);
                     eventListAdapter.addEvent(event);
@@ -398,7 +408,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.filter_events) {
-
+        //FILTER EVENTS BASED ON THE SELECTED DATE
             DatePickerDialog datePickerDialog = new DatePickerDialog(this);
             datePickerDialog.setTitle(getString(R.string.filter_date_prompt));
             datePickerDialog.show();
@@ -477,6 +487,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //CALL BACKS FROM THE LIST ADAPTER TO UPDATE THE DATABSE AND EVENTS
     @Override
     public void eventInterestedClicked(Event event) {
 
@@ -503,12 +514,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void viewEventSelected(Event event) {
-        Log.d(TAG, "viewEventSelected: "+event);
         Intent intent = new Intent(getApplicationContext(), EventDetailActivity.class);
         intent.setAction(VIEW_INTENT_ACTION);
         intent.putExtra(EVENT_DATA, event);
         startActivity(intent);
     }
+
 
     public void updateEvent(Event event) {
         if (!Objects.equals(event.getEventID(), "")) {

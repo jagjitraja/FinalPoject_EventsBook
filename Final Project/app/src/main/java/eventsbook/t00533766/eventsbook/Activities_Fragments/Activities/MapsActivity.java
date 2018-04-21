@@ -23,6 +23,7 @@ import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONG
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    //ACTIVITY TO SHOW USER LOCATION AND EVENT LOCATION
     private static final String TAG = MapsActivity.class.getSimpleName();
     private GoogleMap mMap;
 

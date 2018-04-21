@@ -16,7 +16,4 @@ public class FireBaseUtils {
         return firebaseDatabase;
     }
 
-    public void addInterestedUser(Event event,String userID){
-
-    }
 }

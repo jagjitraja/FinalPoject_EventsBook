@@ -16,6 +16,9 @@ import java.text.SimpleDateFormat;
  */
 
 public class Utils {
+
+    //STATIC CLASS TO HOLD CONSTANTS AND GENERIC METHODS
+
     public static final String EVENT_IMAGES_STORAGE = "gs://eventify-jsb.appspot.com";
     public static final String EVENT_NODE = "EVENTS";
 

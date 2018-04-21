@@ -65,6 +65,16 @@ import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LATI
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.USER_LOCATION_LONGITUDE;
 import static eventsbook.t00533766.eventsbook.Utilities.Utils.hasInternet;
 
+
+/*
+* This activity uses two fragments
+* @EVENTADDFRAGMENT
+* @EVENTVIEWFRAGMENT
+*
+* it switches them based on how the user launches the activity or selects to edit the event from view event fragment
+*
+* ALSO PROVIDES NFC functionality when user is on this screen
+* */
 public class EventDetailActivity extends FragmentActivity
         implements AddEventFragment.AddEventFragmentListener,
         ViewEventFragment.ViewEventFragmentListener,
@@ -224,6 +234,8 @@ public class EventDetailActivity extends FragmentActivity
     }
 
 
+
+    //CALL BACKS FROM THE FRAGMENTS FROM VIEW EVENT OR ADD EVENT
     @Override
     public void editEventClicked(Event event) {
         getIntent().setAction(Utils.EDIT_INTENT_ACTION);
@@ -337,6 +349,7 @@ public class EventDetailActivity extends FragmentActivity
     }
 
 
+    //GET LOCATION AND CAMERA PERMISSIONS
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
@@ -463,6 +476,7 @@ public class EventDetailActivity extends FragmentActivity
     }
 
 
+    //SAVE IMAGE TO FIREBASE STORAGE WHENA ACTIVITY COMES BACK FROM THE CAMERA AND UPDATE UI
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

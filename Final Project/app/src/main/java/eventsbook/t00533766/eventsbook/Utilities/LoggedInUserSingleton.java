@@ -11,6 +11,7 @@ import eventsbook.t00533766.eventsbook.EventData.User;
 
 public abstract class LoggedInUserSingleton {
 
+    //SINGLETON TO SAVE LOGGGED IN USER DETAILS
 
     private static User loggedInUser;
 

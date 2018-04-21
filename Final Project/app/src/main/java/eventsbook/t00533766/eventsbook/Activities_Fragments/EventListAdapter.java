@@ -114,6 +114,7 @@ public class EventListAdapter extends
             eventPostersNameTextView.setText(event.getPostedBy().getUserName());
             eventCityTextView.setText(event.getAddressLocation());
 
+            //CHECK THE EVENT PROPERTES AND UPDATE THE TEXT OF THE BUTTONS
             if (event.getAttendingUsersCount()>0&&
                     event.getAttendingUsers().contains(loggedInUser.getUserID())){
                 registerButton.setText(R.string.remove_event);
